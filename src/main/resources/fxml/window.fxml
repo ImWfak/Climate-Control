@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.climateControl.window.controller.Controller">
+   <TabPane prefHeight="275.0" prefWidth="1920.0" tabClosingPolicy="UNAVAILABLE">
+      <Tab fx:id="fileTab">
+         <AnchorPane prefHeight="250.0" prefWidth="1920.0">
+            <Label fx:id="fileLabel" alignment="CENTER" layoutX="25.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="openFileButton" layoutX="25.0" layoutY="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="newFileButton" layoutX="25.0" layoutY="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="saveFileButton" layoutX="25.0" layoutY="110.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="saveAsFileButton" layoutX="25.0" layoutY="140.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="closeFileButton" layoutX="25.0" layoutY="170.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <BorderPane layoutY="240.0" prefHeight="5.0" prefWidth="1920.0" />
+         </AnchorPane>
+      </Tab>
+      <Tab fx:id="editTab">
+         <AnchorPane prefHeight="250.0" prefWidth="1920.0">
+            <Label fx:id="deleteWeatherLabel" alignment="CENTER" layoutX="25.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="deleteWeatherBySeasonButton" layoutX="25.0" layoutY="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="deleteWeatherByCommentButton" layoutX="25.0" layoutY="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="deleteWeatherByPositionButton" layoutX="25.0" layoutY="110.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Label fx:id="deleteDayLabel" alignment="CENTER" layoutX="255.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="deleteDayByTemperatureButton" layoutX="255.0" layoutY="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="deleteDayByDateButton" layoutX="255.0" layoutY="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="deleteDayByCommentButton" layoutX="255.0" layoutY="110.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="deleteDayByPositionButton" layoutX="255.0" layoutY="140.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <BorderPane layoutX="485.0" prefHeight="250.0" prefWidth="5.0" />
+            <Label fx:id="editWeatherLabel" alignment="CENTER" layoutX="540.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="editWeatherBySeasonButton" layoutX="540.0" layoutY="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="editWeatherByCommentButton" layoutX="540.0" layoutY="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="editWeatherByPositionButton" layoutX="540.0" layoutY="110.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Label fx:id="editDayLabel" alignment="CENTER" layoutX="770.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="editDayByTemperatureButton" layoutX="770.0" layoutY="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="editDayByDateButton" layoutX="770.0" layoutY="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="editDayByCommentButton" layoutX="770.0" layoutY="110.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="editDayByPositionButton" layoutX="770.0" layoutY="140.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <BorderPane layoutX="1000.0" layoutY="3.0" prefHeight="250.0" prefWidth="5.0" />
+            <Label fx:id="addLabel" alignment="CENTER" layoutX="1055.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="addWeatherButton" layoutX="1055.0" layoutY="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <Button fx:id="addDayButton" layoutX="1055.0" layoutY="140.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <BorderPane layoutY="240.0" prefHeight="5.0" prefWidth="1920.0" />
+         </AnchorPane>
+      </Tab>
+      <Tab fx:id="viewTab">
+         <AnchorPane prefHeight="250.0" prefWidth="1920.0">
+            <Label fx:id="setLanguageLabel" alignment="CENTER" layoutX="25.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" />
+            <ToggleButton fx:id="setEnToggleButton" layoutX="25.0" layoutY="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <ToggleButton fx:id="setUaToggleButton" layoutX="25.0" layoutY="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <ToggleButton fx:id="setRuToggleButton" layoutX="25.0" layoutY="110.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" />
+            <BorderPane layoutX="255.0" prefHeight="250.0" prefWidth="5.0" />
+            <Label fx:id="fontLabel" alignment="CENTER" layoutX="305.0" layoutY="20.0" prefHeight="30.0" prefWidth="180.0" />
+            <ChoiceBox fx:id="fontChoiceBox" layoutX="305.0" layoutY="50.0" prefHeight="30.0" prefWidth="180.0" />
+            <ChoiceBox fx:id="fontSizeChoiceBox" layoutX="305.0" layoutY="85.0" prefHeight="30.0" prefWidth="80.0" />
+            <BorderPane layoutY="240.0" prefHeight="5.0" prefWidth="1920.0" />
+            <ColorPicker fx:id="fontColorPicker" layoutX="390.0" layoutY="85.0" prefHeight="30.0" prefWidth="95.0" />
+         </AnchorPane>
+      </Tab>
+   </TabPane>
+   <Pane layoutY="275.0" prefHeight="805.0" prefWidth="400.0">
+      <Button fx:id="showAllDaysInWeatherButton" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="345.0" />
+      <Button fx:id="dayWithLongestCommentInWeatherButton" layoutX="25.0" layoutY="105.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="345.0" />
+      <Button fx:id="dayWithBiggestTemperatureInWeatherButton" layoutX="25.0" layoutY="185.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="345.0" />
+      <TextField fx:id="findCommentsTextField" layoutX="25.0" layoutY="265.0" minHeight="40.0" prefWidth="240.0" />
+      <Button fx:id="findCommentsButton" layoutX="270.0" layoutY="265.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" />
+      <BorderPane layoutX="395.0" prefHeight="805.0" prefWidth="5.0" />
+      <TextArea fx:id="findCommentsTextArea" layoutX="25.0" layoutY="345.0" prefHeight="300.0" prefWidth="345.0" />
+   </Pane>
+   <ScrollPane layoutX="400.0" layoutY="275.0" prefHeight="805.0" prefWidth="450.0">
+      <TreeTableView fx:id="weathersTreeTable" prefHeight="805.0" prefWidth="450.0">
+         <columns>
+            <TreeTableColumn fx:id="weathersPositionColumn" prefWidth="110.0" />
+            <TreeTableColumn fx:id="weathersSeasonColumn" prefWidth="170.0" />
+            <TreeTableColumn fx:id="weathersCommentColumn" prefWidth="170.0" />
+         </columns>
+      </TreeTableView>
+   </ScrollPane>
+   <ScrollPane layoutX="850.0" layoutY="275.0" prefHeight="805.0" prefWidth="1070.0">
+      <TableView fx:id="daysTable" prefHeight="805.0" prefWidth="1070.0">
+         <columns>
+            <TableColumn fx:id="daysPositionColumn" prefWidth="110.0" />
+            <TableColumn fx:id="daysTemperatureColumn" prefWidth="320.0" />
+            <TableColumn fx:id="daysDateColumn" prefWidth="320.0" />
+            <TableColumn fx:id="daysCommentColumn" prefWidth="320.0" />
+         </columns>
+      </TableView>
+   </ScrollPane>
+</AnchorPane>
