@@ -12,7 +12,6 @@ module info.climateControl.application {
     // XStream
     requires xstream;
 
-    opens info.climateControl.window.additionalWindows to javafx.fxml;
     opens info.climateControl.window.alerts to javafx.fxml;
     opens info.climateControl.window.controller to javafx.fxml;
     opens info.climateControl.window.tabs to javafx.fxml;

@@ -176,7 +176,7 @@ public class Controller {
     private String filePath;
 
     private final FileTab fileTabObject = new FileTab();
-    private final EditTab editTabObject = new EditTab();
+    private final EditTab editTabObject = new EditTab(this);
     private final ViewTab viewTabObject = new ViewTab();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
@@ -246,6 +246,9 @@ public class Controller {
         fileChangesSaved = true;
         fileOpen = false;
         filePath = null;
+    }
+    public void setLanguage() {
+
     }
     @FXML
     public void initialize() {
