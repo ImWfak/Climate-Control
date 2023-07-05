@@ -6,6 +6,7 @@ import info.climateControl.day.Day;
 import info.climateControl.window.tabs.EditTab;
 import info.climateControl.window.tabs.FileTab;
 import info.climateControl.window.tabs.ViewTab;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
@@ -112,13 +113,13 @@ public class Controller {
     private TextArea findCommentsTextArea;
     // LEFT WEATHER TABLE
     @FXML
-    private TreeTableView<Weather> weathersTreeTable;
+    private TableView<Weather> weathersTreeTable;
     @FXML
-    private TreeTableColumn<Weather, Integer> weathersPositionColumn;
+    private TableColumn<Weather, Integer> weathersPositionColumn;
     @FXML
-    private TreeTableColumn<Weather, String> weathersSeasonColumn;
+    private TableColumn<Weather, String> weathersSeasonColumn;
     @FXML
-    private TreeTableColumn<Weather, String> weathersCommentColumn;
+    private TableColumn<Weather, String> weathersCommentColumn;
     // RIGHT DAYS TABLE
     @FXML
     private TableView<Day> daysTable;
@@ -246,8 +247,54 @@ public class Controller {
         fileChangesSaved = true;
         fileOpen = false;
         filePath = null;
+
+        weathersPositionColumn.setCellValueFactory(column -> {
+            return new TableCell<Weather, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item != null || !empty)
+                        setText(String.valueOf(getIndex() + 1));
+                }
+            }.itemProperty();
+        });
+        weathersSeasonColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getSeason()));
+        weathersCommentColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getComment()));
+        daysPositionColumn.setCellValueFactory(column -> {
+            return new TableCell<Weather, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item != null || !empty)
+                        setText(String.valueOf(getIndex() + 1));
+                }
+            }.itemProperty();
+        });
+        daysTemperatureColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getTemperature()));
+        daysDateColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getDate()));
+        daysCommentColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getComment()));
     }
     public void setLanguage() {
+
+    }
+    public void setFont() {
+
+    }
+    public void setFontSize() {
+
+    }
+    public void setFontColor() {
+
+    }
+    public void updateWeathersTable() {
+
+    }
+    public void updateDaysTable() {
 
     }
     @FXML

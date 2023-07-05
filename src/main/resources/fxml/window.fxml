@@ -84,13 +84,13 @@
       <TextArea fx:id="findCommentsTextArea" layoutX="25.0" layoutY="345.0" prefHeight="300.0" prefWidth="345.0" />
    </Pane>
    <ScrollPane layoutX="400.0" layoutY="275.0" prefHeight="805.0" prefWidth="450.0">
-      <TreeTableView fx:id="weathersTreeTable" prefHeight="805.0" prefWidth="450.0">
+      <TableView fx:id="weathersTable" prefHeight="805.0" prefWidth="450.0">
          <columns>
-            <TreeTableColumn fx:id="weathersPositionColumn" prefWidth="110.0" />
-            <TreeTableColumn fx:id="weathersSeasonColumn" prefWidth="170.0" />
-            <TreeTableColumn fx:id="weathersCommentColumn" prefWidth="170.0" />
+            <TableColumn fx:id="weathersPositionColumn" prefWidth="110.0" />
+            <TableColumn fx:id="weathersSeasonColumn" prefWidth="170.0" />
+            <TableColumn fx:id="weathersCommentColumn" prefWidth="170.0" />
          </columns>
-      </TreeTableView>
+      </TableView>
    </ScrollPane>
    <ScrollPane layoutX="850.0" layoutY="275.0" prefHeight="805.0" prefWidth="1070.0">
       <TableView fx:id="daysTable" prefHeight="805.0" prefWidth="1070.0">

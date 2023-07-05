@@ -7,7 +7,6 @@ public interface Alerts {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // WEATHER ALERTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /** method which will create */
     static Alert createNoSuchWeathersAlert(ResourceBundle resourceBundle) {
         Alert noSuchWeathersAlert = new Alert(Alert.AlertType.ERROR);
         noSuchWeathersAlert.setTitle(resourceBundle.getString("noSuchWeatherAlertTitle"));
@@ -29,7 +28,7 @@ public interface Alerts {
         noWeathersInFile.setContentText(resourceBundle.getString("noWeatherInFileAlertContent"));
         return noWeathersInFile;
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
     // DAYS ALERTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     static Alert createNoSuchDaysAlert(ResourceBundle resourceBundle) {
@@ -48,5 +47,26 @@ public interface Alerts {
         indexOutOfBoundsAlert.setHeaderText(resourceBundle.getString("indexOutOfBoundsHeader"));
         indexOutOfBoundsAlert.setContentText(resourceBundle.getString("indexOutOfBoundsContent"));
         return indexOutOfBoundsAlert;
+    }
+    static Alert createWrongInputAlert(ResourceBundle resourceBundle) {
+        Alert wrongInputAlert = new Alert(Alert.AlertType.ERROR);
+        wrongInputAlert.setTitle(resourceBundle.getString("wrongInputAlertTitle"));
+        wrongInputAlert.setHeaderText(resourceBundle.getString("wrongInputAlertHeader"));
+        wrongInputAlert.setContentText(resourceBundle.getString("wrongInputAlertContent"));
+        return wrongInputAlert;
+    }
+    static Alert createTableIsEmptyAlert(ResourceBundle resourceBundle) {
+        Alert tableIsEmptyAlert = new Alert(Alert.AlertType.ERROR);
+        tableIsEmptyAlert.setTitle(resourceBundle.getString("tableIsEmptyAlertTitle"));
+        tableIsEmptyAlert.setHeaderText(resourceBundle.getString("tableIsEmptyAlertHeader"));
+        tableIsEmptyAlert.setContentText(resourceBundle.getString("tableIsEmptyAlertContent"));
+        return tableIsEmptyAlert;
+    }
+    static Alert createNoSelectedRowAlert(ResourceBundle resourceBundle) {
+        Alert noSelectedRowAlert = new Alert(Alert.AlertType.ERROR);
+        noSelectedRowAlert.setTitle(resourceBundle.getString("noSelectedRowAlertTitle"));
+        noSelectedRowAlert.setHeaderText(resourceBundle.getString("noSelectedRowAlertHeader"));
+        noSelectedRowAlert.setContentText(resourceBundle.getString("noSelectedRowAlertContent"));
+        return noSelectedRowAlert;
     }
 }
