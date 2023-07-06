@@ -113,24 +113,24 @@ public class Controller {
     private TextArea findCommentsTextArea;
     // LEFT WEATHER TABLE
     @FXML
-    private TableView<Weather> weathersTreeTable;
+    private TableView<Weather> weathersTable;
     @FXML
-    private TableColumn<Weather, Integer> weathersPositionColumn;
+    private TableColumn<Weather, Integer> weathersPositionColumn = new TableColumn<>();
     @FXML
-    private TableColumn<Weather, String> weathersSeasonColumn;
+    private TableColumn<Weather, String> weathersSeasonColumn = new TableColumn<>();
     @FXML
-    private TableColumn<Weather, String> weathersCommentColumn;
+    private TableColumn<Weather, String> weathersCommentColumn = new TableColumn<>();
     // RIGHT DAYS TABLE
     @FXML
     private TableView<Day> daysTable;
     @FXML
-    private TableColumn<Day, Integer> daysPositionColumn;
+    private TableColumn<Day, Integer> daysPositionColumn = new TableColumn<>();
     @FXML
-    private TableColumn<Day, Double> daysTemperatureColumn;
+    private TableColumn<Day, Double> daysTemperatureColumn = new TableColumn<>();
     @FXML
-    private TableColumn<Day, LocalDate> daysDateColumn;
+    private TableColumn<Day, LocalDate> daysDateColumn = new TableColumn<>();
     @FXML
-    private TableColumn<Day, String> daysCommentColumn;
+    private TableColumn<Day, String> daysCommentColumn = new TableColumn<>();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,8 +239,8 @@ public class Controller {
     // METHODS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     {
-        climate = null;
-        selectedWeather = null;
+        climate = new Climate();
+        selectedWeather = new Weather();
         mainWindowResourceBundle = ResourceBundle.getBundle("resourceBundles/mainWindowBundle", Locale.US);
         additionalWindowsResourceBundle = ResourceBundle.getBundle("resourceBundles/additionalWindowsBundle", Locale.US);
         alertResourceBundle = ResourceBundle.getBundle("resourceBundles/alertBundle", Locale.US);
