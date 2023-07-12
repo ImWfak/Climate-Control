@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.*;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public class EditTab implements Alerts {
     public Button getEditButton() { return editButton; }
     public Button getAddButton() { return addButton; }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // METHODS
+    // PRIVATE METHODS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TABLES
     private void buildWeathersTable() {
@@ -250,7 +252,7 @@ public class EditTab implements Alerts {
         }
     }
     // DELETE WEATHER WINDOW
-    private void buildDeleteWeatherWindow() {
+    private void showDeleteWeatherWindow() {
         anchorPane.setPrefWidth(625);
         anchorPane.setPrefHeight(400);
         scrollPane.setLayoutX(25);
@@ -307,9 +309,12 @@ public class EditTab implements Alerts {
                 controller.setFileChangesSaved(false);
             }
         });
+        Stage stage = new Stage();
+        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
+        stage.show();
     }
     // DELETE DAY WINDOW
-    private void buildDeleteDayWindow() {
+    private void showDeleteDayWindow() {
         anchorPane.setPrefWidth(625);
         anchorPane.setPrefHeight(400);
         scrollPane.setLayoutX(25);
@@ -366,9 +371,12 @@ public class EditTab implements Alerts {
                 controller.setFileChangesSaved(false);
             }
         });
+        Stage stage = new Stage();
+        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
+        stage.show();
     }
     // EDIT WEATHER WINDOW
-    private void buildEditWeatherWindow() {
+    private void showEditWeatherWindow() {
         anchorPane.setPrefWidth(625);
         anchorPane.setPrefHeight(450);
         scrollPane.setLayoutX(25);
@@ -420,9 +428,12 @@ public class EditTab implements Alerts {
                 controller.setFileChangesSaved(false);
             }
         });
+        Stage stage = new Stage();
+        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
+        stage.show();
     }
     // EDIT DAY WINDOW
-    private void buildEditDayWindow() {
+    private void showEditDayWindow() {
         anchorPane.setPrefWidth(625);
         anchorPane.setPrefHeight(400);
         scrollPane.setLayoutX(25);
@@ -488,9 +499,12 @@ public class EditTab implements Alerts {
                 }
             }
         });
+        Stage stage = new Stage();
+        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
+        stage.show();
     }
     // ADD WEATHER WINDOW
-    private void buildAddWeatherWindow() {
+    private void showAddWeatherWindow() {
         anchorPane.setPrefWidth(625);
         anchorPane.setPrefHeight(125);
         weatherSeasonField.setLayoutX(25);
@@ -519,9 +533,12 @@ public class EditTab implements Alerts {
             controller.updateWeathersTable();
             controller.setFileChangesSaved(false);
         });
+        Stage stage = new Stage();
+        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
+        stage.show();
     }
     // ADD DAY WINDOW
-    private void buildAddDayWindow() {
+    private void showAddDayWindow() {
         anchorPane.setPrefWidth(625);
         anchorPane.setPrefHeight(125);
         dayTemperatureField.setLayoutX(25);
@@ -566,7 +583,112 @@ public class EditTab implements Alerts {
                 }
             }
         });
-        controller.updateDaysTable();
-        controller.setFileChangesSaved(false);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
+        stage.show();
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // DELETE
+    public void pressedDeleteWeatherBySeason() {
+        controller.getDeleteWeatherBySeasonButton().setOnAction(actionEvent -> {
+            showDeleteWeatherWindow();
+            loadWeathersTableBySeason();
+        });
+    }
+    public void pressedDeleteWeatherByComment() {
+        controller.getDeleteWeatherByCommentButton().setOnAction(actionEvent -> {
+            showDeleteWeatherWindow();
+            loadWeathersTableByComment();
+        });
+    }
+    public void pressedDeleteWeatherByPosition() {
+        controller.getDeleteWeatherByPositionButton().setOnAction(actionEvent -> {
+            showDeleteWeatherWindow();
+            deleteAllButton.setVisible(false);
+            loadWeatherTableByPosition();
+        });
+    }
+    public void pressedDeleteDayByTemperature() {
+        controller.getDeleteDayByTemperatureButton().setOnAction(actionEvent -> {
+            showDeleteDayWindow();
+            loadDaysTableByTemperature();
+        });
+    }
+    public void pressedDeleteDayByDate() {
+        controller.getDeleteDayByDateButton().setOnAction(actionEvent -> {
+            showDeleteDayWindow();
+            loadDaysTableByDate();
+        });
+    }
+    public void pressedDeleteDayByComment() {
+        controller.getDeleteDayByCommentButton().setOnAction(actionEvent -> {
+            showDeleteDayWindow();
+            loadDaysTableByComment();
+        });
+    }
+    public void pressedDeleteDayByPosition() {
+        controller.getDeleteDayByPositionButton().setOnAction(actionEvent -> {
+            showDeleteDayWindow();
+            deleteAllButton.setVisible(false);
+            loadDaysTableByPosition();
+        });
+    }
+    // EDIT
+    public void pressedEditWeatherBySeason() {
+        controller.getEditWeatherBySeasonButton().setOnAction(actionEvent -> {
+            showEditWeatherWindow();
+            loadWeathersTableBySeason();
+        });
+    }
+    public void pressedEditWeatherByComment() {
+        controller.getEditWeatherByCommentButton().setOnAction(actionEvent -> {
+            showEditWeatherWindow();
+            loadWeathersTableByComment();
+        });
+    }
+    public void pressedEditWeatherByPosition() {
+        controller.getEditWeatherByPositionButton().setOnAction(actionEvent -> {
+            showEditWeatherWindow();
+            deleteAllButton.setVisible(false);
+            loadWeatherTableByPosition();
+        });
+    }
+    public void pressedEditDayByTemperature() {
+        controller.getEditDayByTemperatureButton().setOnAction(actionEvent -> {
+            showEditDayWindow();
+            loadDaysTableByTemperature();
+        });
+    }
+    public void pressedEditDayByDate() {
+        controller.getEditDayByDateButton().setOnAction(actionEvent -> {
+            showEditDayWindow();
+            loadDaysTableByDate();
+        });
+    }
+    public void pressedEditDayByComment() {
+        controller.getEditDayByCommentButton().setOnAction(actionEvent -> {
+            showEditDayWindow();
+            loadDaysTableByComment();
+        });
+    }
+    public void pressedEditeDayByPosition() {
+        controller.getEditDayByPositionButton().setOnAction(actionEvent -> {
+            showEditDayWindow();
+            deleteAllButton.setVisible(false);
+            loadDaysTableByPosition();
+        });
+    }
+    // ADD
+    public void pressedAddWeather() {
+        controller.getAddWeatherButton().setOnAction(actionEvent -> {
+            showAddWeatherWindow();
+        });
+    }
+    public void pressedAddDay() {
+        controller.getAddDayButton().setOnAction(actionEvent -> {
+            showAddDayWindow();
+        });
     }
 }

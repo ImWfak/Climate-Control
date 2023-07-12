@@ -1,19 +1,20 @@
 package info.climateControl.window.controller;
 
-import info.climateControl.climate.Climate;
-import info.climateControl.weather.Weather;
-import info.climateControl.day.Day;
 import info.climateControl.window.tabs.EditTab;
 import info.climateControl.window.tabs.FileTab;
 import info.climateControl.window.tabs.ViewTab;
+import info.climateControl.climate.Climate;
+import info.climateControl.weather.Weather;
+import info.climateControl.day.Day;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.layout.Pane;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
-import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Locale;
 
 public class Controller {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,96 +22,98 @@ public class Controller {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // FILE TAB
     @FXML
-    private Tab fileTab;
+    private Tab fileTab = new Tab();
     @FXML
-    private Label fileLabel;
+    private Label fileLabel = new Label();
     @FXML
-    private Button openFileButton;
+    private Button openFileButton = new Button();
     @FXML
-    private Button newFileButton;
+    private Button newFileButton = new Button();
     @FXML
-    private Button saveFileButton;
+    private Button saveFileButton = new Button();
     @FXML
-    private Button saveAsFileButton;
+    private Button saveAsFileButton = new Button();
     @FXML
-    private Button closeFileButton;
+    private Button closeFileButton = new Button();
     // EDIT TAB
     @FXML
-    private Tab editTab;
+    private Tab editTab = new Tab();
     @FXML
-    private Label deleteWeatherLabel;
+    private Label deleteWeatherLabel =  new Label();
     @FXML
-    private Button deleteWeatherBySeasonButton;
+    private Button deleteWeatherBySeasonButton = new Button();
     @FXML
-    private Button deleteWeatherByCommentButton;
+    private Button deleteWeatherByCommentButton = new Button();
     @FXML
-    private Button deleteWeatherByPositionButton;
+    private Button deleteWeatherByPositionButton = new Button();
     @FXML
-    private Label deleteDayLabel;
+    private Label deleteDayLabel = new Label();
     @FXML
-    private Button deleteDayByTemperatureButton;
+    private Button deleteDayByTemperatureButton = new Button();
     @FXML
-    private Button deleteDayByDateButton;
+    private Button deleteDayByDateButton = new Button();
     @FXML
-    private Button deleteDayByCommentButton;
+    private Button deleteDayByCommentButton = new Button();
     @FXML
-    private Button deleteDayByPositionButton;
+    private Button deleteDayByPositionButton = new Button();
     @FXML
-    private Label editWeatherLabel;
+    private Label editWeatherLabel = new Label();
     @FXML
-    private Button editWeatherBySeasonButton;
+    private Button editWeatherBySeasonButton = new Button();
     @FXML
-    private Button editWeatherByCommentButton;
+    private Button editWeatherByCommentButton = new Button();
     @FXML
-    private Button editWeatherByPositionButton;
+    private Button editWeatherByPositionButton = new Button();
     @FXML
-    private Label editDayLabel;
+    private Label editDayLabel = new Label();
     @FXML
-    private Button editDayByTemperatureButton;
+    private Button editDayByTemperatureButton = new Button();
     @FXML
-    private Button editDayByDateButton;
+    private Button editDayByDateButton = new Button();
     @FXML
-    private Button editDayByCommentButton;
+    private Button editDayByCommentButton = new Button();
     @FXML
-    private Button editDayByPositionButton;
+    private Button editDayByPositionButton = new Button();
     @FXML
-    private Label addLabel;
+    private Label addLabel = new Label();
     @FXML
-    private Button addWeatherButton;
+    private Button addWeatherButton = new Button();
     @FXML
-    private Button addDayButton;
+    private Button addDayButton = new Button();
     // VIEW TAB
     @FXML
-    private Tab viewTab;
+    private Tab viewTab = new Tab();
     @FXML
-    private Label setLanguageLabel;
+    private Label setLanguageLabel = new Label();
     @FXML
-    private ToggleButton setEnToggleButton;
+    private ToggleButton setEnToggleButton = new ToggleButton();
     @FXML
-    private ToggleButton setUaToggleButton;
+    private ToggleButton setUaToggleButton = new ToggleButton();
     @FXML
-    private ToggleButton setRuToggleButton;
+    private ToggleButton setRuToggleButton = new ToggleButton();
     @FXML
-    private Label fontLabel;
+    private Label fontLabel = new Label();
     @FXML
-    private ChoiceBox fontChoiceBox;
+    private ChoiceBox fontChoiceBox = new ChoiceBox();
     @FXML
-    private ChoiceBox fontSizeChoiceBox;
+    private ChoiceBox fontSizeChoiceBox = new ChoiceBox();
     @FXML
-    private ColorPicker fontColorPicker;
+    private ColorPicker fontColorPicker = new ColorPicker();
     // LEFT PANE
     @FXML
-    private Button showAllDaysInWeatherButton;
+    private Pane leftPane = new Pane();
     @FXML
-    private Button dayWithLongestCommentInWeatherButton;
+    private Button showAllDaysInWeatherButton = new Button();
     @FXML
-    private Button dayWithBiggestTemperatureInWeatherButton;
+    private Button dayWithLongestCommentInWeatherButton = new Button();
     @FXML
-    private TextField findCommentsTextField;
+    private Button dayWithBiggestTemperatureInWeatherButton = new Button();
     @FXML
-    private Button findCommentsButton;
+    private TextField findCommentsTextField = new TextField();
     @FXML
-    private TextArea findCommentsTextArea;
+    private Button findCommentsButton = new Button();
+    @FXML
+    private TextArea findCommentsTextArea = new TextArea();
     // LEFT WEATHER TABLE
     @FXML
     private TableView<Weather> weathersTable;
@@ -148,7 +151,7 @@ public class Controller {
     public Button getDeleteDayByCommentButton() { return deleteDayByCommentButton; }
     public Button getDeleteDayByPositionButton() { return deleteDayByPositionButton; }
     public Button getEditWeatherBySeasonButton() { return editWeatherBySeasonButton; }
-    public Button getEditWeatherByCommentButton() { return editWeatherByPositionButton; }
+    public Button getEditWeatherByCommentButton() { return editWeatherByCommentButton; }
     public Button getEditWeatherByPositionButton() { return editWeatherByPositionButton; }
     public Button getEditDayByTemperatureButton() { return editDayByTemperatureButton; }
     public Button getEditDayByDateButton() { return editDayByDateButton; }
@@ -278,6 +281,16 @@ public class Controller {
                 new SimpleObjectProperty<>(cellData.getValue().getDate()));
         daysCommentColumn.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getComment()));
+
+        if (!fileOpen)
+            setDisable(true);
+    }
+    public void setDisable(boolean bool) {
+        saveFileButton.setDisable(bool);
+        saveAsFileButton.setDisable(bool);
+        closeFileButton.setDisable(bool);
+        editTab.setDisable(bool);
+        leftPane.setDisable(bool);
     }
     public void setLanguage() {
 
@@ -299,6 +312,6 @@ public class Controller {
     }
     @FXML
     public void initialize() {
-
+        editTabObject.pressedDeleteWeatherBySeason();
     }
 }
