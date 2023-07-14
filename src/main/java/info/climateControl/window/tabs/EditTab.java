@@ -20,6 +20,7 @@ public class EditTab implements Alerts {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // WINDOW`S ITEMS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private final Stage stage = new Stage();
     private final AnchorPane anchorPane = new AnchorPane();
     private final ScrollPane scrollPane = new ScrollPane();
     private final TableView<Weather> weathersTable = new TableView<>();
@@ -52,6 +53,23 @@ public class EditTab implements Alerts {
     public EditTab(Controller controller) {
         this.controller = controller;
     }
+    {
+        stage.setScene(new Scene(anchorPane));
+        anchorPane.getChildren().addAll(
+                scrollPane,
+                findField,
+                findButton,
+                deleteAllButton,
+                deleteSelectedButton,
+                weatherSeasonField,
+                weatherCommentField,
+                dayTemperatureField,
+                dayDateField,
+                dayCommentField,
+                editButton,
+                addButton
+        );
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +97,7 @@ public class EditTab implements Alerts {
     // PRIVATE METHODS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TABLES
+    /** private method which build table of weathers */
     private void buildWeathersTable() {
         weathersPositionColumn.setPrefWidth(95);
         weathersSeasonColumn.setPrefWidth(240);
@@ -103,51 +122,43 @@ public class EditTab implements Alerts {
                 weathersCommentColumn
         );
     }
+    /** private method which fill table of weathers by season */
     private void loadWeathersTableBySeason() {
-        if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-        } else {
-            findButton.setOnAction(actionEvent -> {
-                controller.getClimate().getWeathers().forEach(weather -> {
-                    if (Objects.equals(weather.getSeason(), findField.getCharacters().toString()))
-                        weathersTable.getItems().add(weather);
-                });
+        findButton.setOnAction(actionEvent -> {
+            controller.getClimate().getWeathers().forEach(weather -> {
+                if (Objects.equals(weather.getSeason(), findField.getCharacters().toString()))
+                    weathersTable.getItems().add(weather);
+            });
                 if (weathersTable.getItems().isEmpty())
                     Alerts.createNoSuchWeathersAlert(controller.getAlertResourceBundle()).show();
-            });
-        }
+        });
     }
+    /** private method which fill table of weather by comment */
     private void loadWeathersTableByComment() {
-        if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-        } else {
-            findButton.setOnAction(actionEvent -> {
-                controller.getClimate().getWeathers().forEach(weather -> {
-                    if (Objects.equals(weather.getComment(), findField.getCharacters().toString()))
-                        weathersTable.getItems().add(weather);
-                });
-                if (weathersTable.getItems().isEmpty())
-                    Alerts.createNoSuchWeathersAlert(controller.getAlertResourceBundle()).show();
+        findButton.setOnAction(actionEvent -> {
+            controller.getClimate().getWeathers().forEach(weather -> {
+                if (Objects.equals(weather.getComment(), findField.getCharacters().toString()))
+                    weathersTable.getItems().add(weather);
             });
-        }
+            if (weathersTable.getItems().isEmpty())
+                Alerts.createNoSuchWeathersAlert(controller.getAlertResourceBundle()).show();
+        });
     }
+    /** private method which fill table of weather by position */
     private void loadWeatherTableByPosition() {
-        if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-        } else {
-            findButton.setOnAction(actionEvent -> {
-                if (Pattern.matches("^-?\\d+$", findField.getCharacters())) {
-                    int index = Integer.parseInt(findField.getCharacters().toString());
-                    if (index < 0 || index > controller.getClimate().getWeathers().size())
-                        Alerts.createIndexOutOfBoundsAlert(controller.getAlertResourceBundle()).show();
-                    else
-                        weathersTable.getItems().add(controller.getClimate().getWeathers().get(index));
-                } else {
-                    Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
-                }
-            });
-        }
+        findButton.setOnAction(actionEvent -> {
+            if (Pattern.matches("^-?\\d+$", findField.getCharacters())) {
+                int index = Integer.parseInt(findField.getCharacters().toString());
+                if (index < 0 || index > controller.getClimate().getWeathers().size())
+                    Alerts.createIndexOutOfBoundsAlert(controller.getAlertResourceBundle()).show();
+                else
+                    weathersTable.getItems().add(controller.getClimate().getWeathers().get(index));
+            } else {
+                Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
+            }
+        });
     }
+    /** private method which build table of days */
     private void buildDaysTable() {
         daysPositionColumn.setPrefWidth(95);
         daysTemperatureColumn.setPrefWidth(160);
@@ -176,334 +187,298 @@ public class EditTab implements Alerts {
                 daysCommentColumn
         );
     }
+    /** private method which fill table of days by temperature */
     private void loadDaysTableByTemperature() {
-        if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-        } else if (controller.getSelectedWeather() == null) {
-            Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
-        } else {
-            findButton.setOnAction(actionEvent -> {
-                if (Pattern.matches("^[+-]?(\\d*\\.?\\d+|\\d+\\.?\\d*)$", findField.getCharacters())) {
-                    controller.getSelectedWeather().getDays().forEach(day -> {
-                        if (day.getTemperature() == Double.parseDouble(findField.getCharacters().toString()))
-                            daysTable.getItems().add(day);
-                    });
-                    if (daysTable.getItems().isEmpty())
-                        Alerts.createNoSuchDaysAlert(controller.getAlertResourceBundle()).show();
-                } else {
-                    Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
-                }
-            });
-        }
-    }
-    private void loadDaysTableByDate() {
-        if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-        } else if (controller.getSelectedWeather() == null) {
-            Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
-        } else {
-            findButton.setOnAction(actionEvent -> {
-                if (Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", findField.getCharacters())) {
-                    controller.getSelectedWeather().getDays().forEach(day -> {
-                        if (day.getDate() == LocalDate.parse(findField.getCharacters().toString()))
-                            daysTable.getItems().add(day);
-                    });
-                    if (daysTable.getItems().isEmpty())
-                        Alerts.createNoSuchDaysAlert(controller.getAlertResourceBundle()).show();
-                } else {
-                    Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
-                }
-            });
-        }
-    }
-    private void loadDaysTableByComment() {
-        if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-        } else if (controller.getSelectedWeather() == null) {
-            Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
-        } else {
-            findButton.setOnAction(actionEvent -> {
+        findButton.setOnAction(actionEvent -> {
+            if (Pattern.matches("^[+-]?(\\d*\\.?\\d+|\\d+\\.?\\d*)$", findField.getCharacters())) {
                 controller.getSelectedWeather().getDays().forEach(day -> {
-                    if (Objects.equals(day.getComment(), findField.getCharacters().toString()))
+                    if (day.getTemperature() == Double.parseDouble(findField.getCharacters().toString()))
                         daysTable.getItems().add(day);
                 });
                 if (daysTable.getItems().isEmpty())
                     Alerts.createNoSuchDaysAlert(controller.getAlertResourceBundle()).show();
+            } else {
+                Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
+            }
+        });
+    }
+    /** private method which fill table of days by date */
+    private void loadDaysTableByDate() {
+        findButton.setOnAction(actionEvent -> {
+            if (Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", findField.getCharacters())) {
+                controller.getSelectedWeather().getDays().forEach(day -> {
+                    if (day.getDate() == LocalDate.parse(findField.getCharacters().toString()))
+                        daysTable.getItems().add(day);
+                });
+                if (daysTable.getItems().isEmpty())
+                    Alerts.createNoSuchDaysAlert(controller.getAlertResourceBundle()).show();
+            } else {
+                Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
+            }
+        });
+    }
+    /** private method which fill table of days by comment */
+    private void loadDaysTableByComment() {
+        findButton.setOnAction(actionEvent -> {
+            controller.getSelectedWeather().getDays().forEach(day -> {
+                if (Objects.equals(day.getComment(), findField.getCharacters().toString()))
+                    daysTable.getItems().add(day);
             });
+            if (daysTable.getItems().isEmpty())
+                Alerts.createNoSuchDaysAlert(controller.getAlertResourceBundle()).show();
+        });
+    }
+    /** private method which fill table of days by position */
+    private void loadDaysTableByPosition() {
+        findButton.setOnAction(actionEvent -> {
+            if (Pattern.matches("^-?\\d+$", findField.getCharacters())) {
+                int index = Integer.parseInt(findField.getCharacters().toString());
+                if (index < 0 || index > controller.getSelectedWeather().getDays().size())
+                    Alerts.createIndexOutOfBoundsAlert(controller.getAlertResourceBundle()).show();
+                else
+                    daysTable.getItems().add(controller.getSelectedWeather().getDays().get(index));
+            } else {
+                Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
+            }
+        });
+    }
+    // DELETE
+    /** private method which build delete weather window */
+    private void showDeleteWeatherWindow() {
+        if (controller.getClimate().getWeathers().isEmpty()) {
+            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+        } else {
+            anchorPane.setPrefWidth(625);
+            anchorPane.setPrefHeight(400);
+            scrollPane.setLayoutX(25);
+            scrollPane.setLayoutY(25);
+            scrollPane.setPrefWidth(575);
+            scrollPane.setPrefHeight(300);
+            buildWeathersTable();
+            scrollPane.setContent(weathersTable);
+            findField.setLayoutX(25);
+            findField.setLayoutY(350);
+            findField.setPrefWidth(150);
+            findField.setPrefHeight(25);
+            findButton.setLayoutX(200);
+            findButton.setLayoutY(350);
+            findButton.setPrefWidth(100);
+            findButton.setPrefHeight(25);
+            deleteAllButton.setLayoutX(375);
+            deleteAllButton.setLayoutY(350);
+            deleteAllButton.setPrefWidth(100);
+            deleteAllButton.setPrefHeight(25);
+            deleteSelectedButton.setLayoutX(500);
+            deleteSelectedButton.setLayoutY(350);
+            deleteSelectedButton.setPrefWidth(100);
+            deleteSelectedButton.setPrefHeight(25);
+            deleteAllButton.setOnAction(actionEvent -> {
+                if (weathersTable.getItems().isEmpty()) {
+                    Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
+                } else {
+                    weathersTable.getItems().forEach(weather -> {
+                        controller.getClimate().getWeathers().remove(weather);
+                    });
+                    weathersTable.getItems().clear();
+                    controller.updateWeathersTable();
+                    controller.setFileChangesSaved(false);
+                }
+            });
+            deleteSelectedButton.setOnAction(actionEvent -> {
+                if (weathersTable.getItems().isEmpty()) {
+                    Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
+                } else if (weathersTable.getSelectionModel().isEmpty()) {
+                    Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
+                } else {
+                    Weather weather = weathersTable.getSelectionModel().getSelectedItem();
+                    weathersTable.getItems().remove(weather);
+                    controller.getClimate().getWeathers().remove(weather);
+                    controller.updateWeathersTable();
+                    controller.setFileChangesSaved(false);
+                }
+            });
+            stage.show();
         }
     }
-    private void loadDaysTableByPosition() {
+    /** private method which build delete day window */
+    private void showDeleteDayWindow() {
         if (controller.getClimate().getWeathers().isEmpty()) {
             Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
         } else if (controller.getSelectedWeather() == null) {
             Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
         } else {
-            findButton.setOnAction(actionEvent -> {
-                if (Pattern.matches("^-?\\d+$", findField.getCharacters())) {
-                    int index = Integer.parseInt(findField.getCharacters().toString());
-                    if (index < 0 || index > controller.getSelectedWeather().getDays().size())
-                        Alerts.createIndexOutOfBoundsAlert(controller.getAlertResourceBundle()).show();
-                    else
-                        daysTable.getItems().add(controller.getSelectedWeather().getDays().get(index));
+            anchorPane.setPrefWidth(625);
+            anchorPane.setPrefHeight(400);
+            scrollPane.setLayoutX(25);
+            scrollPane.setLayoutY(25);
+            scrollPane.setPrefWidth(575);
+            scrollPane.setPrefHeight(300);
+            buildDaysTable();
+            scrollPane.setContent(daysTable);
+            findField.setLayoutX(25);
+            findField.setLayoutY(350);
+            findField.setPrefWidth(150);
+            findField.setPrefHeight(25);
+            findButton.setLayoutX(200);
+            findButton.setLayoutY(350);
+            findButton.setPrefWidth(100);
+            findButton.setPrefHeight(25);
+            deleteAllButton.setLayoutX(375);
+            deleteAllButton.setLayoutY(350);
+            deleteAllButton.setPrefWidth(100);
+            deleteAllButton.setPrefHeight(25);
+            deleteSelectedButton.setLayoutX(500);
+            deleteSelectedButton.setLayoutY(350);
+            deleteSelectedButton.setPrefWidth(100);
+            deleteSelectedButton.setPrefHeight(25);
+            deleteAllButton.setOnAction(actionEvent -> {
+                if (daysTable.getItems().isEmpty()) {
+                    Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
                 } else {
-                    Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
-                }
-            });
-        }
-    }
-    // DELETE WEATHER WINDOW
-    private void showDeleteWeatherWindow() {
-        anchorPane.setPrefWidth(625);
-        anchorPane.setPrefHeight(400);
-        scrollPane.setLayoutX(25);
-        scrollPane.setLayoutY(25);
-        scrollPane.setPrefWidth(575);
-        scrollPane.setPrefHeight(300);
-        buildWeathersTable();
-        scrollPane.setContent(weathersTable);
-        findField.setLayoutX(25);
-        findField.setLayoutY(350);
-        findField.setPrefWidth(150);
-        findField.setPrefHeight(25);
-        findButton.setLayoutX(200);
-        findButton.setLayoutY(350);
-        findButton.setPrefWidth(100);
-        findButton.setPrefHeight(25);
-        deleteAllButton.setLayoutX(375);
-        deleteAllButton.setLayoutY(350);
-        deleteAllButton.setPrefWidth(100);
-        deleteAllButton.setPrefHeight(25);
-        deleteSelectedButton.setLayoutX(500);
-        deleteSelectedButton.setLayoutY(350);
-        deleteSelectedButton.setPrefWidth(100);
-        deleteSelectedButton.setPrefHeight(25);
-        anchorPane.getChildren().addAll(
-                scrollPane,
-                findField,
-                findButton,
-                deleteAllButton,
-                deleteSelectedButton
-        );
-        deleteAllButton.setOnAction(actionEvent -> {
-            if (weathersTable.getItems().isEmpty()) {
-                Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
-            } else {
-                weathersTable.getItems().forEach(weather -> {
-                    controller.getClimate().getWeathers().remove(weather);
-                });
-                weathersTable.getItems().clear();
-                controller.updateWeathersTable();
-                controller.setFileChangesSaved(false);
-            }
-        });
-        deleteSelectedButton.setOnAction(actionEvent -> {
-            if (weathersTable.getItems().isEmpty()) {
-                Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
-            } else if (weathersTable.getSelectionModel().isEmpty()) {
-                Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
-            } else {
-                Weather weather = weathersTable.getSelectionModel().getSelectedItem();
-                weathersTable.getItems().remove(weather);
-                controller.getClimate().getWeathers().remove(weather);
-                controller.updateWeathersTable();
-                controller.setFileChangesSaved(false);
-            }
-        });
-        Stage stage = new Stage();
-        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
-        stage.show();
-    }
-    // DELETE DAY WINDOW
-    private void showDeleteDayWindow() {
-        anchorPane.setPrefWidth(625);
-        anchorPane.setPrefHeight(400);
-        scrollPane.setLayoutX(25);
-        scrollPane.setLayoutY(25);
-        scrollPane.setPrefWidth(575);
-        scrollPane.setPrefHeight(300);
-        buildDaysTable();
-        scrollPane.setContent(daysTable);
-        findField.setLayoutX(25);
-        findField.setLayoutY(350);
-        findField.setPrefWidth(150);
-        findField.setPrefHeight(25);
-        findButton.setLayoutX(200);
-        findButton.setLayoutY(350);
-        findButton.setPrefWidth(100);
-        findButton.setPrefHeight(25);
-        deleteAllButton.setLayoutX(375);
-        deleteAllButton.setLayoutY(350);
-        deleteAllButton.setPrefWidth(100);
-        deleteAllButton.setPrefHeight(25);
-        deleteSelectedButton.setLayoutX(500);
-        deleteSelectedButton.setLayoutY(350);
-        deleteSelectedButton.setPrefWidth(100);
-        deleteSelectedButton.setPrefHeight(25);
-        anchorPane.getChildren().addAll(
-                scrollPane,
-                findField,
-                findButton,
-                deleteAllButton,
-                deleteSelectedButton
-        );
-        deleteAllButton.setOnAction(actionEvent -> {
-            if (daysTable.getItems().isEmpty()) {
-                Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
-            } else {
-                daysTable.getItems().forEach(day -> {
-                    controller.getSelectedWeather().getDays().remove(day);
-                });
-                daysTable.getItems().clear();
-                controller.updateDaysTable();
-                controller.setFileChangesSaved(false);
-            }
-        });
-        deleteSelectedButton.setOnAction(actionEvent -> {
-            if (daysTable.getItems().isEmpty()) {
-                Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
-            } else if (daysTable.getSelectionModel().isEmpty()){
-                Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
-            } else {
-                Day day = daysTable.getSelectionModel().getSelectedItem();
-                daysTable.getItems().remove(day);
-                controller.getSelectedWeather().getDays().remove(day);
-                controller.updateDaysTable();
-                controller.setFileChangesSaved(false);
-            }
-        });
-        Stage stage = new Stage();
-        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
-        stage.show();
-    }
-    // EDIT WEATHER WINDOW
-    private void showEditWeatherWindow() {
-        anchorPane.setPrefWidth(625);
-        anchorPane.setPrefHeight(450);
-        scrollPane.setLayoutX(25);
-        scrollPane.setLayoutY(25);
-        scrollPane.setPrefWidth(575);
-        scrollPane.setPrefHeight(300);
-        buildWeathersTable();
-        scrollPane.setContent(weathersTable);
-        findField.setLayoutX(25);
-        findField.setLayoutY(350);
-        findField.setPrefWidth(150);
-        findField.setPrefHeight(25);
-        findButton.setLayoutX(200);
-        findButton.setLayoutY(350);
-        findButton.setPrefWidth(100);
-        findButton.setPrefHeight(25);
-        weatherSeasonField.setLayoutX(400);
-        weatherSeasonField.setLayoutY(25);
-        weatherSeasonField.setPrefWidth(150);
-        weatherSeasonField.setPrefHeight(25);
-        weatherCommentField.setLayoutX(400);
-        weatherCommentField.setLayoutY(200);
-        weatherCommentField.setPrefWidth(150);
-        weatherCommentField.setPrefHeight(25);
-        editButton.setLayoutX(500);
-        editButton.setLayoutY(375);
-        editButton.setPrefWidth(100);
-        editButton.setPrefHeight(25);
-        anchorPane.getChildren().addAll(
-                scrollPane,
-                findField,
-                findButton,
-                weatherSeasonField,
-                weatherCommentField,
-                editButton
-        );
-        editButton.setOnAction(actionEvent -> {
-            if (controller.getClimate().getWeathers().isEmpty()) {
-                Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-            } else if (weathersTable.getSelectionModel().isEmpty()) {
-                Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
-            } else {
-                int index = controller.getClimate().getWeathers().indexOf(weathersTable.getSelectionModel().getSelectedItem());
-                Weather weather = controller.getClimate().getWeathers().get(index);
-                weather.setSeason(weatherSeasonField.getCharacters().toString());
-                weather.setComment(weatherCommentField.getCharacters().toString());
-                controller.getClimate().getWeathers().set(index, weather);
-                controller.updateWeathersTable();
-                controller.setFileChangesSaved(false);
-            }
-        });
-        Stage stage = new Stage();
-        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
-        stage.show();
-    }
-    // EDIT DAY WINDOW
-    private void showEditDayWindow() {
-        anchorPane.setPrefWidth(625);
-        anchorPane.setPrefHeight(400);
-        scrollPane.setLayoutX(25);
-        scrollPane.setLayoutY(25);
-        scrollPane.setPrefWidth(575);
-        scrollPane.setPrefHeight(300);
-        buildDaysTable();
-        scrollPane.setContent(daysTable);
-        findField.setLayoutX(25);
-        findField.setLayoutY(350);
-        findField.setPrefWidth(150);
-        findField.setPrefHeight(50);
-        findButton.setLayoutX(200);
-        findButton.setLayoutY(350);
-        findButton.setPrefWidth(100);
-        findButton.setPrefHeight(25);
-        dayTemperatureField.setLayoutX(400);
-        dayTemperatureField.setLayoutY(25);
-        dayTemperatureField.setPrefWidth(125);
-        dayTemperatureField.setPrefHeight(25);
-        dayDateField.setLayoutX(400);
-        dayDateField.setLayoutY(175);
-        dayDateField.setPrefWidth(125);
-        dayDateField.setPrefHeight(25);
-        dayCommentField.setLayoutX(400);
-        dayCommentField.setLayoutY(325);
-        dayCommentField.setPrefWidth(125);
-        dayCommentField.setPrefHeight(25);
-        editButton.setLayoutX(500);
-        editButton.setLayoutY(475);
-        editButton.setPrefWidth(100);
-        editButton.setPrefHeight(25);
-        anchorPane.getChildren().addAll(
-                scrollPane,
-                findField,
-                findButton,
-                dayTemperatureField,
-                dayDateField,
-                dayCommentField,
-                editButton
-        );
-        editButton.setOnAction(actionEvent -> {
-            if (controller.getClimate().getWeathers().isEmpty()) {
-                Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-            } else if (controller.getSelectedWeather() == null) {
-                Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
-            } else if (daysTable.getSelectionModel().isEmpty()) {
-                Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
-            } else {
-                if (Pattern.matches("^[+-]?(\\d*\\.?\\d+|\\d+\\.?\\d*)$", dayTemperatureField.getCharacters()) ||
-                        Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", dayDateField.getCharacters())) {
-                    int index = controller.getSelectedWeather().getDays().indexOf(daysTable.getSelectionModel().getSelectedItem());
-                    Day day = new Day(
-                            Double.parseDouble(dayTemperatureField.getCharacters().toString()),
-                            LocalDate.parse(dayDateField.getCharacters().toString()),
-                            dayCommentField.getCharacters().toString()
-                    );
-                    controller.getSelectedWeather().getDays().set(index, day);
+                    daysTable.getItems().forEach(day -> {
+                        controller.getSelectedWeather().getDays().remove(day);
+                    });
+                    daysTable.getItems().clear();
                     controller.updateDaysTable();
                     controller.setFileChangesSaved(false);
-                } else {
-                    Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
                 }
-            }
-        });
-        Stage stage = new Stage();
-        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
-        stage.show();
+            });
+            deleteSelectedButton.setOnAction(actionEvent -> {
+                if (daysTable.getItems().isEmpty()) {
+                    Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
+                } else if (daysTable.getSelectionModel().isEmpty()) {
+                    Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
+                } else {
+                    Day day = daysTable.getSelectionModel().getSelectedItem();
+                    daysTable.getItems().remove(day);
+                    controller.getSelectedWeather().getDays().remove(day);
+                    controller.updateDaysTable();
+                    controller.setFileChangesSaved(false);
+                }
+            });
+            stage.show();
+        }
     }
-    // ADD WEATHER WINDOW
+    // EDIT
+    /** private method which will build edit weather window */
+    private void showEditWeatherWindow() {
+        if (controller.getClimate().getWeathers().isEmpty()) {
+            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+        } else {
+            anchorPane.setPrefWidth(625);
+            anchorPane.setPrefHeight(450);
+            scrollPane.setLayoutX(25);
+            scrollPane.setLayoutY(25);
+            scrollPane.setPrefWidth(575);
+            scrollPane.setPrefHeight(300);
+            buildWeathersTable();
+            scrollPane.setContent(weathersTable);
+            findField.setLayoutX(25);
+            findField.setLayoutY(350);
+            findField.setPrefWidth(150);
+            findField.setPrefHeight(25);
+            findButton.setLayoutX(200);
+            findButton.setLayoutY(350);
+            findButton.setPrefWidth(100);
+            findButton.setPrefHeight(25);
+            weatherSeasonField.setLayoutX(400);
+            weatherSeasonField.setLayoutY(25);
+            weatherSeasonField.setPrefWidth(150);
+            weatherSeasonField.setPrefHeight(25);
+            weatherCommentField.setLayoutX(400);
+            weatherCommentField.setLayoutY(200);
+            weatherCommentField.setPrefWidth(150);
+            weatherCommentField.setPrefHeight(25);
+            editButton.setLayoutX(500);
+            editButton.setLayoutY(375);
+            editButton.setPrefWidth(100);
+            editButton.setPrefHeight(25);
+            editButton.setOnAction(actionEvent -> {
+                if (controller.getClimate().getWeathers().isEmpty()) {
+                    Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+                } else if (weathersTable.getSelectionModel().isEmpty()) {
+                    Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
+                } else {
+                    int index = controller.getClimate().getWeathers().indexOf(weathersTable.getSelectionModel().getSelectedItem());
+                    Weather weather = controller.getClimate().getWeathers().get(index);
+                    weather.setSeason(weatherSeasonField.getCharacters().toString());
+                    weather.setComment(weatherCommentField.getCharacters().toString());
+                    controller.getClimate().getWeathers().set(index, weather);
+                    controller.updateWeathersTable();
+                    controller.setFileChangesSaved(false);
+                }
+            });
+            stage.show();
+        }
+    }
+    /** private method which will build edit day window */
+    private void showEditDayWindow() {
+        if (controller.getClimate().getWeathers().isEmpty()) {
+            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+        } else if (controller.getSelectedWeather() == null) {
+            Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
+        } else {
+            anchorPane.setPrefWidth(625);
+            anchorPane.setPrefHeight(400);
+            scrollPane.setLayoutX(25);
+            scrollPane.setLayoutY(25);
+            scrollPane.setPrefWidth(575);
+            scrollPane.setPrefHeight(300);
+            buildDaysTable();
+            scrollPane.setContent(daysTable);
+            findField.setLayoutX(25);
+            findField.setLayoutY(350);
+            findField.setPrefWidth(150);
+            findField.setPrefHeight(50);
+            findButton.setLayoutX(200);
+            findButton.setLayoutY(350);
+            findButton.setPrefWidth(100);
+            findButton.setPrefHeight(25);
+            dayTemperatureField.setLayoutX(400);
+            dayTemperatureField.setLayoutY(25);
+            dayTemperatureField.setPrefWidth(125);
+            dayTemperatureField.setPrefHeight(25);
+            dayDateField.setLayoutX(400);
+            dayDateField.setLayoutY(175);
+            dayDateField.setPrefWidth(125);
+            dayDateField.setPrefHeight(25);
+            dayCommentField.setLayoutX(400);
+            dayCommentField.setLayoutY(325);
+            dayCommentField.setPrefWidth(125);
+            dayCommentField.setPrefHeight(25);
+            editButton.setLayoutX(500);
+            editButton.setLayoutY(475);
+            editButton.setPrefWidth(100);
+            editButton.setPrefHeight(25);
+            editButton.setOnAction(actionEvent -> {
+                if (controller.getClimate().getWeathers().isEmpty()) {
+                    Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+                } else if (controller.getSelectedWeather() == null) {
+                    Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
+                } else if (daysTable.getSelectionModel().isEmpty()) {
+                    Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
+                } else {
+                    if (Pattern.matches("^[+-]?(\\d*\\.?\\d+|\\d+\\.?\\d*)$", dayTemperatureField.getCharacters()) ||
+                            Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", dayDateField.getCharacters())) {
+                        int index = controller.getSelectedWeather().getDays().indexOf(daysTable.getSelectionModel().getSelectedItem());
+                        Day day = new Day(
+                                Double.parseDouble(dayTemperatureField.getCharacters().toString()),
+                                LocalDate.parse(dayDateField.getCharacters().toString()),
+                                dayCommentField.getCharacters().toString()
+                        );
+                        controller.getSelectedWeather().getDays().set(index, day);
+                        controller.updateDaysTable();
+                        controller.setFileChangesSaved(false);
+                    } else {
+                        Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
+                    }
+                }
+            });
+            stage.show();
+        }
+    }
+    // ADD
+    /** private method which will build add weather window */
     private void showAddWeatherWindow() {
         anchorPane.setPrefWidth(625);
         anchorPane.setPrefHeight(125);
@@ -519,11 +494,6 @@ public class EditTab implements Alerts {
         addButton.setLayoutY(50);
         addButton.setPrefWidth(100);
         addButton.setPrefHeight(25);
-        anchorPane.getChildren().addAll(
-                weatherSeasonField,
-                weatherCommentField,
-                addButton
-        );
         addButton.setOnAction(actionEvent -> {
             controller.getClimate().getWeathers().add(new Weather(
                     weatherSeasonField.getCharacters().toString(),
@@ -533,161 +503,173 @@ public class EditTab implements Alerts {
             controller.updateWeathersTable();
             controller.setFileChangesSaved(false);
         });
-        Stage stage = new Stage();
-        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
         stage.show();
     }
-    // ADD DAY WINDOW
+    /** private method which will build add day window */
     private void showAddDayWindow() {
-        anchorPane.setPrefWidth(625);
-        anchorPane.setPrefHeight(125);
-        dayTemperatureField.setLayoutX(25);
-        dayTemperatureField.setLayoutY(50);
-        dayTemperatureField.setPrefWidth(150);
-        dayTemperatureField.setPrefHeight(25);
-        dayDateField.setLayoutX(175);
-        dayDateField.setLayoutY(50);
-        dayDateField.setPrefWidth(150);
-        dayDateField.setPrefHeight(25);
-        dayCommentField.setLayoutX(350);
-        dayCommentField.setLayoutY(25);
-        dayCommentField.setPrefWidth(150);
-        dayCommentField.setPrefHeight(25);
-        addButton.setLayoutX(500);
-        addButton.setLayoutY(50);
-        addButton.setPrefWidth(100);
-        addButton.setPrefHeight(25);
-        anchorPane.getChildren().addAll(
-                dayTemperatureField,
-                dayDateField,
-                dayCommentField,
-                addButton
-        );
-        addButton.setOnAction(actionEvent -> {
-            if (controller.getClimate().getWeathers().isEmpty()) {
-                Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
-            } else if (controller.getSelectedWeather() == null) {
-                Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
-            } else {
-                if (Pattern.matches("^[+-]?(\\d*\\.?\\d+|\\d+\\.?\\d*)$", dayTemperatureField.getCharacters()) ||
-                        Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", dayDateField.getCharacters())) {
-                    controller.getSelectedWeather().getDays().add(new Day(
-                            Double.parseDouble(dayTemperatureField.getCharacters().toString()),
-                            LocalDate.parse(dayDateField.getCharacters().toString()),
-                            dayCommentField.getCharacters().toString()
-                    ));
-                    controller.updateDaysTable();
-                    controller.setFileChangesSaved(false);
+        if (controller.getClimate().getWeathers().isEmpty()) {
+            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+        } else if (controller.getSelectedWeather() == null) {
+            Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
+        } else {
+            anchorPane.setPrefWidth(625);
+            anchorPane.setPrefHeight(125);
+            dayTemperatureField.setLayoutX(25);
+            dayTemperatureField.setLayoutY(50);
+            dayTemperatureField.setPrefWidth(150);
+            dayTemperatureField.setPrefHeight(25);
+            dayDateField.setLayoutX(175);
+            dayDateField.setLayoutY(50);
+            dayDateField.setPrefWidth(150);
+            dayDateField.setPrefHeight(25);
+            dayCommentField.setLayoutX(350);
+            dayCommentField.setLayoutY(25);
+            dayCommentField.setPrefWidth(150);
+            dayCommentField.setPrefHeight(25);
+            addButton.setLayoutX(500);
+            addButton.setLayoutY(50);
+            addButton.setPrefWidth(100);
+            addButton.setPrefHeight(25);
+            addButton.setOnAction(actionEvent -> {
+                if (controller.getClimate().getWeathers().isEmpty()) {
+                    Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+                } else if (controller.getSelectedWeather() == null) {
+                    Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
                 } else {
-                    Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
+                    if (Pattern.matches("^[+-]?(\\d*\\.?\\d+|\\d+\\.?\\d*)$", dayTemperatureField.getCharacters()) ||
+                            Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", dayDateField.getCharacters())) {
+                        controller.getSelectedWeather().getDays().add(new Day(
+                                Double.parseDouble(dayTemperatureField.getCharacters().toString()),
+                                LocalDate.parse(dayDateField.getCharacters().toString()),
+                                dayCommentField.getCharacters().toString()
+                        ));
+                        controller.updateDaysTable();
+                        controller.setFileChangesSaved(false);
+                    } else {
+                        Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
+                    }
                 }
-            }
-        });
-        Stage stage = new Stage();
-        stage.setScene(new Scene(anchorPane, anchorPane.getPrefWidth(), anchorPane.getHeight()));
-        stage.show();
+            });
+            stage.show();
+        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // DELETE
-    public void pressedDeleteWeatherBySeason() {
+    public void pressedDeleteWeatherBySeasonButton() {
         controller.getDeleteWeatherBySeasonButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'deleteWeatherBySeasonButton'");
             showDeleteWeatherWindow();
             loadWeathersTableBySeason();
         });
     }
-    public void pressedDeleteWeatherByComment() {
+    public void pressedDeleteWeatherByCommentButton() {
         controller.getDeleteWeatherByCommentButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'deleteWeatherByCommentButton'");
             showDeleteWeatherWindow();
             loadWeathersTableByComment();
         });
     }
-    public void pressedDeleteWeatherByPosition() {
+    public void pressedDeleteWeatherByPositionButton() {
         controller.getDeleteWeatherByPositionButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'deleteWeatherByPositionButton'");
             showDeleteWeatherWindow();
             deleteAllButton.setVisible(false);
             loadWeatherTableByPosition();
         });
     }
-    public void pressedDeleteDayByTemperature() {
+    public void pressedDeleteDayByTemperatureButton() {
         controller.getDeleteDayByTemperatureButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'deleteDayByTemperatureButton'");
             showDeleteDayWindow();
             loadDaysTableByTemperature();
         });
     }
-    public void pressedDeleteDayByDate() {
+    public void pressedDeleteDayByDateButton() {
         controller.getDeleteDayByDateButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'deleteDayByDateButton'");
             showDeleteDayWindow();
             loadDaysTableByDate();
         });
     }
-    public void pressedDeleteDayByComment() {
+    public void pressedDeleteDayByCommentButton() {
         controller.getDeleteDayByCommentButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'deleteDayByCommentButton'");
             showDeleteDayWindow();
             loadDaysTableByComment();
         });
     }
-    public void pressedDeleteDayByPosition() {
+    public void pressedDeleteDayByPositionButton() {
         controller.getDeleteDayByPositionButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'deleteDayByPositionButton'");
             showDeleteDayWindow();
             deleteAllButton.setVisible(false);
             loadDaysTableByPosition();
         });
     }
     // EDIT
-    public void pressedEditWeatherBySeason() {
+    public void pressedEditWeatherBySeasonButton() {
         controller.getEditWeatherBySeasonButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'editWeatherBySeasonButton'");
             showEditWeatherWindow();
             loadWeathersTableBySeason();
         });
     }
-    public void pressedEditWeatherByComment() {
+    public void pressedEditWeatherByCommentButton() {
         controller.getEditWeatherByCommentButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'editWeatherByCommentButton'");
             showEditWeatherWindow();
             loadWeathersTableByComment();
         });
     }
-    public void pressedEditWeatherByPosition() {
+    public void pressedEditWeatherByPositionButton() {
         controller.getEditWeatherByPositionButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'editWeatherByPositionButton'");
             showEditWeatherWindow();
             deleteAllButton.setVisible(false);
             loadWeatherTableByPosition();
         });
     }
-    public void pressedEditDayByTemperature() {
+    public void pressedEditDayByTemperatureButton() {
         controller.getEditDayByTemperatureButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'editDayByTemperatureButton'");
             showEditDayWindow();
             loadDaysTableByTemperature();
         });
     }
-    public void pressedEditDayByDate() {
+    public void pressedEditDayByDateButton() {
         controller.getEditDayByDateButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'editDayByDateButton'");
             showEditDayWindow();
             loadDaysTableByDate();
         });
     }
-    public void pressedEditDayByComment() {
+    public void pressedEditDayByCommentButton() {
         controller.getEditDayByCommentButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'editDayByCommentButton'");
             showEditDayWindow();
             loadDaysTableByComment();
         });
     }
-    public void pressedEditeDayByPosition() {
+    public void pressedEditeDayByPositionButton() {
         controller.getEditDayByPositionButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'editDayByPositionButton'");
             showEditDayWindow();
             deleteAllButton.setVisible(false);
             loadDaysTableByPosition();
         });
     }
     // ADD
-    public void pressedAddWeather() {
+    public void pressedAddWeatherButton() {
         controller.getAddWeatherButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'addWeatherButton'");
             showAddWeatherWindow();
         });
     }
-    public void pressedAddDay() {
+    public void pressedAddDayButton() {
         controller.getAddDayButton().setOnAction(actionEvent -> {
+            logger.info("pressed 'addDayButton'");
             showAddDayWindow();
         });
     }

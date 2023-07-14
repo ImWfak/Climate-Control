@@ -8,10 +8,10 @@ public interface Alerts {
     // WEATHER ALERTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     static Alert createNoSuchWeathersAlert(ResourceBundle resourceBundle) {
-        Alert noSuchWeathersAlert = new Alert(Alert.AlertType.ERROR);
-        noSuchWeathersAlert.setTitle(resourceBundle.getString("noSuchWeatherAlertTitle"));
-        noSuchWeathersAlert.setHeaderText(resourceBundle.getString("noSuchWeatherAlertHeader"));
-        noSuchWeathersAlert.setContentText(resourceBundle.getString("noSuchWeatherAlertContent"));
+        Alert noSuchWeathersAlert = new Alert(Alert.AlertType.WARNING);
+        noSuchWeathersAlert.setTitle(resourceBundle.getString("noSuchWeathersAlertTitle"));
+        noSuchWeathersAlert.setHeaderText(resourceBundle.getString("noSuchWeathersAlertHeader"));
+        noSuchWeathersAlert.setContentText(resourceBundle.getString("noSuchWeathersAlertContent"));
         return noSuchWeathersAlert;
     }
     static Alert createNoSelectedWeatherAlert(ResourceBundle resourceBundle) {
@@ -22,7 +22,7 @@ public interface Alerts {
        return noSelectedWeatherAlert;
     }
     static Alert createNoWeathersInFile(ResourceBundle resourceBundle) {
-        Alert noWeathersInFile = new Alert(Alert.AlertType.ERROR);
+        Alert noWeathersInFile = new Alert(Alert.AlertType.WARNING);
         noWeathersInFile.setTitle(resourceBundle.getString("noWeatherInFileAlertTitle"));
         noWeathersInFile.setHeaderText(resourceBundle.getString("noWeatherInFileAlertHeader"));
         noWeathersInFile.setContentText(resourceBundle.getString("noWeatherInFileAlertContent"));
@@ -32,7 +32,7 @@ public interface Alerts {
     // DAYS ALERTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     static Alert createNoSuchDaysAlert(ResourceBundle resourceBundle) {
-        Alert noSuchDaysAlert = new Alert(Alert.AlertType.ERROR);
+        Alert noSuchDaysAlert = new Alert(Alert.AlertType.WARNING);
         noSuchDaysAlert.setTitle(resourceBundle.getString("noSuchDaysAlertTitle"));
         noSuchDaysAlert.setHeaderText(resourceBundle.getString("noSuchDaysAlertHeader"));
         noSuchDaysAlert.setContentText(resourceBundle.getString("noSuchDaysAlertContent"));
@@ -44,8 +44,8 @@ public interface Alerts {
     static Alert createIndexOutOfBoundsAlert(ResourceBundle resourceBundle) {
         Alert indexOutOfBoundsAlert = new Alert(Alert.AlertType.ERROR);
         indexOutOfBoundsAlert.setTitle(resourceBundle.getString("indexOutOfBoundsAlertTitle"));
-        indexOutOfBoundsAlert.setHeaderText(resourceBundle.getString("indexOutOfBoundsHeader"));
-        indexOutOfBoundsAlert.setContentText(resourceBundle.getString("indexOutOfBoundsContent"));
+        indexOutOfBoundsAlert.setHeaderText(resourceBundle.getString("indexOutOfBoundsAlertHeader"));
+        indexOutOfBoundsAlert.setContentText(resourceBundle.getString("indexOutOfBoundsAlertContent"));
         return indexOutOfBoundsAlert;
     }
     static Alert createWrongInputAlert(ResourceBundle resourceBundle) {
@@ -56,7 +56,7 @@ public interface Alerts {
         return wrongInputAlert;
     }
     static Alert createTableIsEmptyAlert(ResourceBundle resourceBundle) {
-        Alert tableIsEmptyAlert = new Alert(Alert.AlertType.ERROR);
+        Alert tableIsEmptyAlert = new Alert(Alert.AlertType.WARNING);
         tableIsEmptyAlert.setTitle(resourceBundle.getString("tableIsEmptyAlertTitle"));
         tableIsEmptyAlert.setHeaderText(resourceBundle.getString("tableIsEmptyAlertHeader"));
         tableIsEmptyAlert.setContentText(resourceBundle.getString("tableIsEmptyAlertContent"));

@@ -312,6 +312,21 @@ public class Controller {
     }
     @FXML
     public void initialize() {
-        editTabObject.pressedDeleteWeatherBySeason();
+        editTabObject.pressedDeleteWeatherBySeasonButton();
+        editTabObject.pressedDeleteWeatherByCommentButton();
+        editTabObject.pressedDeleteWeatherByPositionButton();
+        editTabObject.pressedDeleteDayByTemperatureButton();
+        editTabObject.pressedDeleteDayByDateButton();
+        editTabObject.pressedDeleteDayByCommentButton();
+        editTabObject.pressedDeleteDayByPositionButton();
+        editTabObject.pressedEditWeatherBySeasonButton();
+        editTabObject.pressedEditWeatherByCommentButton();
+        editTabObject.pressedEditWeatherByPositionButton();
+        editTabObject.pressedEditDayByTemperatureButton();
+        editTabObject.pressedEditDayByDateButton();
+        editTabObject.pressedEditDayByCommentButton();
+        editTabObject.pressedEditeDayByPositionButton();
+        editTabObject.pressedAddWeatherButton();
+        editTabObject.pressedAddDayButton();
     }
 }
