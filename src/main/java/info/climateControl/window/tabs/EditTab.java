@@ -55,20 +55,6 @@ public class EditTab implements Alerts {
     }
     {
         stage.setScene(new Scene(anchorPane));
-        anchorPane.getChildren().addAll(
-                scrollPane,
-                findField,
-                findButton,
-                deleteAllButton,
-                deleteSelectedButton,
-                weatherSeasonField,
-                weatherCommentField,
-                dayTemperatureField,
-                dayDateField,
-                dayCommentField,
-                editButton,
-                addButton
-        );
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
@@ -116,7 +102,7 @@ public class EditTab implements Alerts {
                 new SimpleObjectProperty<>(cellData.getValue().getSeason()));
         weathersCommentColumn.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getComment()));
-        weathersTable.getColumns().addAll(
+        weathersTable.getColumns().setAll(
                 weathersPositionColumn,
                 weathersSeasonColumn,
                 weathersCommentColumn
@@ -180,7 +166,7 @@ public class EditTab implements Alerts {
                 new SimpleObjectProperty<>(cellData.getValue().getDate()));
         daysCommentColumn.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getComment()));
-        daysTable.getColumns().addAll(
+        daysTable.getColumns().setAll(
                 daysPositionColumn,
                 daysTemperatureColumn,
                 daysDateColumn,
@@ -272,6 +258,13 @@ public class EditTab implements Alerts {
             deleteSelectedButton.setLayoutY(350);
             deleteSelectedButton.setPrefWidth(100);
             deleteSelectedButton.setPrefHeight(25);
+            anchorPane.getChildren().setAll(
+                    scrollPane,
+                    findField,
+                    findButton,
+                    deleteAllButton,
+                    deleteSelectedButton
+            );
             deleteAllButton.setOnAction(actionEvent -> {
                 if (weathersTable.getItems().isEmpty()) {
                     Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
@@ -331,6 +324,13 @@ public class EditTab implements Alerts {
             deleteSelectedButton.setLayoutY(350);
             deleteSelectedButton.setPrefWidth(100);
             deleteSelectedButton.setPrefHeight(25);
+            anchorPane.getChildren().setAll(
+                    scrollPane,
+                    findField,
+                    findButton,
+                    deleteAllButton,
+                    deleteSelectedButton
+            );
             deleteAllButton.setOnAction(actionEvent -> {
                 if (daysTable.getItems().isEmpty()) {
                     Alerts.createTableIsEmptyAlert(controller.getAlertResourceBundle()).show();
@@ -393,6 +393,14 @@ public class EditTab implements Alerts {
             editButton.setLayoutY(375);
             editButton.setPrefWidth(100);
             editButton.setPrefHeight(25);
+            anchorPane.getChildren().setAll(
+                    scrollPane,
+                    findField,
+                    findButton,
+                    weatherSeasonField,
+                    weatherCommentField,
+                    editButton
+            );
             editButton.setOnAction(actionEvent -> {
                 if (controller.getClimate().getWeathers().isEmpty()) {
                     Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
@@ -450,6 +458,15 @@ public class EditTab implements Alerts {
             editButton.setLayoutY(475);
             editButton.setPrefWidth(100);
             editButton.setPrefHeight(25);
+            anchorPane.getChildren().setAll(
+                    scrollPane,
+                    findField,
+                    findButton,
+                    dayTemperatureField,
+                    dayDateField,
+                    dayCommentField,
+                    editButton
+            );
             editButton.setOnAction(actionEvent -> {
                 if (controller.getClimate().getWeathers().isEmpty()) {
                     Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
@@ -494,6 +511,11 @@ public class EditTab implements Alerts {
         addButton.setLayoutY(50);
         addButton.setPrefWidth(100);
         addButton.setPrefHeight(25);
+        anchorPane.getChildren().setAll(
+                weatherSeasonField,
+                weatherCommentField,
+                addButton
+        );
         addButton.setOnAction(actionEvent -> {
             controller.getClimate().getWeathers().add(new Weather(
                     weatherSeasonField.getCharacters().toString(),
@@ -530,6 +552,12 @@ public class EditTab implements Alerts {
             addButton.setLayoutY(50);
             addButton.setPrefWidth(100);
             addButton.setPrefHeight(25);
+            anchorPane.getChildren().addAll(
+                    dayTemperatureField,
+                    dayDateField,
+                    dayCommentField,
+                    addButton
+            );
             addButton.setOnAction(actionEvent -> {
                 if (controller.getClimate().getWeathers().isEmpty()) {
                     Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();

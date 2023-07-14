@@ -7,12 +7,15 @@ import info.climateControl.climate.Climate;
 import info.climateControl.weather.Weather;
 import info.climateControl.day.Day;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.ResourceBundle;
 import java.util.Locale;
 
@@ -293,7 +296,24 @@ public class Controller {
         leftPane.setDisable(bool);
     }
     public void setLanguage() {
-
+        editTabObject.getWeathersPositionColumn().setText(additionalWindowsResourceBundle.getString("weathersPositionColumn"));
+        editTabObject.getWeathersSeasonColumn().setText(additionalWindowsResourceBundle.getString("weathersSeasonColumn"));
+        editTabObject.getWeathersCommentColumn().setText(additionalWindowsResourceBundle.getString("weathersCommentColumn"));
+        editTabObject.getDaysPositionColumn().setText(additionalWindowsResourceBundle.getString("daysPositionColumn"));
+        editTabObject.getDaysTemperatureColumn().setText(additionalWindowsResourceBundle.getString("daysTemperatureColumn"));
+        editTabObject.getDaysDateColumn().setText(additionalWindowsResourceBundle.getString("daysDateColumn"));
+        editTabObject.getDaysCommentColumn().setText(additionalWindowsResourceBundle.getString("daysCommentColumn"));
+        editTabObject.getFindField().setPromptText(additionalWindowsResourceBundle.getString("findField"));
+        editTabObject.getFindButton().setText(additionalWindowsResourceBundle.getString("findButton"));
+        editTabObject.getDeleteAllButton().setText(additionalWindowsResourceBundle.getString("deleteAllButton"));
+        editTabObject.getDeleteSelectedButton().setText(additionalWindowsResourceBundle.getString("deleteSelectedButton"));
+        editTabObject.getWeatherSeasonField().setPromptText(additionalWindowsResourceBundle.getString("weatherSeasonField"));
+        editTabObject.getWeatherCommentField().setPromptText(additionalWindowsResourceBundle.getString("weatherCommentField"));
+        editTabObject.getDayTemperatureField().setPromptText(additionalWindowsResourceBundle.getString("dayTemperatureField"));
+        editTabObject.getDayDateField().setPromptText(additionalWindowsResourceBundle.getString("dayDateField"));
+        editTabObject.getDayCommentField().setPromptText(additionalWindowsResourceBundle.getString("dayCommentField"));
+        editTabObject.getEditButton().setText(additionalWindowsResourceBundle.getString("editButton"));
+        editTabObject.getAddButton().setText(additionalWindowsResourceBundle.getString("addButton"));
     }
     public void setFont() {
 
@@ -305,13 +325,14 @@ public class Controller {
 
     }
     public void updateWeathersTable() {
-
+        weathersTable.getItems().addAll(FXCollections.observableArrayList(climate.getWeathers()));
     }
     public void updateDaysTable() {
-
+        daysTable.getItems().addAll(FXCollections.observableArrayList(getSelectedWeather().getDays()));
     }
     @FXML
     public void initialize() {
+        setLanguage();
         editTabObject.pressedDeleteWeatherBySeasonButton();
         editTabObject.pressedDeleteWeatherByCommentButton();
         editTabObject.pressedDeleteWeatherByPositionButton();
