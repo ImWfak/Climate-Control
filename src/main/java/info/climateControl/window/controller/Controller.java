@@ -8,14 +8,13 @@ import info.climateControl.weather.Weather;
 import info.climateControl.day.Day;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.ResourceBundle;
 import java.util.Locale;
 
@@ -23,6 +22,7 @@ public class Controller {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // WINDOW`S ITEMS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private AnchorPane anchorPane = new AnchorPane();
     // FILE TAB
     @FXML
     private Tab fileTab = new Tab();
@@ -140,6 +140,8 @@ public class Controller {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public AnchorPane getAnchorPane() { return anchorPane; }
+
     public Button getOpenFileButton() { return openFileButton; }
     public Button getNewFileButton() { return newFileButton; }
     public Button getSaveFileButton() { return saveFileButton; }
@@ -182,7 +184,7 @@ public class Controller {
     private boolean fileOpen;
     private String filePath;
 
-    private final FileTab fileTabObject = new FileTab();
+    private final FileTab fileTabObject = new FileTab(this);
     private final EditTab editTabObject = new EditTab(this);
     private final ViewTab viewTabObject = new ViewTab();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

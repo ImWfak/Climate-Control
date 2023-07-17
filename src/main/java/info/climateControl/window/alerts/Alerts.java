@@ -1,6 +1,8 @@
 package info.climateControl.window.alerts;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+
 import java.util.ResourceBundle;
 
 public interface Alerts {
@@ -68,5 +70,20 @@ public interface Alerts {
         noSelectedRowAlert.setHeaderText(resourceBundle.getString("noSelectedRowAlertHeader"));
         noSelectedRowAlert.setContentText(resourceBundle.getString("noSelectedRowAlertContent"));
         return noSelectedRowAlert;
+    }
+    static Alert createFileAlreadyOpenedAlert(ResourceBundle resourceBundle) {
+        Alert fileAlreadyOpenedAlert = new Alert(Alert.AlertType.WARNING);
+        fileAlreadyOpenedAlert.setTitle(resourceBundle.getString("fileAlreadyOpenedAlertTitle"));
+        fileAlreadyOpenedAlert.setHeaderText(resourceBundle.getString("fileAlreadyOpenedAlertHeader"));
+        fileAlreadyOpenedAlert.setContentText(resourceBundle.getString("fileAlreadyOpenAlertContent"));
+
+        return fileAlreadyOpenedAlert;
+    }
+    static Alert createWrongFileExtension(ResourceBundle resourceBundle) {
+        Alert wrongFileExtensionAlert = new Alert(Alert.AlertType.ERROR);
+        wrongFileExtensionAlert.setTitle(resourceBundle.getString("wrongFileExtensionAlertTitle"));
+        wrongFileExtensionAlert.setHeaderText(resourceBundle.getString("wrongFileExtensionAlertHeader"));
+        wrongFileExtensionAlert.setContentText(resourceBundle.getString("wrongFileExtensionAlertContent"));
+        return wrongFileExtensionAlert;
     }
 }
