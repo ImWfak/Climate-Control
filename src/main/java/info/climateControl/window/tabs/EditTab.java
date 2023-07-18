@@ -1,5 +1,6 @@
 package info.climateControl.window.tabs;
 
+import info.climateControl.window.controller.FileChangesSaved;
 import info.climateControl.window.controller.Controller;
 import info.climateControl.window.alerts.Alerts;
 import info.climateControl.weather.Weather;
@@ -273,8 +274,8 @@ public class EditTab implements Alerts {
                         controller.getClimate().getWeathers().remove(weather);
                     });
                     weathersTable.getItems().clear();
-                    controller.updateWeathersTable();
-                    controller.setFileChangesSaved(false);
+                    controller.fillWeathersTable(controller.getClimate().getWeathers());
+                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
                 }
             });
             deleteSelectedButton.setOnAction(actionEvent -> {
@@ -286,8 +287,8 @@ public class EditTab implements Alerts {
                     Weather weather = weathersTable.getSelectionModel().getSelectedItem();
                     weathersTable.getItems().remove(weather);
                     controller.getClimate().getWeathers().remove(weather);
-                    controller.updateWeathersTable();
-                    controller.setFileChangesSaved(false);
+                    controller.fillWeathersTable(controller.getClimate().getWeathers());
+                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
                 }
             });
             stage.show();
@@ -339,8 +340,8 @@ public class EditTab implements Alerts {
                         controller.getSelectedWeather().getDays().remove(day);
                     });
                     daysTable.getItems().clear();
-                    controller.updateDaysTable();
-                    controller.setFileChangesSaved(false);
+                    controller.fillDaysTable(controller.getSelectedWeather().getDays());
+                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
                 }
             });
             deleteSelectedButton.setOnAction(actionEvent -> {
@@ -352,8 +353,8 @@ public class EditTab implements Alerts {
                     Day day = daysTable.getSelectionModel().getSelectedItem();
                     daysTable.getItems().remove(day);
                     controller.getSelectedWeather().getDays().remove(day);
-                    controller.updateDaysTable();
-                    controller.setFileChangesSaved(false);
+                    controller.fillDaysTable(controller.getSelectedWeather().getDays());
+                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
                 }
             });
             stage.show();
@@ -412,8 +413,8 @@ public class EditTab implements Alerts {
                     weather.setSeason(weatherSeasonField.getCharacters().toString());
                     weather.setComment(weatherCommentField.getCharacters().toString());
                     controller.getClimate().getWeathers().set(index, weather);
-                    controller.updateWeathersTable();
-                    controller.setFileChangesSaved(false);
+                    controller.fillWeathersTable(controller.getClimate().getWeathers());
+                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
                 }
             });
             stage.show();
@@ -484,8 +485,8 @@ public class EditTab implements Alerts {
                                 dayCommentField.getCharacters().toString()
                         );
                         controller.getSelectedWeather().getDays().set(index, day);
-                        controller.updateDaysTable();
-                        controller.setFileChangesSaved(false);
+                        controller.fillDaysTable(controller.getSelectedWeather().getDays());
+                        controller.setFileChangesSaved(FileChangesSaved.FALSE);
                     } else {
                         Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
                     }
@@ -522,8 +523,8 @@ public class EditTab implements Alerts {
                     weatherCommentField.getCharacters().toString(),
                     new ArrayList<Day>()
             ));
-            controller.updateWeathersTable();
-            controller.setFileChangesSaved(false);
+            controller.fillWeathersTable(controller.getClimate().getWeathers());
+            controller.setFileChangesSaved(FileChangesSaved.FALSE);
         });
         stage.show();
     }
@@ -571,8 +572,8 @@ public class EditTab implements Alerts {
                                 LocalDate.parse(dayDateField.getCharacters().toString()),
                                 dayCommentField.getCharacters().toString()
                         ));
-                        controller.updateDaysTable();
-                        controller.setFileChangesSaved(false);
+                        controller.fillDaysTable(controller.getSelectedWeather().getDays());
+                        controller.setFileChangesSaved(FileChangesSaved.FALSE);
                     } else {
                         Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
                     }

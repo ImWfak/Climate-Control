@@ -1,8 +1,7 @@
 package info.climateControl.window.alerts;
 
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-
 import java.util.ResourceBundle;
 
 public interface Alerts {
@@ -72,18 +71,41 @@ public interface Alerts {
         return noSelectedRowAlert;
     }
     static Alert createFileAlreadyOpenedAlert(ResourceBundle resourceBundle) {
-        Alert fileAlreadyOpenedAlert = new Alert(Alert.AlertType.WARNING);
+        Alert fileAlreadyOpenedAlert = new Alert(Alert.AlertType.CONFIRMATION);
         fileAlreadyOpenedAlert.setTitle(resourceBundle.getString("fileAlreadyOpenedAlertTitle"));
         fileAlreadyOpenedAlert.setHeaderText(resourceBundle.getString("fileAlreadyOpenedAlertHeader"));
         fileAlreadyOpenedAlert.setContentText(resourceBundle.getString("fileAlreadyOpenAlertContent"));
-
+        ButtonType saveAndOpenAlertButton = new ButtonType(resourceBundle.getString("saveAndOpenAlertButton"));
+        ButtonType doNotSaveAndOpenAlertButton = new ButtonType(resourceBundle.getString("doNotSaveAndOpenAlertButton"));
+        ButtonType saveAndDoNotOpenAlertButton = new ButtonType(resourceBundle.getString("saveAndDoNotOpenAlertButton"));
+        ButtonType doNotSaveAndDoNotOpenAlertButton = new ButtonType(resourceBundle.getString("doNotSaveAndDoNotOpenAlertButton"));
+        fileAlreadyOpenedAlert.getButtonTypes().setAll(
+                saveAndOpenAlertButton,
+                doNotSaveAndOpenAlertButton,
+                saveAndDoNotOpenAlertButton,
+                doNotSaveAndDoNotOpenAlertButton
+        );
         return fileAlreadyOpenedAlert;
     }
-    static Alert createWrongFileExtension(ResourceBundle resourceBundle) {
+    static Alert createWrongFileExtensionAlert(ResourceBundle resourceBundle) {
         Alert wrongFileExtensionAlert = new Alert(Alert.AlertType.ERROR);
         wrongFileExtensionAlert.setTitle(resourceBundle.getString("wrongFileExtensionAlertTitle"));
         wrongFileExtensionAlert.setHeaderText(resourceBundle.getString("wrongFileExtensionAlertHeader"));
         wrongFileExtensionAlert.setContentText(resourceBundle.getString("wrongFileExtensionAlertContent"));
         return wrongFileExtensionAlert;
+    }
+    static Alert createWrongFileContentAlert(ResourceBundle resourceBundle) {
+        Alert wrongFileContentAlert = new Alert(Alert.AlertType.ERROR);
+        wrongFileContentAlert.setTitle(resourceBundle.getString("wrongFileContentAlertTitle"));
+        wrongFileContentAlert.setHeaderText(resourceBundle.getString("wrongFileContentAlertHeader"));
+        wrongFileContentAlert.setContentText(resourceBundle.getString("wrongFileContentAlertContent"));
+        return wrongFileContentAlert;
+    }
+    static Alert createCanNotSaveFileAlert(ResourceBundle resourceBundle) {
+        Alert canNotSaveFileAlert = new Alert(Alert.AlertType.ERROR);
+        canNotSaveFileAlert.setTitle(resourceBundle.getString("canNotSaveFileAlertTitle"));
+        canNotSaveFileAlert.setHeaderText(resourceBundle.getString("canNotSaveFileAlertHeader"));
+        canNotSaveFileAlert.setContentText(resourceBundle.getString("canNotSaveFileAlertContent"));
+        return canNotSaveFileAlert;
     }
 }

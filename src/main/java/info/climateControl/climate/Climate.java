@@ -77,9 +77,9 @@ public class Climate {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /** method which writes current climate object to .txt file
      * @param path String as path to .txt file in which will be written */
-    public void writeToTXT(String path) {
+    public void writeToTXT(String path) throws IOException {
         logger.info("write climate to .txt file " + path);
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
             for (Weather weather : weathers) {
                 bufferedWriter.newLine();
                 bufferedWriter.write(weather.getSeason() + " " + weather.getComment());
@@ -90,43 +90,33 @@ public class Climate {
                     bufferedWriter.newLine();
                 }
             }
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage());
-        }
     }
     /** method which writes current climate object to .xml file
      * @param path String as path to .xml file in which will be written */
-    public void writeToXML(String path) {
+    public void writeToXML(String path) throws IOException {
         logger.info("write climate to .xml file " + path);
         XStream xStream = new XStream();
         xStream.alias("climate", Climate.class);
         xStream.alias("weather", Weather.class);
         xStream.alias("day", Day.class);
-        try (PrintWriter printWriter = new PrintWriter(new FileWriter(path))) {
+        PrintWriter printWriter = new PrintWriter(new FileWriter(path));
             printWriter.println(xStream.toXML(this));
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage());
-        }
     }
     /** method which writes current climate object to .json file
      * @param path String as path to .json file in which will be written */
-    public void writeToJSON(String path) {
+    public void writeToJSON(String path) throws IOException {
         logger.info("write climate to .json file " + path);
         XStream xStream = new XStream(new JettisonMappedXmlDriver());
         xStream.alias("climate", Climate.class);
         xStream.alias("weather", Weather.class);
         xStream.alias("day", Day.class);
-        try (PrintWriter printWriter = new PrintWriter(new FileWriter(path))) {
+        PrintWriter printWriter = new PrintWriter(new FileWriter(path));
             printWriter.println(xStream.toXML(this));
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage());
-        }
     }
     /** method which reads and writes to current climate object from .txt file
      * @param path String as path to .txt file which will be read */
-    public void readFromTXT(String path) {
+    public void readFromTXT(String path) throws IOException{
         logger.info("read to climate from .txt file " + path);
-        try {
             List<String> list = Files.readAllLines(Path.of(path));
             weathers.clear();
             for (int index = 0; index < list.size(); index++) {
@@ -142,52 +132,41 @@ public class Climate {
                     weathers.add(new Weather(seasonComment[0], seasonComment[1], days));
                 }
             }
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage());
-        }
     }
     /** method which reads and writes to current climate object from .xml file
      * @param path String as path to .xml file which will be read */
-    public void readFromXML(String path) {
+    public void readFromXML(String path) throws IOException {
         logger.info("read to climate from .xml file " + path);
         XStream xStream = new XStream();
         xStream.addPermission(AnyTypePermission.ANY);
         xStream.alias("climate", Climate.class);
         xStream.alias("weather", Weather.class);
         xStream.alias("day", Day.class);
-        try {
             Climate tempClimate = (Climate) xStream.fromXML(new FileInputStream(path));
             weathers = tempClimate.weathers;
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage());
-        }
     }
     /** method which reads and writes to current climate object from .json file
      * @param path String as path to .json file which will be read */
-    public void readFromJSON(String path) {
+    public void readFromJSON(String path) throws IOException {
         logger.info("read to climate from .json file " + path);
         XStream xStream = new XStream(new JettisonMappedXmlDriver());
         xStream.addPermission(AnyTypePermission.ANY);
         xStream.alias("climate", Climate.class);
         xStream.alias("weather", Weather.class);
         xStream.alias("day", Day.class);
-        try {
             Climate tempClimate = (Climate) xStream.fromXML(new FileInputStream(path));
             weathers = tempClimate.weathers;
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage());
-        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // DATA BASES
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void createDB(String path) {
+    public void createDB(String path) throws IOException {
 
     }
-    public void writeToDB(String path) {
+    public void writeToDB(String path) throws IOException {
 
     }
-    public void readFromDB(String path) {
+    public void readFromDB(String path) throws IOException {
 
     }
 }

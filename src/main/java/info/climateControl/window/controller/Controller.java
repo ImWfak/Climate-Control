@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Locale;
 
@@ -180,7 +181,7 @@ public class Controller {
     private ResourceBundle mainWindowResourceBundle;
     private ResourceBundle additionalWindowsResourceBundle;
     private ResourceBundle alertResourceBundle;
-    private boolean fileChangesSaved;
+    private FileChangesSaved fileChangesSaved;
     private boolean fileOpen;
     private String filePath;
 
@@ -199,7 +200,7 @@ public class Controller {
     }
     public ResourceBundle getAdditionalWindowsResourceBundle() { return additionalWindowsResourceBundle; }
     public ResourceBundle getAlertResourceBundle() { return alertResourceBundle; }
-    public boolean getFileChangesSaved() {
+    public FileChangesSaved getFileChangesSaved() {
         return fileChangesSaved;
     }
     public boolean getFileOpen() {
@@ -231,7 +232,7 @@ public class Controller {
         this.alertResourceBundle = alertResourceBundle;
         logger.info("changed value of alertResourceBundle");
     }
-    public void setFileChangesSaved(boolean fileChangesSaved) {
+    public void setFileChangesSaved(FileChangesSaved fileChangesSaved) {
         this.fileChangesSaved = fileChangesSaved;
         logger.info("changed value of fileChangesSaved to '" + this.fileChangesSaved + "'");
     }
@@ -252,7 +253,7 @@ public class Controller {
         mainWindowResourceBundle = ResourceBundle.getBundle("resourceBundles/mainWindowBundle", Locale.US);
         additionalWindowsResourceBundle = ResourceBundle.getBundle("resourceBundles/additionalWindowsBundle", Locale.US);
         alertResourceBundle = ResourceBundle.getBundle("resourceBundles/alertBundle", Locale.US);
-        fileChangesSaved = true;
+        fileChangesSaved = FileChangesSaved.IS_NOT_OPEN;
         fileOpen = false;
         filePath = null;
 
@@ -326,11 +327,11 @@ public class Controller {
     public void setFontColor() {
 
     }
-    public void updateWeathersTable() {
-        weathersTable.getItems().addAll(FXCollections.observableArrayList(climate.getWeathers()));
+    public void fillWeathersTable(ArrayList<Weather> weathers) {
+        weathersTable.getItems().addAll(FXCollections.observableArrayList(weathers));
     }
-    public void updateDaysTable() {
-        daysTable.getItems().addAll(FXCollections.observableArrayList(getSelectedWeather().getDays()));
+    public void fillDaysTable(ArrayList<Day> days) {
+        daysTable.getItems().addAll(FXCollections.observableArrayList(days));
     }
     @FXML
     public void initialize() {
