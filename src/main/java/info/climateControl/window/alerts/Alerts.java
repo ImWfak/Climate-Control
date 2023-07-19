@@ -87,6 +87,23 @@ public interface Alerts {
         );
         return fileAlreadyOpenedAlert;
     }
+    static Alert createFileIsNotSavedAlert(ResourceBundle resourceBundle) {
+        Alert fileIsNotSavedAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        fileIsNotSavedAlert.setTitle(resourceBundle.getString("fileIsNotSavedAlertTitle"));
+        fileIsNotSavedAlert.setHeaderText(resourceBundle.getString("fileIsNotSavedAlertHeader"));
+        fileIsNotSavedAlert.setContentText(resourceBundle.getString("fileIsNotSavedAlertContent"));
+        ButtonType saveAndCloseAlertButton = new ButtonType(resourceBundle.getString("saveAndCloseAlertButton"));
+        ButtonType doNotSaveAndCloseAlertButton = new ButtonType(resourceBundle.getString("doNotSaveAndCloseAlertButton"));
+        ButtonType saveAndDoNotCloseAlertButton = new ButtonType(resourceBundle.getString("saveAndDoNotCloseAlertButton"));
+        ButtonType doNotSaveAndDoNotCloseAlertButton = new ButtonType(resourceBundle.getString("doNotSaveAndDoNotCloseAlertButton"));
+        fileIsNotSavedAlert.getButtonTypes().setAll(
+                saveAndCloseAlertButton,
+                doNotSaveAndCloseAlertButton,
+                saveAndDoNotCloseAlertButton,
+                doNotSaveAndDoNotCloseAlertButton
+        );
+        return fileIsNotSavedAlert;
+    }
     static Alert createWrongFileExtensionAlert(ResourceBundle resourceBundle) {
         Alert wrongFileExtensionAlert = new Alert(Alert.AlertType.ERROR);
         wrongFileExtensionAlert.setTitle(resourceBundle.getString("wrongFileExtensionAlertTitle"));

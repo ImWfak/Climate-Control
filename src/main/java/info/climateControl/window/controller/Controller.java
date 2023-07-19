@@ -8,7 +8,6 @@ import info.climateControl.weather.Weather;
 import info.climateControl.day.Day;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
@@ -23,7 +22,6 @@ public class Controller {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // WINDOW`S ITEMS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private AnchorPane anchorPane = new AnchorPane();
     // FILE TAB
     @FXML
     private Tab fileTab = new Tab();
@@ -141,8 +139,6 @@ public class Controller {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public AnchorPane getAnchorPane() { return anchorPane; }
-
     public Button getOpenFileButton() { return openFileButton; }
     public Button getNewFileButton() { return newFileButton; }
     public Button getSaveFileButton() { return saveFileButton; }
@@ -336,6 +332,13 @@ public class Controller {
     @FXML
     public void initialize() {
         setLanguage();
+
+        fileTabObject.pressedOpenFileButton();
+        fileTabObject.pressedNewFileButton();
+        fileTabObject.pressedSaveFileButton();
+        fileTabObject.pressedSaveAsFileButton();
+        fileTabObject.pressedClosedFileButton();
+
         editTabObject.pressedDeleteWeatherBySeasonButton();
         editTabObject.pressedDeleteWeatherByCommentButton();
         editTabObject.pressedDeleteWeatherByPositionButton();

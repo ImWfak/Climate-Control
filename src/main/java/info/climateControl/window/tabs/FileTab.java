@@ -1,9 +1,11 @@
 package info.climateControl.window.tabs;
 
-import info.climateControl.weather.Weather;
 import info.climateControl.window.controller.FileChangesSaved;
 import info.climateControl.window.controller.Controller;
 import info.climateControl.window.alerts.Alerts;
+import info.climateControl.climate.Climate;
+import info.climateControl.weather.Weather;
+import info.climateControl.day.Day;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.io.Files;
 import java.io.IOException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class FileTab implements Alerts {
@@ -33,81 +36,40 @@ public class FileTab implements Alerts {
                 new FileChooser.ExtensionFilter("TXT Files", "*.txt"),
                 new FileChooser.ExtensionFilter("All Files", "*.*")
         );
-        return fileChooser.showOpenDialog(controller.getAnchorPane().getParent().getScene().getWindow());
+        return fileChooser.showOpenDialog(controller.getOpenFileButton().getParent().getScene().getWindow());
     }
-    private void setValues(FileChangesSaved fileChangesSaved, boolean fileOpen, String filePath) {
+    private void openFile(String filePath) throws IOException {
+        switch (Files.getFileExtension(filePath)) {
+            case "db" -> controller.getClimate().readFromDB(filePath);
+            case "xml" -> controller.getClimate().readFromXML(filePath);
+            case "json" -> controller.getClimate().readFromJSON(filePath);
+            case "txt" -> controller.getClimate().readFromTXT(filePath);
+            default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
+        }
+    }
+    private void saveFile(String filePath) throws IOException {
+        switch (Files.getFileExtension(filePath)) {
+            case "db" -> controller.getClimate().writeToDB(filePath);
+            case "xml" -> controller.getClimate().writeToXML(filePath);
+            case "json" -> controller.getClimate().writeToJSON(filePath);
+            case "txt" -> controller.getClimate().writeToTXT(filePath);
+            default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
+        }
+    }
+    private void setVariables(
+            FileChangesSaved fileChangesSaved,
+            boolean fileOpen,
+            String filePath,
+            Weather weather,
+            ArrayList<Weather> weathers,
+            ArrayList<Day> days
+    ) {
         controller.setFileChangesSaved(fileChangesSaved);
         controller.setFileOpen(fileOpen);
         controller.setFilePath(filePath);
-        controller.setSelectedWeather(new Weather());
-        controller.fillWeathersTable(controller.getClimate().getWeathers());
-        controller.fillDaysTable(null);
-    }
-    private void openFile(String filePath) {
-        switch (Files.getFileExtension(filePath)) {
-            case "db" -> {
-                try {
-                    controller.getClimate().readFromDB(filePath);
-                } catch (IOException ioException) {
-                    logger.info(ioException.getMessage());
-                    Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
-                }
-            } case "xml" -> {
-                try {
-                    controller.getClimate().readFromXML(filePath);
-                } catch (IOException ioException) {
-                    logger.info(ioException.getMessage());
-                    Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
-                }
-            } case "json" -> {
-                try {
-                    controller.getClimate().readFromJSON(filePath);
-                } catch (IOException ioException) {
-                    logger.info(ioException.getMessage());
-                    Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
-                }
-            } case "txt" -> {
-                try {
-                    controller.getClimate().readFromTXT(filePath);
-                } catch (IOException ioException) {
-                    logger.info(ioException.getMessage());
-                    Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
-                }
-            } default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
-        }
-    }
-    private void saveFile(String filePath) {
-        switch (Files.getFileExtension(filePath)) {
-            case "db" -> {
-                try {
-                    controller.getClimate().writeToDB(filePath);
-                } catch (IOException ioException) {
-                    logger.info(ioException.getMessage());
-                    Alerts.createCanNotSaveFileAlert(controller.getAlertResourceBundle()).show();
-                }
-            } case "xml" -> {
-                try {
-                    controller.getClimate().writeToXML(filePath);
-                } catch (IOException ioException) {
-                    logger.info(ioException.getMessage());
-                    Alerts.createCanNotSaveFileAlert(controller.getAlertResourceBundle()).show();
-                }
-            } case "json" -> {
-                try {
-                    controller.getClimate().writeToJSON(filePath);
-                } catch (IOException ioException) {
-                    logger.info(ioException.getMessage());
-                    Alerts.createCanNotSaveFileAlert(controller.getAlertResourceBundle()).show();
-                }
-            } case "txt" -> {
-                try {
-                    controller.getClimate().writeToTXT(filePath);
-                } catch (IOException ioException) {
-                    logger.info(ioException.getMessage());
-                    Alerts.createCanNotSaveFileAlert(controller.getAlertResourceBundle()).show();
-                }
-            } default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
-        }
+        controller.setSelectedWeather(weather);
+        controller.fillWeathersTable(weathers);
+        controller.fillDaysTable(days);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS
@@ -117,28 +79,52 @@ public class FileTab implements Alerts {
             logger.info("pressed 'openFileButton'");
             if (controller.getFileOpen()) {
                 Optional<ButtonType> choice = Alerts.createFileAlreadyOpenedAlert(controller.getAlertResourceBundle()).showAndWait();
-                switch (choice.get().toString()) {
-                    case "saveAndOpenAlertButton" -> {
-                        if (controller.getFileOpen()) {
+                try {
+                    switch (choice.get().toString()) {
+                        case "saveAndOpenAlertButton" -> {
+                            if (controller.getFilePath() == null)
+                                controller.setFilePath(getFile().getPath());
                             saveFile(controller.getFilePath());
-                        } else {
-                            controller.setFilePath(getFile().getPath());
+                            openFile(getFile().getPath());
+                        }
+                        case "doNotSaveAndOpenAlertButton" -> {
+                            openFile(getFile().getPath());
+                        }
+                        case "saveAndDoNotOpenAlertButton" -> {
+                            if (controller.getFilePath() == null)
+                                controller.setFilePath(getFile().getPath());
                             saveFile(controller.getFilePath());
                         }
-                        openFile(controller.getFilePath());
-                        setValues(FileChangesSaved.TRUE, true, controller.getFilePath());
-                    } case "doNotSaveAndOpenAlertButton" -> {
-                        openFile(controller.getFilePath());
-                        setValues(FileChangesSaved.TRUE, true, controller.getFilePath());
-                    } case "saveAndDoNotOpenAlertButton" -> {
-                        if (controller.getFileOpen()) {
-                            saveFile(controller.getFilePath());
-                        } else {
-                            controller.setFilePath(getFile().getPath());
-                            saveFile(controller.getFilePath());
-                        }
-                        setValues(FileChangesSaved.TRUE, true, controller.getFilePath());
                     }
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage());
+                    Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
+                }
+                setVariables(
+                        FileChangesSaved.TRUE,
+                        true,
+                        controller.getFilePath(),
+                        new Weather(),
+                        controller.getClimate().getWeathers(),
+                        new ArrayList<>()
+                );
+            } else {
+                File file = getFile();
+                if (file != null) {
+                    try {
+                        openFile(file.getPath());
+                    } catch (IOException ioException) {
+                        logger.error(ioException.getMessage());
+                        Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
+                    }
+                    setVariables(
+                            FileChangesSaved.TRUE,
+                            true,
+                            controller.getFilePath(),
+                            new Weather(),
+                            controller.getClimate().getWeathers(),
+                            new ArrayList<>()
+                    );
                 }
             }
         });
@@ -146,21 +132,93 @@ public class FileTab implements Alerts {
     public void pressedNewFileButton() {
         controller.getNewFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'newFileButton'");
+            setVariables(
+                    FileChangesSaved.TRUE,
+                    true,
+                    null,
+                    new Weather(),
+                    new ArrayList<>(),
+                    new ArrayList<>()
+            );
         });
     }
     public void pressedSaveFileButton() {
         controller.getSaveFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'saveFileButton'");
+            if (controller.getFilePath() == null)
+                controller.setFilePath(getFile().getPath());
+            try {
+                saveFile(controller.getFilePath());
+            } catch (IOException ioException) {
+                logger.error(ioException.getMessage());
+                Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
+            }
+            controller.setFileChangesSaved(FileChangesSaved.TRUE);
         });
     }
     public void pressedSaveAsFileButton() {
         controller.getSaveAsFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'saveAsFileButton'");
+            controller.setFilePath(getFile().getPath());
+            try {
+                saveFile(controller.getFilePath());
+            } catch (IOException ioException) {
+                logger.error(ioException.getMessage());
+                Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
+            }
+            controller.setFileChangesSaved(FileChangesSaved.TRUE);
         });
     }
     public void pressedClosedFileButton() {
         controller.getCloseFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'closeFileButton'");
+            if (controller.getFileChangesSaved() == FileChangesSaved.FALSE) {
+                Optional<ButtonType> choice = Alerts.createFileIsNotSavedAlert(controller.getAlertResourceBundle()).showAndWait();
+                try {
+                    switch (choice.get().toString()) {
+                        case "saveAndCloseAlertButton" -> {
+                            if (controller.getFilePath() == null)
+                                controller.setFilePath(getFile().getPath());
+                            saveFile(controller.getFilePath());
+                            setVariables(
+                                    FileChangesSaved.IS_NOT_OPEN,
+                                    false,
+                                    null,
+                                    new Weather(),
+                                    new ArrayList<>(),
+                                    new ArrayList<>()
+                            );
+                        } case "doNotSaveAndCloseAlertButton" -> {
+                            setVariables(
+                                    FileChangesSaved.IS_NOT_OPEN,
+                                    false,
+                                    null,
+                                    new Weather(),
+                                    new ArrayList<>(),
+                                    new ArrayList<>()
+                            );
+                            controller.setClimate(new Climate());
+                        } case "saveAndDoNotCloseAlertButton" -> {
+                            if (controller.getFilePath() == null)
+                                controller.setFilePath(getFile().getPath());
+                            saveFile(controller.getFilePath());
+                        }
+                    }
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage());
+                    Alerts.createWrongFileContentAlert(controller.getAlertResourceBundle()).show();
+                }
+            } else {
+                setVariables(
+                        FileChangesSaved.IS_NOT_OPEN,
+                        false,
+                        null,
+                        new Weather(),
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                );
+                controller.setClimate(new Climate());
+            }
         });
     }
 }
