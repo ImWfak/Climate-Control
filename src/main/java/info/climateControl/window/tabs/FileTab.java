@@ -30,11 +30,11 @@ public class FileTab implements Alerts {
     private File getFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Files", "*.*"),
                 new FileChooser.ExtensionFilter("Data Bases", "*.db"),
                 new FileChooser.ExtensionFilter("XML Files", "*.xml"),
                 new FileChooser.ExtensionFilter("JSON Files", "*.json"),
-                new FileChooser.ExtensionFilter("TXT Files", "*.txt"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
+                new FileChooser.ExtensionFilter("TXT Files", "*.txt")
         );
         return fileChooser.showOpenDialog(controller.getOpenFileButton().getParent().getScene().getWindow());
     }

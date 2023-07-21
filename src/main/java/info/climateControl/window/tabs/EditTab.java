@@ -5,6 +5,7 @@ import info.climateControl.window.controller.Controller;
 import info.climateControl.window.alerts.Alerts;
 import info.climateControl.weather.Weather;
 import info.climateControl.day.Day;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.*;
@@ -25,11 +26,11 @@ public class EditTab implements Alerts {
     private final AnchorPane anchorPane = new AnchorPane();
     private final ScrollPane scrollPane = new ScrollPane();
     private final TableView<Weather> weathersTable = new TableView<>();
-    private final TableColumn<Weather, Integer> weathersPositionColumn = new TableColumn<>();
+    private final TableColumn<Weather, Weather> weathersPositionColumn = new TableColumn<>();
     private final TableColumn<Weather, String> weathersSeasonColumn = new TableColumn<>();
     private final TableColumn<Weather, String> weathersCommentColumn = new TableColumn<>();
     private final TableView<Day> daysTable = new TableView<>();
-    private final TableColumn<Day, Integer> daysPositionColumn = new TableColumn<>();
+    private final TableColumn<Day, Day> daysPositionColumn = new TableColumn<>();
     private final TableColumn<Day, Double> daysTemperatureColumn = new TableColumn<>();
     private final TableColumn<Day, LocalDate> daysDateColumn = new TableColumn<>();
     private final TableColumn<Day, String> daysCommentColumn = new TableColumn<>();
@@ -61,11 +62,11 @@ public class EditTab implements Alerts {
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public TableView<Weather> getWeathersTable() { return weathersTable; }
-    public TableColumn<Weather, Integer> getWeathersPositionColumn() { return weathersPositionColumn; }
+    public TableColumn<Weather, Weather> getWeathersPositionColumn() { return weathersPositionColumn; }
     public TableColumn<Weather, String> getWeathersSeasonColumn() {return weathersSeasonColumn; }
     public TableColumn<Weather, String> getWeathersCommentColumn() { return weathersCommentColumn; }
     public TableView<Day> getDaysTable() { return daysTable; }
-    public TableColumn<Day, Integer> getDaysPositionColumn() { return daysPositionColumn; }
+    public TableColumn<Day, Day> getDaysPositionColumn() { return daysPositionColumn; }
     public TableColumn<Day, Double> getDaysTemperatureColumn() { return daysTemperatureColumn; }
     public TableColumn<Day, LocalDate> getDaysDateColumn() { return daysDateColumn; }
     public TableColumn<Day, String> getDaysCommentColumn() { return daysCommentColumn; }
@@ -89,20 +90,18 @@ public class EditTab implements Alerts {
         weathersPositionColumn.setPrefWidth(95);
         weathersSeasonColumn.setPrefWidth(240);
         weathersCommentColumn.setPrefWidth(240);
-        weathersPositionColumn.setCellValueFactory(column -> {
-            return new TableCell<Weather, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null || !empty)
-                        setText(String.valueOf(getIndex() + 1));
-                }
-            }.itemProperty();
+
+        weathersPositionColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue()));
+        weathersPositionColumn.setCellFactory(cellData -> new TableCell<Weather, Weather>() {
+            @Override
+            protected void updateItem(Weather weather, boolean empty) {
+                super.updateItem(weather, empty);
+                if (weather != null || !empty)
+                    setText(String.valueOf(getIndex() + 1));
+            }
         });
-        weathersSeasonColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getSeason()));
-        weathersCommentColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getComment()));
+        weathersSeasonColumn.setCellValueFactory(cellData -> cellData.getValue().getSeasonProperty());
+        weathersCommentColumn.setCellValueFactory(cellData -> cellData.getValue().getCommentProperty());
         weathersTable.getColumns().setAll(
                 weathersPositionColumn,
                 weathersSeasonColumn,
@@ -151,22 +150,18 @@ public class EditTab implements Alerts {
         daysTemperatureColumn.setPrefWidth(160);
         daysDateColumn.setPrefWidth(160);
         daysCommentColumn.setPrefWidth(160);
-        daysPositionColumn.setCellValueFactory(column -> {
-            return new TableCell<Weather, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null || !empty)
-                        setText(String.valueOf(getIndex() + 1));
-                }
-            }.itemProperty();
+        daysPositionColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue()));
+        daysPositionColumn.setCellFactory(cellData -> new TableCell<Day, Day>() {
+            @Override
+            protected void updateItem(Day day, boolean empty) {
+                super.updateItem(day, empty);
+                if (day != null || !empty)
+                    setText(String.valueOf(getIndex() + 1));
+            }
         });
-        daysTemperatureColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getTemperature()));
-        daysDateColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getDate()));
-        daysCommentColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getComment()));
+        daysTemperatureColumn.setCellValueFactory(cellData -> cellData.getValue().getTemperatureProperty().asObject());
+        daysDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDate()));
+        daysCommentColumn.setCellValueFactory(cellData -> cellData.getValue().getCommentProperty());
         daysTable.getColumns().setAll(
                 daysPositionColumn,
                 daysTemperatureColumn,

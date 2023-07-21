@@ -6,6 +6,7 @@ import info.climateControl.window.tabs.ViewTab;
 import info.climateControl.climate.Climate;
 import info.climateControl.weather.Weather;
 import info.climateControl.day.Day;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.layout.Pane;
@@ -118,24 +119,24 @@ public class Controller {
     private TextArea findCommentsTextArea = new TextArea();
     // LEFT WEATHER TABLE
     @FXML
-    private TableView<Weather> weathersTable;
-    @FXML
-    private TableColumn<Weather, Integer> weathersPositionColumn = new TableColumn<>();
+    private TableView<Weather> weathersTable = new TableView<>();
     @FXML
     private TableColumn<Weather, String> weathersSeasonColumn = new TableColumn<>();
     @FXML
     private TableColumn<Weather, String> weathersCommentColumn = new TableColumn<>();
+    @FXML
+    private TableColumn<Weather, Weather> weathersPositionColumn = new TableColumn<>();
     // RIGHT DAYS TABLE
     @FXML
-    private TableView<Day> daysTable;
-    @FXML
-    private TableColumn<Day, Integer> daysPositionColumn = new TableColumn<>();
+    private TableView<Day> daysTable = new TableView<>();
     @FXML
     private TableColumn<Day, Double> daysTemperatureColumn = new TableColumn<>();
     @FXML
     private TableColumn<Day, LocalDate> daysDateColumn = new TableColumn<>();
     @FXML
     private TableColumn<Day, String> daysCommentColumn = new TableColumn<>();
+    @FXML
+    private TableColumn<Day, Day> daysPositionColumn = new TableColumn<>();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,49 +253,43 @@ public class Controller {
         fileChangesSaved = FileChangesSaved.IS_NOT_OPEN;
         fileOpen = false;
         filePath = null;
-
-        weathersPositionColumn.setCellValueFactory(column -> {
-            return new TableCell<Weather, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null || !empty)
-                        setText(String.valueOf(getIndex() + 1));
-                }
-            }.itemProperty();
-        });
-        weathersSeasonColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getSeason()));
-        weathersCommentColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getComment()));
-        daysPositionColumn.setCellValueFactory(column -> {
-            return new TableCell<Weather, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null || !empty)
-                        setText(String.valueOf(getIndex() + 1));
-                }
-            }.itemProperty();
-        });
-        daysTemperatureColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getTemperature()));
-        daysDateColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getDate()));
-        daysCommentColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getComment()));
-
-        if (!fileOpen)
-            setDisable(true);
     }
     public void setDisable(boolean bool) {
-        saveFileButton.setDisable(bool);
-        saveAsFileButton.setDisable(bool);
-        closeFileButton.setDisable(bool);
-        editTab.setDisable(bool);
-        leftPane.setDisable(bool);
+
     }
     public void setLanguage() {
+        openFileButton.setText(mainWindowResourceBundle.getString("openFileButton"));
+        newFileButton.setText(mainWindowResourceBundle.getString("newFileButton"));
+        saveFileButton.setText(mainWindowResourceBundle.getString("saveFileButton"));
+        saveAsFileButton.setText(mainWindowResourceBundle.getString("saveAsFileButton"));
+        closeFileButton.setText(mainWindowResourceBundle.getString("closeFileButton"));
+
+        deleteWeatherLabel.setText(mainWindowResourceBundle.getString("deleteWeatherLabel"));
+        deleteWeatherBySeasonButton.setText(mainWindowResourceBundle.getString("deleteWeatherBySeasonButton"));
+        deleteWeatherByCommentButton.setText(mainWindowResourceBundle.getString("deleteWeatherByCommentButton"));
+        deleteWeatherByPositionButton.setText(mainWindowResourceBundle.getString("deleteWeatherByPositionButton"));
+
+        deleteDayLabel.setText(mainWindowResourceBundle.getString("deleteDayLabel"));
+        deleteDayByTemperatureButton.setText(mainWindowResourceBundle.getString("deleteDayByTemperatureButton"));
+        deleteDayByDateButton.setText(mainWindowResourceBundle.getString("deleteDayByDateButton"));
+        deleteDayByCommentButton.setText(mainWindowResourceBundle.getString("deleteDayByCommentButton"));
+        deleteDayByPositionButton.setText(mainWindowResourceBundle.getString("deleteDayByPositionButton"));
+
+        editWeatherLabel.setText(mainWindowResourceBundle.getString("editWeatherLabel"));
+        editWeatherBySeasonButton.setText(mainWindowResourceBundle.getString("editWeatherBySeasonButton"));
+        editWeatherByCommentButton.setText(mainWindowResourceBundle.getString("editWeatherByCommentButton"));
+        editWeatherByPositionButton.setText(mainWindowResourceBundle.getString("editWeatherByPositionButton"));
+
+        editDayLabel.setText(mainWindowResourceBundle.getString("editDayLabel"));
+        editDayByTemperatureButton.setText(mainWindowResourceBundle.getString("editDayByTemperatureButton"));
+        editDayByDateButton.setText(mainWindowResourceBundle.getString("editDayByDateButton"));
+        editDayByCommentButton.setText(mainWindowResourceBundle.getString("editDayByCommentButton"));
+        editDayByPositionButton.setText(mainWindowResourceBundle.getString("editDayByPositionButton"));
+
+        addLabel.setText(mainWindowResourceBundle.getString("addLabel"));
+        addWeatherButton.setText(mainWindowResourceBundle.getString("addWeatherButton"));
+        addDayButton.setText(mainWindowResourceBundle.getString("addDayButton"));
+
         editTabObject.getWeathersPositionColumn().setText(additionalWindowsResourceBundle.getString("weathersPositionColumn"));
         editTabObject.getWeathersSeasonColumn().setText(additionalWindowsResourceBundle.getString("weathersSeasonColumn"));
         editTabObject.getWeathersCommentColumn().setText(additionalWindowsResourceBundle.getString("weathersCommentColumn"));
@@ -313,6 +308,27 @@ public class Controller {
         editTabObject.getDayCommentField().setPromptText(additionalWindowsResourceBundle.getString("dayCommentField"));
         editTabObject.getEditButton().setText(additionalWindowsResourceBundle.getString("editButton"));
         editTabObject.getAddButton().setText(additionalWindowsResourceBundle.getString("addButton"));
+
+        setLanguageLabel.setText(mainWindowResourceBundle.getString("setLanguageLabel"));
+        setEnToggleButton.setText(mainWindowResourceBundle.getString("setEnToggleButton"));
+        setUaToggleButton.setText(mainWindowResourceBundle.getString("setUaToggleButton"));
+        setRuToggleButton.setText(mainWindowResourceBundle.getString("setRuToggleButton"));
+        fontLabel.setText(mainWindowResourceBundle.getString("fontLabel"));
+
+        showAllDaysInWeatherButton.setText(mainWindowResourceBundle.getString("showAllDaysInWeatherButton"));
+        dayWithLongestCommentInWeatherButton.setText(mainWindowResourceBundle.getString("dayWithLongestCommentInWeatherButton"));
+        dayWithBiggestTemperatureInWeatherButton.setText(mainWindowResourceBundle.getString("dayWithBiggestTemperatureInWeatherButton"));
+        findCommentsTextField.setPromptText(mainWindowResourceBundle.getString("findCommentTextField"));
+        findCommentsButton.setText(mainWindowResourceBundle.getString("findCommentButton"));
+
+        weathersSeasonColumn.setText(mainWindowResourceBundle.getString("weathersSeasonColumn"));
+        weathersCommentColumn.setText(mainWindowResourceBundle.getString("weathersCommentColumn"));
+        weathersPositionColumn.setText(mainWindowResourceBundle.getString("weathersPositionColumn"));
+
+        daysTemperatureColumn.setText(mainWindowResourceBundle.getString("daysTemperatureColumn"));
+        daysDateColumn.setText(mainWindowResourceBundle.getString("daysDateColumn"));
+        daysCommentColumn.setText(mainWindowResourceBundle.getString("daysCommentColumn"));
+        daysPositionColumn.setText(mainWindowResourceBundle.getString("daysPositionColumn"));
     }
     public void setFont() {
 
@@ -323,14 +339,62 @@ public class Controller {
     public void setFontColor() {
 
     }
+    public void initializeWeathersTable() {
+        weathersPositionColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue()));
+        weathersPositionColumn.setCellFactory(cellData -> new TableCell<Weather, Weather>() {
+            @Override
+            protected void updateItem(Weather weather, boolean empty) {
+                super.updateItem(weather, empty);
+                if (weather != null || !empty)
+                    setText(String.valueOf(getIndex() + 1));
+            }
+        });
+        weathersSeasonColumn.setCellValueFactory(cellData -> cellData.getValue().getSeasonProperty());
+        weathersCommentColumn.setCellValueFactory(cellData -> cellData.getValue().getCommentProperty());
+        weathersTable.getColumns().setAll(
+                weathersPositionColumn,
+                weathersSeasonColumn,
+                weathersCommentColumn
+        );
+    }
+    public void initializeDaysTable() {
+        daysPositionColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue()));
+        daysPositionColumn.setCellFactory(cellData -> new TableCell<Day, Day>() {
+            @Override
+            protected void updateItem(Day day, boolean empty) {
+                super.updateItem(day, empty);
+                if (day != null || !empty)
+                    setText(String.valueOf(getIndex() + 1));
+            }
+        });
+        daysTemperatureColumn.setCellValueFactory(cellData -> cellData.getValue().getTemperatureProperty().asObject());
+        daysDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDate()));
+        daysCommentColumn.setCellValueFactory(cellData -> cellData.getValue().getCommentProperty());
+        daysTable.getColumns().setAll(
+                daysPositionColumn,
+                daysTemperatureColumn,
+                daysDateColumn,
+                daysCommentColumn
+        );
+    }
     public void fillWeathersTable(ArrayList<Weather> weathers) {
         weathersTable.getItems().addAll(FXCollections.observableArrayList(weathers));
     }
     public void fillDaysTable(ArrayList<Day> days) {
         daysTable.getItems().addAll(FXCollections.observableArrayList(days));
     }
+    public void selectWeatherInTable() {
+        weathersTable.setOnMouseClicked(actionEvent -> {
+            if (!weathersTable.getSelectionModel().isEmpty()) {
+                setSelectedWeather(weathersTable.getSelectionModel().getSelectedItem());
+                fillDaysTable(weathersTable.getSelectionModel().getSelectedItem().getDays());
+            }
+        });
+    }
     @FXML
     public void initialize() {
+        initializeWeathersTable();
+        initializeDaysTable();
         setLanguage();
 
         fileTabObject.pressedOpenFileButton();
@@ -355,5 +419,7 @@ public class Controller {
         editTabObject.pressedEditeDayByPositionButton();
         editTabObject.pressedAddWeatherButton();
         editTabObject.pressedAddDayButton();
+
+        selectWeatherInTable();
     }
 }

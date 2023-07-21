@@ -1,5 +1,10 @@
 package info.climateControl.day;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -16,24 +21,29 @@ import java.util.ResourceBundle;
  * <li>{@link #toString(ResourceBundle)}</li>
  * <li>{@link #hashCode()}</li> */
 public class Day {
-    private double temperature;
+    private DoubleProperty temperature;
     private LocalDate date;
-    private String comment;
+    private StringProperty comment;
     /** constructor which sets: temperature, date, comment and resourceBundle - of current day object
      * @param temperature   double which will be set as temperature
      * @param date          LocalDate which will be set as date
      * @param comment       String which will be set as comment */
     public Day(double temperature, LocalDate date, String comment) {
-        this.temperature = temperature;
+        this.temperature = new SimpleDoubleProperty(temperature);
         this.date = date;
-        this.comment = comment;
+        this.comment= new SimpleStringProperty(comment);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /** method which returns temperature of current day object
-     * @return double as temperature */
-    public double getTemperature() {
+     * @return Double as temperature */
+    public Double getTemperature() {
+        return temperature.get();
+    }
+    /** methods which returns temperature of current day object
+     * @return DoubleProperty as temperature */
+    public DoubleProperty getTemperatureProperty() {
         return temperature;
     }
     /** method which returns date of current day object
@@ -44,6 +54,11 @@ public class Day {
     /** method which returns comment of current day object
      * @return String as comment */
     public String getComment() {
+        return comment.get();
+    }
+    /** method which returns comment of current day object
+     * @return StringProperty as comment */
+    public StringProperty getCommentProperty() {
         return comment;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +67,7 @@ public class Day {
     /** method which sets temperature of current day object
      * @param temperature double which will be set as temperature */
     public void setTemperature(double temperature) {
-        this.temperature = temperature;
+        this.temperature = new SimpleDoubleProperty(temperature);
     }
     /** method which sets date of current day object
      * @param date LocalDate which will be set as date */
@@ -62,7 +77,7 @@ public class Day {
     /** method which sets comment of current day object
      * @param comment String which will be set as comment */
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment= new SimpleStringProperty(comment);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // OTHER
@@ -74,6 +89,6 @@ public class Day {
     }
     @Override
     public int hashCode() {
-        return (int) getTemperature() + getDate().hashCode() + getComment().hashCode();
+        return getTemperature().intValue() + getDate().hashCode() + getComment().hashCode();
     }
 }
