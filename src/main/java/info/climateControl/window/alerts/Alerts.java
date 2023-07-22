@@ -70,39 +70,65 @@ public interface Alerts {
         noSelectedRowAlert.setContentText(resourceBundle.getString("noSelectedRowAlertContent"));
         return noSelectedRowAlert;
     }
-    static Alert createFileAlreadyOpenedAlert(ResourceBundle resourceBundle) {
-        Alert fileAlreadyOpenedAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        fileAlreadyOpenedAlert.setTitle(resourceBundle.getString("fileAlreadyOpenedAlertTitle"));
-        fileAlreadyOpenedAlert.setHeaderText(resourceBundle.getString("fileAlreadyOpenedAlertHeader"));
-        fileAlreadyOpenedAlert.setContentText(resourceBundle.getString("fileAlreadyOpenAlertContent"));
+    static Alert createOpenAnotherFile(ResourceBundle resourceBundle) {
+        Alert openAnotherFile = new Alert(Alert.AlertType.CONFIRMATION);
+        openAnotherFile.setTitle(resourceBundle.getString("openAnotherFileAlertTitle"));
+        openAnotherFile.setHeaderText(resourceBundle.getString("openAnotherFileAlertHeader"));
+        openAnotherFile.setContentText(resourceBundle.getString("openAnotherFileAlertContent"));
+        ButtonType openAlertButton = new ButtonType(resourceBundle.getString("openAlertButton"));
+        ButtonType doNotOpenAlertButton = new ButtonType(resourceBundle.getString("doNotOpenAlertButton"));
+        openAnotherFile.getButtonTypes().setAll(
+                openAlertButton,
+                doNotOpenAlertButton
+        );
+        return openAnotherFile;
+    }
+    static Alert createOpenAnotherFileWithUnsavedFile(ResourceBundle resourceBundle) {
+        Alert openAnotherFileWithUnsavedFileAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        openAnotherFileWithUnsavedFileAlert.setTitle(resourceBundle.getString("openAnotherFileWithUnsavedFileAlertTitle"));
+        openAnotherFileWithUnsavedFileAlert.setHeaderText(resourceBundle.getString("openAnotherFileWithUnsavedFileAlertHeader"));
+        openAnotherFileWithUnsavedFileAlert.setContentText(resourceBundle.getString("openAnotherFileWithUnsavedFileAlertContent"));
         ButtonType saveAndOpenAlertButton = new ButtonType(resourceBundle.getString("saveAndOpenAlertButton"));
         ButtonType doNotSaveAndOpenAlertButton = new ButtonType(resourceBundle.getString("doNotSaveAndOpenAlertButton"));
         ButtonType saveAndDoNotOpenAlertButton = new ButtonType(resourceBundle.getString("saveAndDoNotOpenAlertButton"));
         ButtonType doNotSaveAndDoNotOpenAlertButton = new ButtonType(resourceBundle.getString("doNotSaveAndDoNotOpenAlertButton"));
-        fileAlreadyOpenedAlert.getButtonTypes().setAll(
+        openAnotherFileWithUnsavedFileAlert.getButtonTypes().setAll(
                 saveAndOpenAlertButton,
                 doNotSaveAndOpenAlertButton,
                 saveAndDoNotOpenAlertButton,
                 doNotSaveAndDoNotOpenAlertButton
         );
-        return fileAlreadyOpenedAlert;
+        return openAnotherFileWithUnsavedFileAlert;
     }
-    static Alert createFileIsNotSavedAlert(ResourceBundle resourceBundle) {
-        Alert fileIsNotSavedAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        fileIsNotSavedAlert.setTitle(resourceBundle.getString("fileIsNotSavedAlertTitle"));
-        fileIsNotSavedAlert.setHeaderText(resourceBundle.getString("fileIsNotSavedAlertHeader"));
-        fileIsNotSavedAlert.setContentText(resourceBundle.getString("fileIsNotSavedAlertContent"));
+    static Alert createCloseFile(ResourceBundle resourceBundle) {
+        Alert closeFileAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        closeFileAlert.setTitle(resourceBundle.getString("closeFileAlertTitle"));
+        closeFileAlert.setHeaderText(resourceBundle.getString("closeFileAlertHeader"));
+        closeFileAlert.setContentText(resourceBundle.getString("closeFileAlertContent"));
+        ButtonType closeFileAlertButton = new ButtonType(resourceBundle.getString("closeFileAlertButton"));
+        ButtonType doNotCloseFileAlertButton = new ButtonType(resourceBundle.getString("doNotCloseFileAlertButton"));
+        closeFileAlert.getButtonTypes().setAll(
+                closeFileAlertButton,
+                doNotCloseFileAlertButton
+        );
+        return closeFileAlert;
+    }
+    static Alert createCloseUnsavedFile(ResourceBundle resourceBundle) {
+        Alert closeUnsavedFileAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        closeUnsavedFileAlert.setTitle(resourceBundle.getString("closeUnsavedFileAlertTitle"));
+        closeUnsavedFileAlert.setHeaderText(resourceBundle.getString("closeUnsavedFileAlertHeader"));
+        closeUnsavedFileAlert.setContentText(resourceBundle.getString("closeUnsavedFileAlertContent"));
         ButtonType saveAndCloseAlertButton = new ButtonType(resourceBundle.getString("saveAndCloseAlertButton"));
         ButtonType doNotSaveAndCloseAlertButton = new ButtonType(resourceBundle.getString("doNotSaveAndCloseAlertButton"));
         ButtonType saveAndDoNotCloseAlertButton = new ButtonType(resourceBundle.getString("saveAndDoNotCloseAlertButton"));
         ButtonType doNotSaveAndDoNotCloseAlertButton = new ButtonType(resourceBundle.getString("doNotSaveAndDoNotCloseAlertButton"));
-        fileIsNotSavedAlert.getButtonTypes().setAll(
+        closeUnsavedFileAlert.getButtonTypes().setAll(
                 saveAndCloseAlertButton,
                 doNotSaveAndCloseAlertButton,
                 saveAndDoNotCloseAlertButton,
                 doNotSaveAndDoNotCloseAlertButton
         );
-        return fileIsNotSavedAlert;
+        return closeUnsavedFileAlert;
     }
     static Alert createWrongFileExtensionAlert(ResourceBundle resourceBundle) {
         Alert wrongFileExtensionAlert = new Alert(Alert.AlertType.ERROR);

@@ -1,9 +1,6 @@
 package info.climateControl.weather;
 
 import info.climateControl.day.Day;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import java.util.ResourceBundle;
 import java.util.ArrayList;
 
@@ -20,16 +17,16 @@ import java.util.ArrayList;
  * <li>{@link #toString(ResourceBundle)}</li>
  * <li>{@link #hashCode()}</li> */
 public class Weather {
-    private StringProperty season;
-    private StringProperty comment;
+    private String season;
+    private String comment;
     private ArrayList<Day> days;
     /** constructor which sets: season, comment, days and resourceBundle - of current weather object
      * @param season    String which will be set as season
      * @param comment   String which will be set as comment
      * @param days      ArrayList which will be set as days */
     public Weather(String season, String comment, ArrayList<Day> days) {
-        this.season = new SimpleStringProperty(season);
-        this.comment = new SimpleStringProperty(comment);
+        this.season = season;
+        this.comment = comment;
         this.days = days;
     }
     /** constructor which makes weather empty */
@@ -44,25 +41,15 @@ public class Weather {
     /** method which returns season of current weather object
      * @return String as season */
     public String getSeason() {
-        return season.get();
-    }
-    /** method which returns season of current weather object
-     * @return StringProperty as season */
-    public StringProperty getSeasonProperty() {
         return season;
     }
     /** method which returns comment of current weather object
      * @return String as comment */
     public String getComment() {
-        return comment.get();
-    }
-    /** method which returns comment of current weather object
-     * @return StringProperty as comment */
-    public StringProperty getCommentProperty() {
         return comment;
     }
     /** method which returns days of current weather object
-     * @return ArraysList as days */
+     * @return ArraysList of days */
     public ArrayList<Day> getDays() {
         return days;
     }
@@ -72,12 +59,12 @@ public class Weather {
     /** method which sets season of current weather object
      * @param season String which will be set as season */
     public void setSeason(String season) {
-        this.season = new SimpleStringProperty(season);
+        this.season = season;
     }
     /** method which sets comment of current weather object
      * @param comment String which will be set as comment */
     public void setComment(String comment) {
-        this.comment = new SimpleStringProperty(comment);
+        this.comment = comment;
     }
     /** method which sets days of current weather object
      * @param days ArrayList which will be set as days */

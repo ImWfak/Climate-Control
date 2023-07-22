@@ -21,17 +21,17 @@ import java.util.ResourceBundle;
  * <li>{@link #toString(ResourceBundle)}</li>
  * <li>{@link #hashCode()}</li> */
 public class Day {
-    private DoubleProperty temperature;
+    private Double temperature;
     private LocalDate date;
-    private StringProperty comment;
+    private String comment;
     /** constructor which sets: temperature, date, comment and resourceBundle - of current day object
      * @param temperature   double which will be set as temperature
      * @param date          LocalDate which will be set as date
      * @param comment       String which will be set as comment */
     public Day(double temperature, LocalDate date, String comment) {
-        this.temperature = new SimpleDoubleProperty(temperature);
+        this.temperature = temperature;
         this.date = date;
-        this.comment= new SimpleStringProperty(comment);
+        this.comment = comment;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
@@ -39,11 +39,6 @@ public class Day {
     /** method which returns temperature of current day object
      * @return Double as temperature */
     public Double getTemperature() {
-        return temperature.get();
-    }
-    /** methods which returns temperature of current day object
-     * @return DoubleProperty as temperature */
-    public DoubleProperty getTemperatureProperty() {
         return temperature;
     }
     /** method which returns date of current day object
@@ -54,20 +49,15 @@ public class Day {
     /** method which returns comment of current day object
      * @return String as comment */
     public String getComment() {
-        return comment.get();
-    }
-    /** method which returns comment of current day object
-     * @return StringProperty as comment */
-    public StringProperty getCommentProperty() {
         return comment;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // SETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /** method which sets temperature of current day object
-     * @param temperature double which will be set as temperature */
+     * @param temperature Double which will be set as temperature */
     public void setTemperature(double temperature) {
-        this.temperature = new SimpleDoubleProperty(temperature);
+        this.temperature = temperature;
     }
     /** method which sets date of current day object
      * @param date LocalDate which will be set as date */
@@ -77,7 +67,7 @@ public class Day {
     /** method which sets comment of current day object
      * @param comment String which will be set as comment */
     public void setComment(String comment) {
-        this.comment= new SimpleStringProperty(comment);
+        this.comment = comment;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // OTHER

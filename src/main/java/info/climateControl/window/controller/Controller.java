@@ -7,7 +7,9 @@ import info.climateControl.climate.Climate;
 import info.climateControl.weather.Weather;
 import info.climateControl.day.Day;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.*;
@@ -349,8 +351,8 @@ public class Controller {
                     setText(String.valueOf(getIndex() + 1));
             }
         });
-        weathersSeasonColumn.setCellValueFactory(cellData -> cellData.getValue().getSeasonProperty());
-        weathersCommentColumn.setCellValueFactory(cellData -> cellData.getValue().getCommentProperty());
+        weathersSeasonColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSeason()));
+        weathersCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
         weathersTable.getColumns().setAll(
                 weathersPositionColumn,
                 weathersSeasonColumn,
@@ -367,9 +369,9 @@ public class Controller {
                     setText(String.valueOf(getIndex() + 1));
             }
         });
-        daysTemperatureColumn.setCellValueFactory(cellData -> cellData.getValue().getTemperatureProperty().asObject());
+        daysTemperatureColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getTemperature()).asObject());
         daysDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDate()));
-        daysCommentColumn.setCellValueFactory(cellData -> cellData.getValue().getCommentProperty());
+        daysCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
         daysTable.getColumns().setAll(
                 daysPositionColumn,
                 daysTemperatureColumn,
@@ -378,10 +380,10 @@ public class Controller {
         );
     }
     public void fillWeathersTable(ArrayList<Weather> weathers) {
-        weathersTable.getItems().addAll(FXCollections.observableArrayList(weathers));
+        weathersTable.getItems().setAll(FXCollections.observableArrayList(weathers));
     }
     public void fillDaysTable(ArrayList<Day> days) {
-        daysTable.getItems().addAll(FXCollections.observableArrayList(days));
+        daysTable.getItems().setAll(FXCollections.observableArrayList(days));
     }
     public void selectWeatherInTable() {
         weathersTable.setOnMouseClicked(actionEvent -> {
@@ -401,7 +403,7 @@ public class Controller {
         fileTabObject.pressedNewFileButton();
         fileTabObject.pressedSaveFileButton();
         fileTabObject.pressedSaveAsFileButton();
-        fileTabObject.pressedClosedFileButton();
+        fileTabObject.pressedCloseFileButton();
 
         editTabObject.pressedDeleteWeatherBySeasonButton();
         editTabObject.pressedDeleteWeatherByCommentButton();

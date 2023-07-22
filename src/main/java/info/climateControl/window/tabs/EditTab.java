@@ -6,7 +6,9 @@ import info.climateControl.window.alerts.Alerts;
 import info.climateControl.weather.Weather;
 import info.climateControl.day.Day;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.*;
 import javafx.scene.Scene;
@@ -18,6 +20,40 @@ import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**<p><b>methods in EditTab</b></p>
+ * <p>private:</p>
+ * <li>{@link #buildWeathersTable()}</li>
+ * <li>{@link #loadWeathersTableBySeason()}</li>
+ * <li>{@link #loadWeathersTableByComment()}</li>
+ * <li>{@link #loadWeatherTableByPosition()}</li>
+ * <li>{@link #buildDaysTable()}</li>
+ * <li>{@link #loadDaysTableByTemperature()}</li>
+ * <li>{@link #loadDaysTableByDate()}</li>
+ * <li>{@link #loadDaysTableByComment()}</li>
+ * <li>{@link #loadDaysTableByPosition()}</li>
+ * <li>{@link #showDeleteWeatherWindow()}</li>
+ * <li>{@link #showDeleteDayWindow()}</li>
+ * <li>{@link #showEditWeatherWindow()} d}</li>
+ * <li>{@link #showEditDayWindow()}</li>
+ * <li>{@link #showAddWeatherWindow()}</li>
+ * <li>{@link #showAddDayWindow()}</li>
+ * <p>public:</p>
+ * <li>{@link #pressedDeleteWeatherBySeasonButton()}</li>
+ * <li>{@link #pressedDeleteWeatherByCommentButton()}</li>
+ * <li>{@link #pressedDeleteWeatherByPositionButton()}</li>
+ * <li>{@link #pressedDeleteDayByTemperatureButton()}</li>
+ * <li>{@link #pressedDeleteDayByDateButton()}</li>
+ * <li>{@link #pressedDeleteDayByCommentButton()}</li>
+ * <li>{@link #pressedDeleteDayByPositionButton()}</li>
+ * <li>{@link #pressedEditWeatherBySeasonButton()} </li>
+ * <li>{@link #pressedEditWeatherByCommentButton()}</li>
+ * <li>{@link #pressedEditWeatherByPositionButton()}</li>
+ * <li>{@link #pressedEditDayByTemperatureButton()}</li>
+ * <li>{@link #pressedEditDayByDateButton()}</li>
+ * <li>{@link #pressedEditDayByCommentButton()}</li>
+ * <li>{@link #pressedEditeDayByPositionButton()}</li>
+ * <li>{@link #pressedAddWeatherButton()}</li>
+ * <li>{@link #pressedAddDayButton()}</li> */
 public class EditTab implements Alerts {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // WINDOW`S ITEMS
@@ -100,8 +136,8 @@ public class EditTab implements Alerts {
                     setText(String.valueOf(getIndex() + 1));
             }
         });
-        weathersSeasonColumn.setCellValueFactory(cellData -> cellData.getValue().getSeasonProperty());
-        weathersCommentColumn.setCellValueFactory(cellData -> cellData.getValue().getCommentProperty());
+        weathersSeasonColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSeason()));
+        weathersCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
         weathersTable.getColumns().setAll(
                 weathersPositionColumn,
                 weathersSeasonColumn,
@@ -159,9 +195,9 @@ public class EditTab implements Alerts {
                     setText(String.valueOf(getIndex() + 1));
             }
         });
-        daysTemperatureColumn.setCellValueFactory(cellData -> cellData.getValue().getTemperatureProperty().asObject());
+        daysTemperatureColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getTemperature()).asObject());
         daysDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDate()));
-        daysCommentColumn.setCellValueFactory(cellData -> cellData.getValue().getCommentProperty());
+        daysCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
         daysTable.getColumns().setAll(
                 daysPositionColumn,
                 daysTemperatureColumn,

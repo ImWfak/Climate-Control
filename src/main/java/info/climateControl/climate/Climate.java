@@ -50,7 +50,7 @@ public class Climate {
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /** method which returns weathers of current climate object
-     * @return ArrayList as weather */
+     * @return ArrayList of weathers */
     public ArrayList<Weather> getWeathers() {
         return weathers;
     }
