@@ -232,16 +232,16 @@ public class Controller {
         logger.info("changed value of alertResourceBundle");
     }
     public void setFileChangesSaved(FileChangesSaved fileChangesSaved) {
+        logger.info("changed value of fileChangesSaved from '" + this.fileChangesSaved + "' to '" + fileChangesSaved + "'");
         this.fileChangesSaved = fileChangesSaved;
-        logger.info("changed value of fileChangesSaved to '" + this.fileChangesSaved + "'");
     }
     public void setFileOpen(boolean fileOpen) {
+        logger.info("changed value of fileOpen from '" + this.fileOpen + "' to '" + fileOpen + "'");
         this.fileOpen = fileOpen;
-        logger.info("changed value of fileOpen to '" + this.fileOpen + "'");
     }
     public void setFilePath(String filePath) {
+        logger.info("changed value of filePath from '" + this.filePath + "' to '" + filePath + "'");
         this.filePath = filePath;
-        logger.info("changed value of filePath");
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // METHODS

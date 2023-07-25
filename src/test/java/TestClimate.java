@@ -1,12 +1,15 @@
 import info.climateControl.climate.Climate;
 import info.climateControl.weather.Weather;
 import info.climateControl.day.Day;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class TestClimate {
+    private static final Logger logger = LogManager.getLogger(TestClimate.class);
     private final Climate climate;
     {
         ArrayList<Day> daysForFirstWeather = new ArrayList<>();
@@ -43,7 +46,7 @@ public class TestClimate {
     @Test
     public void testWriteAndReadFromJSON() {
         String path = "out/test.json";
-        climate.writeToJSON(path);;
+        climate.writeToJSON(path);
         Climate tempClimate = new Climate();
         tempClimate.readFromJSON(path);
         Assert.assertEquals(climate.toString(), tempClimate.toString());

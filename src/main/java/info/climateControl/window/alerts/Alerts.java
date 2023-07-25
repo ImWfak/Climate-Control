@@ -70,6 +70,34 @@ public interface Alerts {
         noSelectedRowAlert.setContentText(resourceBundle.getString("noSelectedRowAlertContent"));
         return noSelectedRowAlert;
     }
+    static Alert createWrongFileExtensionAlert(ResourceBundle resourceBundle) {
+        Alert wrongFileExtensionAlert = new Alert(Alert.AlertType.ERROR);
+        wrongFileExtensionAlert.setTitle(resourceBundle.getString("wrongFileExtensionAlertTitle"));
+        wrongFileExtensionAlert.setHeaderText(resourceBundle.getString("wrongFileExtensionAlertHeader"));
+        wrongFileExtensionAlert.setContentText(resourceBundle.getString("wrongFileExtensionAlertContent"));
+        return wrongFileExtensionAlert;
+    }
+    static Alert createWrongFileContentAlert(ResourceBundle resourceBundle) {
+        Alert wrongFileContentAlert = new Alert(Alert.AlertType.ERROR);
+        wrongFileContentAlert.setTitle(resourceBundle.getString("wrongFileContentAlertTitle"));
+        wrongFileContentAlert.setHeaderText(resourceBundle.getString("wrongFileContentAlertHeader"));
+        wrongFileContentAlert.setContentText(resourceBundle.getString("wrongFileContentAlertContent"));
+        return wrongFileContentAlert;
+    }
+    static Alert createCanNotSaveFileAlert(ResourceBundle resourceBundle) {
+        Alert canNotSaveFileAlert = new Alert(Alert.AlertType.ERROR);
+        canNotSaveFileAlert.setTitle(resourceBundle.getString("canNotSaveFileAlertTitle"));
+        canNotSaveFileAlert.setHeaderText(resourceBundle.getString("canNotSaveFileAlertHeader"));
+        canNotSaveFileAlert.setContentText(resourceBundle.getString("canNotSaveFileAlertContent"));
+        return canNotSaveFileAlert;
+    }
+    static Alert createFileHasNotChosenAlert(ResourceBundle resourceBundle) {
+        Alert fileHasNotChosenAlert = new Alert(Alert.AlertType.INFORMATION);
+        fileHasNotChosenAlert.setTitle(resourceBundle.getString("fileHasNotChosenAlertTitle"));
+        fileHasNotChosenAlert.setHeaderText(resourceBundle.getString("fileHasNotChosenAlertHeader"));
+        fileHasNotChosenAlert.setContentText(resourceBundle.getString("fileHasNotChosenAlertContent"));
+        return fileHasNotChosenAlert;
+    }
     static Alert createOpenAnotherFile(ResourceBundle resourceBundle) {
         Alert openAnotherFile = new Alert(Alert.AlertType.CONFIRMATION);
         openAnotherFile.setTitle(resourceBundle.getString("openAnotherFileAlertTitle"));
@@ -130,25 +158,34 @@ public interface Alerts {
         );
         return closeUnsavedFileAlert;
     }
-    static Alert createWrongFileExtensionAlert(ResourceBundle resourceBundle) {
-        Alert wrongFileExtensionAlert = new Alert(Alert.AlertType.ERROR);
-        wrongFileExtensionAlert.setTitle(resourceBundle.getString("wrongFileExtensionAlertTitle"));
-        wrongFileExtensionAlert.setHeaderText(resourceBundle.getString("wrongFileExtensionAlertHeader"));
-        wrongFileExtensionAlert.setContentText(resourceBundle.getString("wrongFileExtensionAlertContent"));
-        return wrongFileExtensionAlert;
+    /*static Alert createCreateNewFile(ResourceBundle resourceBundle) {
+        Alert createNewFileAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        createNewFileAlert.setTitle();
+        createNewFileAlert.setHeaderText();
+        createNewFileAlert.setContentText();
+        ButtonType createNewAlertButton = new ButtonType(resourceBundle.getString());
+        ButtonType doNotCreateNewAlertButton = new ButtonType(resourceBundle.getString());
+        createNewFileAlert.getButtonTypes().setAll(
+                createNewAlertButton,
+                doNotCreateNewAlertButton
+        );
+        return createNewFileAlert;
     }
-    static Alert createWrongFileContentAlert(ResourceBundle resourceBundle) {
-        Alert wrongFileContentAlert = new Alert(Alert.AlertType.ERROR);
-        wrongFileContentAlert.setTitle(resourceBundle.getString("wrongFileContentAlertTitle"));
-        wrongFileContentAlert.setHeaderText(resourceBundle.getString("wrongFileContentAlertHeader"));
-        wrongFileContentAlert.setContentText(resourceBundle.getString("wrongFileContentAlertContent"));
-        return wrongFileContentAlert;
-    }
-    static Alert createCanNotSaveFileAlert(ResourceBundle resourceBundle) {
-        Alert canNotSaveFileAlert = new Alert(Alert.AlertType.ERROR);
-        canNotSaveFileAlert.setTitle(resourceBundle.getString("canNotSaveFileAlertTitle"));
-        canNotSaveFileAlert.setHeaderText(resourceBundle.getString("canNotSaveFileAlertHeader"));
-        canNotSaveFileAlert.setContentText(resourceBundle.getString("canNotSaveFileAlertContent"));
-        return canNotSaveFileAlert;
-    }
+    static Alert createCreateNewFileWithUnsavedFile(ResourceBundle resourceBundle) {
+        Alert createNewFileWithUnsavedFile = new Alert(Alert.AlertType.CONFIRMATION);
+        createNewFileWithUnsavedFile.setTitle();
+        createNewFileWithUnsavedFile.setHeaderText();
+        createNewFileWithUnsavedFile.setContentText();
+        ButtonType saveAndCreateNewAlertButton = new ButtonType(resourceBundle.getString());
+        ButtonType doNotSaveAndCreateNewAlertButton = new ButtonType(resourceBundle.getString());
+        ButtonType saveAndDoNotCreateNewAlertButton = new ButtonType(resourceBundle.getString());
+        ButtonType doNotSaveAndDoNotCreateAlertButton = new ButtonType(resourceBundle.getString());
+        createNewFileWithUnsavedFile.getButtonTypes().setAll(
+                saveAndCreateNewAlertButton,
+                doNotSaveAndCreateNewAlertButton,
+                saveAndDoNotCreateNewAlertButton,
+                doNotSaveAndDoNotCreateAlertButton
+        );
+        return createNewFileWithUnsavedFile;
+    }*/
 }
