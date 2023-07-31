@@ -1,6 +1,5 @@
 package info.climateControl.window.tabs;
 
-import info.climateControl.window.controller.FileChangesSaved;
 import info.climateControl.window.controller.Controller;
 import info.climateControl.window.alerts.Alerts;
 import info.climateControl.weather.Weather;
@@ -126,7 +125,6 @@ public class EditTab implements Alerts {
         weathersPositionColumn.setPrefWidth(95);
         weathersSeasonColumn.setPrefWidth(240);
         weathersCommentColumn.setPrefWidth(240);
-
         weathersPositionColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue()));
         weathersPositionColumn.setCellFactory(cellData -> new TableCell<Weather, Weather>() {
             @Override
@@ -306,7 +304,7 @@ public class EditTab implements Alerts {
                     });
                     weathersTable.getItems().clear();
                     controller.fillWeathersTable(controller.getClimate().getWeathers());
-                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
+                    controller.setChangesInFileSaved(false);
                 }
             });
             deleteSelectedButton.setOnAction(actionEvent -> {
@@ -319,7 +317,7 @@ public class EditTab implements Alerts {
                     weathersTable.getItems().remove(weather);
                     controller.getClimate().getWeathers().remove(weather);
                     controller.fillWeathersTable(controller.getClimate().getWeathers());
-                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
+                    controller.setChangesInFileSaved(false);
                 }
             });
             stage.show();
@@ -372,7 +370,7 @@ public class EditTab implements Alerts {
                     });
                     daysTable.getItems().clear();
                     controller.fillDaysTable(controller.getSelectedWeather().getDays());
-                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
+                    controller.setChangesInFileSaved(false);
                 }
             });
             deleteSelectedButton.setOnAction(actionEvent -> {
@@ -385,7 +383,7 @@ public class EditTab implements Alerts {
                     daysTable.getItems().remove(day);
                     controller.getSelectedWeather().getDays().remove(day);
                     controller.fillDaysTable(controller.getSelectedWeather().getDays());
-                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
+                    controller.setChangesInFileSaved(false);
                 }
             });
             stage.show();
@@ -413,16 +411,16 @@ public class EditTab implements Alerts {
             findButton.setLayoutY(350);
             findButton.setPrefWidth(100);
             findButton.setPrefHeight(25);
-            weatherSeasonField.setLayoutX(400);
-            weatherSeasonField.setLayoutY(25);
+            weatherSeasonField.setLayoutX(25);
+            weatherSeasonField.setLayoutY(400);
             weatherSeasonField.setPrefWidth(150);
             weatherSeasonField.setPrefHeight(25);
-            weatherCommentField.setLayoutX(400);
-            weatherCommentField.setLayoutY(200);
+            weatherCommentField.setLayoutX(200);
+            weatherCommentField.setLayoutY(400);
             weatherCommentField.setPrefWidth(150);
             weatherCommentField.setPrefHeight(25);
             editButton.setLayoutX(500);
-            editButton.setLayoutY(375);
+            editButton.setLayoutY(400);
             editButton.setPrefWidth(100);
             editButton.setPrefHeight(25);
             anchorPane.getChildren().setAll(
@@ -445,7 +443,7 @@ public class EditTab implements Alerts {
                     weather.setComment(weatherCommentField.getCharacters().toString());
                     controller.getClimate().getWeathers().set(index, weather);
                     controller.fillWeathersTable(controller.getClimate().getWeathers());
-                    controller.setFileChangesSaved(FileChangesSaved.FALSE);
+                    controller.setChangesInFileSaved(false);
                 }
             });
             stage.show();
@@ -459,7 +457,7 @@ public class EditTab implements Alerts {
             Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
         } else {
             anchorPane.setPrefWidth(625);
-            anchorPane.setPrefHeight(400);
+            anchorPane.setPrefHeight(450);
             scrollPane.setLayoutX(25);
             scrollPane.setLayoutY(25);
             scrollPane.setPrefWidth(575);
@@ -469,25 +467,25 @@ public class EditTab implements Alerts {
             findField.setLayoutX(25);
             findField.setLayoutY(350);
             findField.setPrefWidth(150);
-            findField.setPrefHeight(50);
+            findField.setPrefHeight(25);
             findButton.setLayoutX(200);
             findButton.setLayoutY(350);
             findButton.setPrefWidth(100);
             findButton.setPrefHeight(25);
-            dayTemperatureField.setLayoutX(400);
-            dayTemperatureField.setLayoutY(25);
+            dayTemperatureField.setLayoutX(25);
+            dayTemperatureField.setLayoutY(400);
             dayTemperatureField.setPrefWidth(125);
             dayTemperatureField.setPrefHeight(25);
-            dayDateField.setLayoutX(400);
-            dayDateField.setLayoutY(175);
+            dayDateField.setLayoutX(175);
+            dayDateField.setLayoutY(400);
             dayDateField.setPrefWidth(125);
             dayDateField.setPrefHeight(25);
-            dayCommentField.setLayoutX(400);
-            dayCommentField.setLayoutY(325);
+            dayCommentField.setLayoutX(325);
+            dayCommentField.setLayoutY(400);
             dayCommentField.setPrefWidth(125);
             dayCommentField.setPrefHeight(25);
             editButton.setLayoutX(500);
-            editButton.setLayoutY(475);
+            editButton.setLayoutY(400);
             editButton.setPrefWidth(100);
             editButton.setPrefHeight(25);
             anchorPane.getChildren().setAll(
@@ -517,7 +515,7 @@ public class EditTab implements Alerts {
                         );
                         controller.getSelectedWeather().getDays().set(index, day);
                         controller.fillDaysTable(controller.getSelectedWeather().getDays());
-                        controller.setFileChangesSaved(FileChangesSaved.FALSE);
+                        controller.setChangesInFileSaved(false);
                     } else {
                         Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
                     }
@@ -529,39 +527,45 @@ public class EditTab implements Alerts {
     // ADD
     /** private method which will build add weather window */
     private void showAddWeatherWindow() {
-        anchorPane.setPrefWidth(625);
-        anchorPane.setPrefHeight(125);
-        weatherSeasonField.setLayoutX(25);
-        weatherSeasonField.setLayoutY(50);
-        weatherSeasonField.setPrefWidth(150);
-        weatherSeasonField.setPrefHeight(25);
-        weatherCommentField.setLayoutX(175);
-        weatherCommentField.setLayoutY(50);
-        weatherCommentField.setPrefWidth(150);
-        weatherCommentField.setPrefHeight(25);
-        addButton.setLayoutX(500);
-        addButton.setLayoutY(50);
-        addButton.setPrefWidth(100);
-        addButton.setPrefHeight(25);
-        anchorPane.getChildren().setAll(
-                weatherSeasonField,
-                weatherCommentField,
-                addButton
-        );
-        addButton.setOnAction(actionEvent -> {
-            controller.getClimate().getWeathers().add(new Weather(
-                    weatherSeasonField.getCharacters().toString(),
-                    weatherCommentField.getCharacters().toString(),
-                    new ArrayList<Day>()
-            ));
-            controller.fillWeathersTable(controller.getClimate().getWeathers());
-            controller.setFileChangesSaved(FileChangesSaved.FALSE);
-        });
-        stage.show();
+        if (!controller.getFileOpen()) {
+             Alerts.createFileIsNotOpened(controller.getAlertResourceBundle()).show();
+        } else {
+            anchorPane.setPrefWidth(625);
+            anchorPane.setPrefHeight(125);
+            weatherSeasonField.setLayoutX(25);
+            weatherSeasonField.setLayoutY(50);
+            weatherSeasonField.setPrefWidth(150);
+            weatherSeasonField.setPrefHeight(25);
+            weatherCommentField.setLayoutX(200);
+            weatherCommentField.setLayoutY(50);
+            weatherCommentField.setPrefWidth(150);
+            weatherCommentField.setPrefHeight(25);
+            addButton.setLayoutX(500);
+            addButton.setLayoutY(50);
+            addButton.setPrefWidth(100);
+            addButton.setPrefHeight(25);
+            anchorPane.getChildren().setAll(
+                    weatherSeasonField,
+                    weatherCommentField,
+                    addButton
+            );
+            addButton.setOnAction(actionEvent -> {
+                controller.getClimate().getWeathers().add(new Weather(
+                        weatherSeasonField.getCharacters().toString(),
+                        weatherCommentField.getCharacters().toString(),
+                        new ArrayList<Day>()
+                ));
+                controller.fillWeathersTable(controller.getClimate().getWeathers());
+                controller.setChangesInFileSaved(false);
+            });
+            stage.show();
+        }
     }
     /** private method which will build add day window */
     private void showAddDayWindow() {
-        if (controller.getClimate().getWeathers().isEmpty()) {
+        if (!controller.getFileOpen()) {
+            Alerts.createFileIsNotOpened(controller.getAlertResourceBundle()).show();
+        } else if (controller.getClimate().getWeathers().isEmpty()) {
             Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
         } else if (controller.getSelectedWeather() == null) {
             Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
@@ -570,21 +574,21 @@ public class EditTab implements Alerts {
             anchorPane.setPrefHeight(125);
             dayTemperatureField.setLayoutX(25);
             dayTemperatureField.setLayoutY(50);
-            dayTemperatureField.setPrefWidth(150);
+            dayTemperatureField.setPrefWidth(125);
             dayTemperatureField.setPrefHeight(25);
             dayDateField.setLayoutX(175);
             dayDateField.setLayoutY(50);
-            dayDateField.setPrefWidth(150);
+            dayDateField.setPrefWidth(125);
             dayDateField.setPrefHeight(25);
-            dayCommentField.setLayoutX(350);
-            dayCommentField.setLayoutY(25);
-            dayCommentField.setPrefWidth(150);
+            dayCommentField.setLayoutX(325);
+            dayCommentField.setLayoutY(50);
+            dayCommentField.setPrefWidth(125);
             dayCommentField.setPrefHeight(25);
             addButton.setLayoutX(500);
             addButton.setLayoutY(50);
             addButton.setPrefWidth(100);
             addButton.setPrefHeight(25);
-            anchorPane.getChildren().addAll(
+            anchorPane.getChildren().setAll(
                     dayTemperatureField,
                     dayDateField,
                     dayCommentField,
@@ -604,7 +608,7 @@ public class EditTab implements Alerts {
                                 dayCommentField.getCharacters().toString()
                         ));
                         controller.fillDaysTable(controller.getSelectedWeather().getDays());
-                        controller.setFileChangesSaved(FileChangesSaved.FALSE);
+                        controller.setChangesInFileSaved(false);
                     } else {
                         Alerts.createWrongInputAlert(controller.getAlertResourceBundle()).show();
                     }

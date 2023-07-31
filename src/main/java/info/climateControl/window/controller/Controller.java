@@ -180,7 +180,7 @@ public class Controller {
     private ResourceBundle mainWindowResourceBundle;
     private ResourceBundle additionalWindowsResourceBundle;
     private ResourceBundle alertResourceBundle;
-    private FileChangesSaved fileChangesSaved;
+    private boolean changesInFileSaved;
     private boolean fileOpen;
     private String filePath;
 
@@ -199,8 +199,8 @@ public class Controller {
     }
     public ResourceBundle getAdditionalWindowsResourceBundle() { return additionalWindowsResourceBundle; }
     public ResourceBundle getAlertResourceBundle() { return alertResourceBundle; }
-    public FileChangesSaved getFileChangesSaved() {
-        return fileChangesSaved;
+    public boolean getChangesInFileSaved() {
+        return changesInFileSaved;
     }
     public boolean getFileOpen() {
         return fileOpen;
@@ -212,28 +212,28 @@ public class Controller {
     // SETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void setClimate(Climate climate) {
-        this.climate = climate;
         logger.info("changed value of climate");
+        this.climate = climate;
     }
     public void setSelectedWeather(Weather weather) {
-        selectedWeather = weather;
         logger.info("changed value of selectedWeather");
+        selectedWeather = weather;
     }
     public void setMainWindowResourceBundle(ResourceBundle mainWindowResourceBundle) {
+        logger.info("changed value of mainWindowResourceBundle from '" + this.mainWindowResourceBundle + "' to '" + mainWindowResourceBundle);
         this.mainWindowResourceBundle = mainWindowResourceBundle;
-        logger.info("changed value of mainWindowResourceBundle");
     }
     public void setAdditionalWindowsResourceBundle(ResourceBundle additionalWindowsResourceBundle) {
+        logger.info("changed value of additionalWindowsResourceBundle from '" + this.additionalWindowsResourceBundle + "' to '" + additionalWindowsResourceBundle + "'");
         this.additionalWindowsResourceBundle = additionalWindowsResourceBundle;
-        logger.info("changed value of 'additionalWindowsResourceBundle'");
     }
     public void setAlertResourceBundle(ResourceBundle alertResourceBundle) {
+        logger.info("changed value of alertResourceBundle from '" + this.alertResourceBundle + "' to '" + alertResourceBundle + "'");
         this.alertResourceBundle = alertResourceBundle;
-        logger.info("changed value of alertResourceBundle");
     }
-    public void setFileChangesSaved(FileChangesSaved fileChangesSaved) {
-        logger.info("changed value of fileChangesSaved from '" + this.fileChangesSaved + "' to '" + fileChangesSaved + "'");
-        this.fileChangesSaved = fileChangesSaved;
+    public void setChangesInFileSaved(boolean changesInFileSaved) {
+        logger.info("changed value of fileChangesSaved from '" + this.changesInFileSaved + "' to '" + changesInFileSaved + "'");
+        this.changesInFileSaved = changesInFileSaved;
     }
     public void setFileOpen(boolean fileOpen) {
         logger.info("changed value of fileOpen from '" + this.fileOpen + "' to '" + fileOpen + "'");
@@ -252,7 +252,7 @@ public class Controller {
         mainWindowResourceBundle = ResourceBundle.getBundle("resourceBundles/mainWindowBundle", Locale.US);
         additionalWindowsResourceBundle = ResourceBundle.getBundle("resourceBundles/additionalWindowsBundle", Locale.US);
         alertResourceBundle = ResourceBundle.getBundle("resourceBundles/alertBundle", Locale.US);
-        fileChangesSaved = FileChangesSaved.IS_NOT_OPEN;
+        changesInFileSaved = true;
         fileOpen = false;
         filePath = null;
     }

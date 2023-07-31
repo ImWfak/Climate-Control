@@ -78,7 +78,7 @@ public class Climate {
     /** method which writes current climate object to .txt file
      * @param path String as path to .txt file in which will be written */
     public void writeToTXT(String path) {
-        logger.info("write climate to .txt file " + path);
+        logger.info("writing climate to .txt file " + path);
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
             for (Weather weather : weathers) {
                 bufferedWriter.newLine();
@@ -97,7 +97,7 @@ public class Climate {
     /** method which writes current climate object to .xml file
      * @param path String as path to .xml file in which will be written */
     public void writeToXML(String path) {
-        logger.info("write climate to .xml file " + path);
+        logger.info("writing climate to .xml file " + path);
         XStream xStream = new XStream();
         xStream.alias("climate", Climate.class);
         xStream.alias("weather", Weather.class);
@@ -111,7 +111,7 @@ public class Climate {
     /** method which writes current climate object to .json file
      * @param path String as path to .json file in which will be written */
     public void writeToJSON(String path) {
-        logger.info("write climate to .json file " + path);
+        logger.info("writing climate to .json file " + path);
         XStream xStream = new XStream(new JettisonMappedXmlDriver());
         xStream.alias("climate", Climate.class);
         xStream.alias("weather", Weather.class);
@@ -125,7 +125,7 @@ public class Climate {
     /** method which reads and writes to current climate object from .txt file
      * @param path String as path to .txt file which will be read */
     public void readFromTXT(String path) {
-        logger.info("read to climate from .txt file " + path);
+        logger.info("reading to climate from .txt file " + path);
         List<String> list = new ArrayList<>();
         try {
             list = Files.readAllLines(Path.of(path));
@@ -150,7 +150,7 @@ public class Climate {
     /** method which reads and writes to current climate object from .xml file
      * @param path String as path to .xml file which will be read */
     public void readFromXML(String path) {
-        logger.info("read to climate from .xml file " + path);
+        logger.info("reading to climate from .xml file " + path);
         XStream xStream = new XStream();
         xStream.addPermission(AnyTypePermission.ANY);
         xStream.alias("climate", Climate.class);
@@ -166,7 +166,7 @@ public class Climate {
     /** method which reads and writes to current climate object from .json file
      * @param path String as path to .json file which will be read */
     public void readFromJSON(String path) {
-        logger.info("read to climate from .json file " + path);
+        logger.info("reading to climate from .json file " + path);
         XStream xStream = new XStream(new JettisonMappedXmlDriver());
         xStream.addPermission(AnyTypePermission.ANY);
         xStream.alias("climate", Climate.class);
