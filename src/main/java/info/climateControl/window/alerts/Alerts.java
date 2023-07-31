@@ -195,4 +195,11 @@ public interface Alerts {
         fileIsNotOpenedAlert.setContentText(resourceBundle.getString("fileIsNotOpenedAlertContent"));
         return fileIsNotOpenedAlert;
     }
+    static Alert createFileSaved(ResourceBundle resourceBundle) {
+        Alert fileSavedAlert = new Alert(Alert.AlertType.INFORMATION);
+        fileSavedAlert.setTitle(resourceBundle.getString("fileSavedAlertTitle"));
+        fileSavedAlert.setHeaderText(resourceBundle.getString("fileSavedAlertHeader"));
+        //fileSavedAlert.setContentText(resourceBundle.getString("fileSavedAlertContent"));
+        return fileSavedAlert;
+    }
 }

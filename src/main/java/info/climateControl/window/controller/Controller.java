@@ -232,7 +232,7 @@ public class Controller {
         this.alertResourceBundle = alertResourceBundle;
     }
     public void setChangesInFileSaved(boolean changesInFileSaved) {
-        logger.info("changed value of fileChangesSaved from '" + this.changesInFileSaved + "' to '" + changesInFileSaved + "'");
+        logger.info("changed value of changesInFileSaved from '" + this.changesInFileSaved + "' to '" + changesInFileSaved + "'");
         this.changesInFileSaved = changesInFileSaved;
     }
     public void setFileOpen(boolean fileOpen) {
