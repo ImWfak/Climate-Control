@@ -1,27 +1,25 @@
 package info.climateControl.window.tabs;
 
-import info.climateControl.climate.Climate;
 import info.climateControl.window.controller.Controller;
+import info.climateControl.window.alerts.CreateAlert;
 import info.climateControl.window.alerts.Alerts;
 import info.climateControl.weather.Weather;
-import info.climateControl.day.Day;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import info.climateControl.climate.Climate;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.google.common.io.Files;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Optional;
+import java.io.File;
 
 /**<p><b>methods in FileTab</b></p>
  * <p>private:</p>
  * <li>{@link #getFileChooser()}</li>
  * <li>{@link #openFile(String)}</li>
  * <li>{@link #saveFile(String)}</li>
- * <li>{@link #setVariables(boolean, boolean, String, Weather, ArrayList, ArrayList)}</li>
  * <p>public:</p>
  * <li>{@link #pressedOpenFileButton()}</li>
  * <li>{@link #pressedNewFileButton()}</li>
@@ -35,7 +33,7 @@ public class FileTab implements Alerts {
     private static final Logger logger = LogManager.getLogger(FileTab.class);
     private final Controller controller;
     /** constructor which sets controller of current fileTab object
-     * @param controller    fxml class which will be set as controller */
+     * @param controller fxml class which will be set as controller */
     public FileTab(Controller controller) {
         this.controller = controller;
     }
@@ -55,12 +53,6 @@ public class FileTab implements Alerts {
         );
         return fileChooser;
     }
-    private File getFileFromSaveDialog(Button button) {
-        return getFileChooser().showSaveDialog(button.getParent().getScene().getWindow());
-    }
-    private File getFileFromOpenDialog(Button button) {
-        return getFileChooser().showOpenDialog(button.getParent().getScene().getWindow());
-    }
     /** method which read .db, .xml, .json and .txt files and write to current climate object
      * @param filePath String as path to file */
     private void openFile(String filePath) {
@@ -69,7 +61,12 @@ public class FileTab implements Alerts {
             case "xml" -> controller.getClimate().readFromXML(filePath);
             case "json" -> controller.getClimate().readFromJSON(filePath);
             case "txt" -> controller.getClimate().readFromTXT(filePath);
-            default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
+            default -> CreateAlert.createAlert(
+                    Alert.AlertType.ERROR,
+                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertTitle"),
+                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertHeader"),
+                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertContent")
+            ).show();
         }
     }
     /** method which write current climate object to .db, .xml, .json and .txt files
@@ -80,30 +77,71 @@ public class FileTab implements Alerts {
             case "xml" -> controller.getClimate().writeToXML(filePath);
             case "json" -> controller.getClimate().writeToJSON(filePath);
             case "txt" -> controller.getClimate().writeToTXT(filePath);
-            default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
+            default -> CreateAlert.createAlert(
+                    Alert.AlertType.ERROR,
+                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertTitle"),
+                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertHeader"),
+                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertContent")
+            ).show();
         }
     }
-    /** method which will set controller variables
-     * @param changesInFileSaved boolean value
-     * @param fileOpen boolean value
-     * @param filePath String as path to file
-     * @param selectedWeather Weather which sets as selected weather
-     * @param weathers ArrayList of weathers which will be set in weathersTable
-     * @param days ArrayList of days which will be set in daysTable */
-    private void setVariables(
-            boolean changesInFileSaved,
-            boolean fileOpen,
-            String filePath,
-            Weather selectedWeather,
-            ArrayList<Weather> weathers,
-            ArrayList<Day> days
-    ) {
-        controller.setChangesInFileSaved(changesInFileSaved);
-        controller.setFileOpen(fileOpen);
-        controller.setFilePath(filePath);
-        controller.setSelectedWeather(selectedWeather);
-        controller.fillWeathersTable(weathers);
-        controller.fillDaysTable(days);
+    private void openFileAndSetVariables(Button button) {
+        File file = getFileChooser().showSaveDialog(button.getParent().getScene().getWindow());
+        if (file == null) {
+            CreateAlert.createAlert(
+                    Alert.AlertType.ERROR,
+                    controller.getAlertResourceBundle().getString(""),
+                    controller.getAlertResourceBundle().getString(""),
+                    controller.getAlertResourceBundle().getString("")
+            ).show();
+        } else {
+            openFile(file.getPath());
+            controller.setSelectedWeather(new Weather());
+            controller.setChangesInFileSaved(true);
+            controller.setFileOpen(true);
+            controller.setFilePath(file.getPath());
+            controller.fillWeathersTable(controller.getClimate().getWeathers());
+            controller.fillDaysTable(controller.getSelectedWeather().getDays());
+        }
+    }
+    private void createNewFileAndSetVariables() {
+        controller.setClimate(new Climate());
+        controller.setSelectedWeather(new Weather());
+        controller.setChangesInFileSaved(false);
+        controller.setFileOpen(true);
+        controller.setFilePath(null);
+        controller.fillWeathersTable(controller.getClimate().getWeathers());
+        controller.fillDaysTable(controller.getSelectedWeather().getDays());
+    }
+    private boolean saveFileAndSetVariables(Button button) {
+        if (controller.getFilePath().isEmpty()) {
+            File file = getFileChooser().showOpenDialog(button.getParent().getScene().getWindow());
+            if (file == null) {
+                CreateAlert.createAlert(
+                        Alert.AlertType.ERROR,
+                        controller.getAlertResourceBundle().getString(""),
+                        controller.getAlertResourceBundle().getString(""),
+                        controller.getAlertResourceBundle().getString("")
+                ).show();
+                return false;
+            } else {
+                saveFile(file.getPath());
+                controller.setFilePath(file.getPath());
+            }
+        } else {
+            saveFile(controller.getFilePath());
+        }
+        controller.setChangesInFileSaved(true);
+        return true;
+    }
+    private void closeFileAndSetVariables() {
+        controller.setClimate(new Climate());
+        controller.setSelectedWeather(new Weather());
+        controller.setChangesInFileSaved(true);
+        controller.setFileOpen(false);
+        controller.setFilePath(null);
+        controller.fillWeathersTable(controller.getClimate().getWeathers());
+        controller.fillDaysTable(controller.getSelectedWeather().getDays());
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS
@@ -112,108 +150,52 @@ public class FileTab implements Alerts {
         controller.getOpenFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'openFileButton'");
             if (controller.getFileOpen()) {
-                if (!controller.getChangesInFileSaved()) {
-                    Alert openAnotherFileWithUnsavedFileAlert = Alerts.createOpenAnotherFileWithUnsavedFile(controller.getAlertResourceBundle());
-                    Optional<ButtonType> choice = openAnotherFileWithUnsavedFileAlert.showAndWait();
-                    if (choice.get() == openAnotherFileWithUnsavedFileAlert.getButtonTypes().get(0)) {
-                        logger.info("pressed 'saveAndOpenAlertButton'");
-                        if (controller.getFilePath() == null) {
-                            File file = getFileFromSaveDialog(controller.getOpenFileButton());
-                            if (file == null) {
-                                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                                return;
-                            } else {
-                                saveFile(getFileFromSaveDialog(controller.getOpenFileButton()).getPath());
-                            }
-                        } else {
-                            saveFile(controller.getFilePath());
-                        }
-                        controller.setChangesInFileSaved(true);
-                        File file = getFileFromOpenDialog(controller.getOpenFileButton());
-                        if (file == null) {
-                            Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                        } else {
-                            openFile(file.getPath());
-                            controller.setFileOpen(true);
-                            controller.setFilePath(file.getPath());
-                            controller.setSelectedWeather(new Weather());
-                            controller.fillWeathersTable(controller.getClimate().getWeathers());
-                            controller.fillDaysTable(new ArrayList<>());
-                        }
-                    } else if (choice.get() == openAnotherFileWithUnsavedFileAlert.getButtonTypes().get(1)) {
-                        logger.info("pressed 'doNotSaveAndOpenAlertButton'");
-                        File file = getFileFromSaveDialog(controller.getOpenFileButton());
-                        if (file == null) {
-                            Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                        } else {
-                            openFile(file.getPath());
-                            setVariables(
-                                    true,
-                                    true,
-                                    file.getPath(),
-                                    new Weather(),
-                                    controller.getClimate().getWeathers(),
-                                    new ArrayList<>()
-                            );
-                        }
-                    } else if (choice.get() == openAnotherFileWithUnsavedFileAlert.getButtonTypes().get(2)) {
-                        logger.info("pressed 'saveAndDoNotOpenAlertButton'");
-                        if (controller.getFilePath() == null) {
-                            File file = getFileFromSaveDialog(controller.getOpenFileButton());
-                            if (file == null) {
-                                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                            } else {
-                                saveFile(file.getPath());
-                                controller.setChangesInFileSaved(true);
-                                controller.setFileOpen(true);
-                                controller.setFilePath(file.getPath());
-                            }
-                        } else {
-                            saveFile(controller.getFilePath());
-                            controller.setChangesInFileSaved(true);
-                            controller.setFileOpen(true);
-                        }
+                if (controller.getChangesInFileSaved()) {
+                    ButtonType openFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                            Alert.AlertType.CONFIRMATION,
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            openFileButton, doNotOpenFileButton
+                    ).showAndWait();
+                    if (choice.get().equals(openFileButton)) {
+                        logger.info("pressed 'openFileButton'");
+                        openFileAndSetVariables(controller.getOpenFileButton());
                     } else {
-                        logger.info("doNotSaveAndDoNotOpenAlertButton");
+                        logger.info("pressed 'doNotOpenFileButton'");
                     }
                 } else {
-                    Alert openAnotherFileAlert = Alerts.createOpenAnotherFile(controller.getAlertResourceBundle());
-                    Optional<ButtonType> choice = openAnotherFileAlert.showAndWait();
-                    if (choice.get() == openAnotherFileAlert.getButtonTypes().get(0)) {
-                        logger.info("pressed 'openAlertButton'");
-                        File file = getFileFromOpenDialog(controller.getOpenFileButton());
-                        if (file == null) {
-                            Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                        } else {
-                            openFile(file.getPath());
-                            setVariables(
-                                    true,
-                                    true,
-                                    file.getPath(),
-                                    new Weather(),
-                                    controller.getClimate().getWeathers(),
-                                    new ArrayList<>()
-                            );
-                        }
+                    ButtonType saveAndOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotSaveAndOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType saveAndDoNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotSaveAndDoNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                            Alert.AlertType.CONFIRMATION,
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            saveAndOpenFileButton, doNotSaveAndOpenFileButton,
+                            saveAndDoNotOpenFileButton, doNotSaveAndDoNotOpenFileButton
+                    ).showAndWait();
+                    if (choice.get().equals(saveAndOpenFileButton)) {
+                        logger.info("pressed 'saveAndOpenFileButton'");
+                        boolean saved = saveFileAndSetVariables(controller.getOpenFileButton());
+                        if (saved)
+                            openFileAndSetVariables(controller.getOpenFileButton());
+                    } else if (choice.get().equals(doNotSaveAndOpenFileButton)) {
+                        logger.info("pressed 'doNotSaveAndOpenFileButton'");
+                        openFileAndSetVariables(controller.getOpenFileButton());
+                    } else if (choice.get().equals(saveAndDoNotOpenFileButton)) {
+                        logger.info("pressed 'saveAndDoNotOpenFileButton'");
+                        saveFileAndSetVariables(controller.getOpenFileButton());
                     } else {
-                        logger.info("pressed 'doNotOpenAlertButton'");
+                        logger.info("pressed 'doNotSaveAndDoNotOpenFileButton'");
                     }
                 }
             } else {
-                File file = getFileFromOpenDialog(controller.getOpenFileButton());
-                if (file == null) {
-                    Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                } else {
-                    openFile(file.getPath());
-                    setVariables(
-                            true,
-                            true,
-                            file.getPath(),
-                            new Weather(),
-                            controller.getClimate().getWeathers(),
-                            new ArrayList<>()
-                    );
-                }
+                openFileAndSetVariables(controller.getOpenFileButton());
             }
         });
     }
@@ -221,198 +203,135 @@ public class FileTab implements Alerts {
         controller.getNewFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'newFileButton'");
             if (controller.getFileOpen()) {
-                if (!controller.getChangesInFileSaved()) {
-                    Alert createNewFileWithUnsavedFileAlert = Alerts.createCreateNewFileWithUnsavedFile(controller.getAlertResourceBundle());
-                    Optional<ButtonType> choice = createNewFileWithUnsavedFileAlert.showAndWait();
-                    if (choice.get() == createNewFileWithUnsavedFileAlert.getButtonTypes().get(0)) {
-                        logger.info("pressed 'saveAndCreateNewAlertButton'");
-                        if (controller.getFilePath() == null) {
-                            File file = getFileFromSaveDialog(controller.getOpenFileButton());
-                            if (file == null) {
-                                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                                return;
-                            } else {
-                                saveFile(getFileFromSaveDialog(controller.getOpenFileButton()).getPath());
-                            }
-                        } else {
-                            saveFile(controller.getFilePath());
-                        }
-                        setVariables(
-                                true,
-                                true,
-                                null,
-                                new Weather(),
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        );
-                        controller.setClimate(new Climate());
-                    } else if (choice.get() == createNewFileWithUnsavedFileAlert.getButtonTypes().get(1)) {
-                        logger.info("pressed 'doNotSaveAndCreateNewAlertButton'");
-                        setVariables(
-                                true,
-                                true,
-                                null,
-                                new Weather(),
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        );
-                        controller.setClimate(new Climate());
-                    } else if (choice.get() == createNewFileWithUnsavedFileAlert.getButtonTypes().get(2)) {
-                        logger.info("pressed 'saveAndDoNotCreateNewAlertButton'");
-                        if (controller.getFilePath() == null) {
-                            File file = getFileFromSaveDialog(controller.getOpenFileButton());
-                            if (file == null) {
-                                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                                return;
-                            } else {
-                                saveFile(getFileFromSaveDialog(controller.getOpenFileButton()).getPath());
-                            }
-                        } else {
-                            saveFile(controller.getFilePath());
-                        }
-                        setVariables(
-                                true,
-                                true,
-                                null,
-                                new Weather(),
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        );
-                        controller.setClimate(new Climate());
+                if (controller.getChangesInFileSaved()) {
+                    ButtonType crateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                            Alert.AlertType.CONFIRMATION,
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            crateNewFileButton, doNotCreateNewFileButton
+                    ).showAndWait();
+                    if (choice.get().equals(crateNewFileButton)) {
+                        logger.info("pressed 'createNewFileButton'");
+                        createNewFileAndSetVariables();
                     } else {
-                        logger.info("pressed 'doNotSaveAndDoNotCreateAlertButton'");
+                        logger.info("pressed 'doNotCreateNewFileButton'");
                     }
                 } else {
-                    Alert createNewFileAlert = Alerts.createCreateNewFile(controller.getAlertResourceBundle());
-                    Optional<ButtonType> choice = createNewFileAlert.showAndWait();
-                    if (choice.get() == createNewFileAlert.getButtonTypes().get(0)) {
-                        logger.info("pressed 'createNewAlertButton'");
-                        setVariables(
-                                true,
-                                true,
-                                null,
-                                new Weather(),
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        );
-                        controller.setClimate(new Climate());
+                    ButtonType saveAndCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotSaveAndCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType saveAndDoNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotSaveAndDoNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                            Alert.AlertType.CONFIRMATION,
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            saveAndCreateNewFileButton, doNotSaveAndCreateNewFileButton,
+                            saveAndDoNotCreateNewFileButton, doNotSaveAndDoNotCreateNewFileButton
+                    ).showAndWait();
+                    if (choice.get().equals(saveAndCreateNewFileButton)) {
+                        logger.info("pressed 'saveAndCreateNewFileButton'");
+                        boolean saved = saveFileAndSetVariables(controller.getNewFileButton());
+                        if (saved)
+                            createNewFileAndSetVariables();
+                    } else if (choice.get().equals(doNotSaveAndCreateNewFileButton)) {
+                        logger.info("pressed 'doNotSaveAndCreateNewFileButton'");
+                        createNewFileAndSetVariables();
+                    } else if (choice.get().equals(saveAndDoNotCreateNewFileButton)) {
+                        logger.info("pressed 'saveAndDoNotCreateNewFileButton'");
+                        saveFileAndSetVariables(controller.getNewFileButton());
                     } else {
-                        logger.info("pressed 'doNotCreateNewAlertButton'");
+                        logger.info("pressed 'doNotSaveAndDoNotCreateNewFileButton'");
                     }
                 }
             } else {
-                controller.setFileOpen(true);
+                createNewFileAndSetVariables();
             }
         });
     }
     public void pressedSaveFileButton() {
         controller.getSaveFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'saveFileButton'");
-            if (controller.getFilePath() == null) {
-                File file = getFileFromSaveDialog(controller.getOpenFileButton());
-                if (file == null) {
-                    Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                } else {
-                    saveFile(getFileFromSaveDialog(controller.getOpenFileButton()).getPath());
-                    controller.setChangesInFileSaved(true);
-                    Alerts.createFileSaved(controller.getAlertResourceBundle()).show();
-                }
-            } else {
-                saveFile(controller.getFilePath());
-                Alerts.createFileSaved(controller.getAlertResourceBundle()).show();
-            }
+            saveFileAndSetVariables(controller.getSaveFileButton());
         });
     }
     public void pressedSaveAsFileButton() {
         controller.getSaveAsFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'saveAsFileButton'");
-            File file = getFileFromSaveDialog(controller.getOpenFileButton());
+            File file = getFileChooser().showOpenDialog(controller.getSaveAsFileButton().getParent().getScene().getWindow());
             if (file == null) {
-                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
+                CreateAlert.createAlert(
+                        Alert.AlertType.ERROR,
+                        controller.getAlertResourceBundle().getString(""),
+                        controller.getAlertResourceBundle().getString(""),
+                        controller.getAlertResourceBundle().getString("")
+                ).show();
+                return;
             } else {
-                saveFile(getFileFromSaveDialog(controller.getOpenFileButton()).getPath());
-                controller.setChangesInFileSaved(true);
-                Alerts.createFileSaved(controller.getAlertResourceBundle()).show();
+                saveFile(file.getPath());
+                controller.setFilePath(file.getPath());
             }
+            controller.setChangesInFileSaved(true);
         });
     }
     public void pressedCloseFileButton() {
         controller.getCloseFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'closeFileButton'");
             if (controller.getFileOpen()) {
-                if (!controller.getChangesInFileSaved()) {
-                    Alert closeUnsavedFileAlert = Alerts.createCloseUnsavedFile(controller.getAlertResourceBundle());
-                    Optional<ButtonType> choice = closeUnsavedFileAlert.showAndWait();
-                    if (choice.get() == closeUnsavedFileAlert.getButtonTypes().get(0)) {
-                        logger.info("saveAndCloseAlertButton");
-                        if (controller.getFilePath() == null) {
-                            File file = getFileFromSaveDialog(controller.getOpenFileButton());
-                            if (file == null) {
-                                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                                return;
-                            } else {
-                                saveFile(getFileFromSaveDialog(controller.getOpenFileButton()).getPath());
-                            }
-                        } else {
-                            saveFile(controller.getFilePath());
-                        }
-                        setVariables(
-                                true,
-                                false,
-                                null,
-                                new Weather(),
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        );
-                        controller.setClimate(new Climate());
-                    } else if (choice.get() == closeUnsavedFileAlert.getButtonTypes().get(1)) {
-                        logger.info("doNotSaveAndCloseAlertButton");
-                        setVariables(
-                                true,
-                                false,
-                                null,
-                                new Weather(),
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        );
-                        controller.setClimate(new Climate());
-                    } else if (choice.get() == closeUnsavedFileAlert.getButtonTypes().get(2)) {
-                        logger.info("saveAndDoNotCloseAlertButton");
-                        if (controller.getFilePath() == null) {
-                            File file = getFileFromSaveDialog(controller.getOpenFileButton());
-                            if (file == null) {
-                                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
-                                return;
-                            } else {
-                                saveFile(getFileFromSaveDialog(controller.getOpenFileButton()).getPath());
-                            }
-                        } else {
-                            saveFile(controller.getFilePath());
-                        }
-                        controller.setChangesInFileSaved(true);
+                if (controller.getChangesInFileSaved()) {
+                    ButtonType closeFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                            Alert.AlertType.CONFIRMATION,
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            closeFileButton, doNotCloseFileButton
+                    ).showAndWait();
+                    if (choice.get().equals(closeFileButton)) {
+                        logger.info("pressed 'closeFileButton'");
+                        closeFileAndSetVariables();
                     } else {
-                        logger.info("doNotSaveAndDoNotCloseAlertButton");
+                        logger.info("pressed 'doNotCloseFileButton'");
                     }
                 } else {
-                    Alert closeFileAlert = Alerts.createCloseFile(controller.getAlertResourceBundle());
-                    Optional<ButtonType> choice = closeFileAlert.showAndWait();
-                    if (choice.get() == closeFileAlert.getButtonTypes().get(0)) {
-                        logger.info("closeFileAlertButton");
-                        setVariables(
-                                true,
-                                false,
-                                null,
-                                new Weather(),
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        );
-                        controller.setClimate(new Climate());
+                    ButtonType saveAndCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotSaveAndCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType saveAndDoNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    ButtonType doNotSaveAndDoNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
+                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                            Alert.AlertType.CONFIRMATION,
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString(""),
+                            saveAndCloseFileButton, doNotSaveAndCloseFileButton,
+                            saveAndDoNotCloseFileButton, doNotSaveAndDoNotCloseFileButton
+                    ).showAndWait();
+                    if (choice.get().equals(saveAndDoNotCloseFileButton)) {
+                        logger.info("pressed 'saveAndDoNotCloseFileButton'");
+                        boolean saved = saveFileAndSetVariables(controller.getCloseFileButton());
+                        if (saved)
+                            closeFileAndSetVariables();
+                    } else if (choice.get().equals(doNotSaveAndCloseFileButton)) {
+                        logger.info("pressed 'doNotSaveAndCloseFileButton'");
+                        closeFileAndSetVariables();
+                    } else if (choice.get().equals(saveAndDoNotCloseFileButton)) {
+                        logger.info("pressed 'saveAndDoNotCloseFileButton'");
+                        saveFileAndSetVariables(controller.getCloseFileButton());
                     } else {
-                        logger.info("doNotCloseFileAlertButton");
+                        logger.info("pressed 'doNotSaveAndDoNotCloseFileButton'");
                     }
                 }
             } else {
-                Alerts.createFileIsNotOpened(controller.getAlertResourceBundle()).show();
+                CreateAlert.createAlert(
+                        Alert.AlertType.ERROR,
+                        controller.getAlertResourceBundle().getString(""),
+                        controller.getAlertResourceBundle().getString(""),
+                        controller.getAlertResourceBundle().getString("")
+                ).show();
             }
         });
     }

@@ -186,7 +186,7 @@ public class Controller {
 
     private final FileTab fileTabObject = new FileTab(this);
     private final EditTab editTabObject = new EditTab(this);
-    private final ViewTab viewTabObject = new ViewTab();
+    private final ViewTab viewTabObject = new ViewTab(this);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,36 +212,52 @@ public class Controller {
     // SETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void setClimate(Climate climate) {
-        logger.info("changed value of climate");
-        this.climate = climate;
+        if (this.climate == climate) {
+            logger.info("changed value of climate");
+            this.climate = climate;
+        }
     }
-    public void setSelectedWeather(Weather weather) {
-        logger.info("changed value of selectedWeather");
-        selectedWeather = weather;
+    public void setSelectedWeather(Weather selectedWeather) {
+        if (this.selectedWeather == selectedWeather) {
+            logger.info("changed value of selectedWeather");
+            this.selectedWeather = selectedWeather;
+        }
     }
     public void setMainWindowResourceBundle(ResourceBundle mainWindowResourceBundle) {
-        logger.info("changed value of mainWindowResourceBundle from '" + this.mainWindowResourceBundle + "' to '" + mainWindowResourceBundle);
-        this.mainWindowResourceBundle = mainWindowResourceBundle;
+        if (this.mainWindowResourceBundle == mainWindowResourceBundle) {
+            logger.info("changed value of mainWindowResourceBundle from '" + this.mainWindowResourceBundle + "' to '" + mainWindowResourceBundle);
+            this.mainWindowResourceBundle = mainWindowResourceBundle;
+        }
     }
     public void setAdditionalWindowsResourceBundle(ResourceBundle additionalWindowsResourceBundle) {
-        logger.info("changed value of additionalWindowsResourceBundle from '" + this.additionalWindowsResourceBundle + "' to '" + additionalWindowsResourceBundle + "'");
-        this.additionalWindowsResourceBundle = additionalWindowsResourceBundle;
+        if (this.additionalWindowsResourceBundle == additionalWindowsResourceBundle) {
+            logger.info("changed value of additionalWindowsResourceBundle from '" + this.additionalWindowsResourceBundle + "' to '" + additionalWindowsResourceBundle + "'");
+            this.additionalWindowsResourceBundle = additionalWindowsResourceBundle;
+        }
     }
     public void setAlertResourceBundle(ResourceBundle alertResourceBundle) {
-        logger.info("changed value of alertResourceBundle from '" + this.alertResourceBundle + "' to '" + alertResourceBundle + "'");
-        this.alertResourceBundle = alertResourceBundle;
+        if (this.alertResourceBundle == alertResourceBundle) {
+            logger.info("changed value of alertResourceBundle from '" + this.alertResourceBundle + "' to '" + alertResourceBundle + "'");
+            this.alertResourceBundle = alertResourceBundle;
+        }
     }
     public void setChangesInFileSaved(boolean changesInFileSaved) {
-        logger.info("changed value of changesInFileSaved from '" + this.changesInFileSaved + "' to '" + changesInFileSaved + "'");
-        this.changesInFileSaved = changesInFileSaved;
+        if (this.changesInFileSaved == changesInFileSaved) {
+            logger.info("changed value of changesInFileSaved from '" + this.changesInFileSaved + "' to '" + changesInFileSaved + "'");
+            this.changesInFileSaved = changesInFileSaved;
+        }
     }
     public void setFileOpen(boolean fileOpen) {
-        logger.info("changed value of fileOpen from '" + this.fileOpen + "' to '" + fileOpen + "'");
-        this.fileOpen = fileOpen;
+        if (this.fileOpen == fileOpen) {
+            logger.info("changed value of fileOpen from '" + this.fileOpen + "' to '" + fileOpen + "'");
+            this.fileOpen = fileOpen;
+        }
     }
     public void setFilePath(String filePath) {
-        logger.info("changed value of filePath from '" + this.filePath + "' to '" + filePath + "'");
-        this.filePath = filePath;
+        if (this.filePath.equals(filePath)) {
+            logger.info("changed value of filePath from '" + this.filePath + "' to '" + filePath + "'");
+            this.filePath = filePath;
+        }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // METHODS
@@ -258,6 +274,11 @@ public class Controller {
     }
     public void setDisable(boolean bool) {
 
+    }
+    public void setLocale(Locale locale) {
+        mainWindowResourceBundle = ResourceBundle.getBundle("resourceBundles/mainWindowBundle", locale);
+        additionalWindowsResourceBundle = ResourceBundle.getBundle("resourceBundles/additionalWindowsBundle", locale);
+        alertResourceBundle = ResourceBundle.getBundle("resourceBundles/alertBundle", locale);
     }
     public void setLanguage() {
         openFileButton.setText(mainWindowResourceBundle.getString("openFileButton"));
@@ -421,6 +442,10 @@ public class Controller {
         editTabObject.pressedEditeDayByPositionButton();
         editTabObject.pressedAddWeatherButton();
         editTabObject.pressedAddDayButton();
+
+        viewTabObject.pressedSetEnToggleButton();
+        viewTabObject.pressedSetUaToggleButton();
+        viewTabObject.pressedSetRuToggleButton();
 
         selectWeatherInTable();
     }
