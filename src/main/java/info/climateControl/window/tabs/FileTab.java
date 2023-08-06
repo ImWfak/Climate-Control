@@ -1,7 +1,6 @@
 package info.climateControl.window.tabs;
 
 import info.climateControl.window.controller.Controller;
-import info.climateControl.window.alerts.CreateAlert;
 import info.climateControl.window.alerts.Alerts;
 import info.climateControl.weather.Weather;
 import info.climateControl.climate.Climate;
@@ -20,6 +19,10 @@ import java.io.File;
  * <li>{@link #getFileChooser()}</li>
  * <li>{@link #openFile(String)}</li>
  * <li>{@link #saveFile(String)}</li>
+ * <li>{@link #openFileAndSetVariables(Button)}</li>
+ * <li>{@link #createNewFileAndSetVariables()}</li>
+ * <li>{@link #saveFileAndSetVariables(Button)}</li>
+ * <li>{@link #closeFileAndSetVariables()}</li>
  * <p>public:</p>
  * <li>{@link #pressedOpenFileButton()}</li>
  * <li>{@link #pressedNewFileButton()}</li>
@@ -61,12 +64,7 @@ public class FileTab implements Alerts {
             case "xml" -> controller.getClimate().readFromXML(filePath);
             case "json" -> controller.getClimate().readFromJSON(filePath);
             case "txt" -> controller.getClimate().readFromTXT(filePath);
-            default -> CreateAlert.createAlert(
-                    Alert.AlertType.ERROR,
-                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertTitle"),
-                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertHeader"),
-                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertContent")
-            ).show();
+            default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
         }
     }
     /** method which write current climate object to .db, .xml, .json and .txt files
@@ -77,23 +75,15 @@ public class FileTab implements Alerts {
             case "xml" -> controller.getClimate().writeToXML(filePath);
             case "json" -> controller.getClimate().writeToJSON(filePath);
             case "txt" -> controller.getClimate().writeToTXT(filePath);
-            default -> CreateAlert.createAlert(
-                    Alert.AlertType.ERROR,
-                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertTitle"),
-                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertHeader"),
-                    controller.getAlertResourceBundle().getString("wrongFileExtensionAlertContent")
-            ).show();
+            default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
         }
     }
+    /** method which will open file and set variables
+     * @param button Button which will be set as parent for FileChooser */
     private void openFileAndSetVariables(Button button) {
-        File file = getFileChooser().showSaveDialog(button.getParent().getScene().getWindow());
+        File file = getFileChooser().showOpenDialog(button.getParent().getScene().getWindow());
         if (file == null) {
-            CreateAlert.createAlert(
-                    Alert.AlertType.ERROR,
-                    controller.getAlertResourceBundle().getString(""),
-                    controller.getAlertResourceBundle().getString(""),
-                    controller.getAlertResourceBundle().getString("")
-            ).show();
+            Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
         } else {
             openFile(file.getPath());
             controller.setSelectedWeather(new Weather());
@@ -104,6 +94,7 @@ public class FileTab implements Alerts {
             controller.fillDaysTable(controller.getSelectedWeather().getDays());
         }
     }
+    /** method which will create new file and set variables */
     private void createNewFileAndSetVariables() {
         controller.setClimate(new Climate());
         controller.setSelectedWeather(new Weather());
@@ -113,16 +104,14 @@ public class FileTab implements Alerts {
         controller.fillWeathersTable(controller.getClimate().getWeathers());
         controller.fillDaysTable(controller.getSelectedWeather().getDays());
     }
+    /** method which will save file and set variables
+     * @param button Button which will be set as parent for FileChooser
+     * @return true if file has been saved, or false if it has not */
     private boolean saveFileAndSetVariables(Button button) {
         if (controller.getFilePath().isEmpty()) {
             File file = getFileChooser().showOpenDialog(button.getParent().getScene().getWindow());
             if (file == null) {
-                CreateAlert.createAlert(
-                        Alert.AlertType.ERROR,
-                        controller.getAlertResourceBundle().getString(""),
-                        controller.getAlertResourceBundle().getString(""),
-                        controller.getAlertResourceBundle().getString("")
-                ).show();
+                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
                 return false;
             } else {
                 saveFile(file.getPath());
@@ -134,6 +123,7 @@ public class FileTab implements Alerts {
         controller.setChangesInFileSaved(true);
         return true;
     }
+    /** method which will close file and set variables */
     private void closeFileAndSetVariables() {
         controller.setClimate(new Climate());
         controller.setSelectedWeather(new Weather());
@@ -146,18 +136,19 @@ public class FileTab implements Alerts {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /** method which will set on action openFileButton */
     public void pressedOpenFileButton() {
         controller.getOpenFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'openFileButton'");
             if (controller.getFileOpen()) {
                 if (controller.getChangesInFileSaved()) {
-                    ButtonType openFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                    ButtonType openFileButton = new ButtonType(controller.getAlertResourceBundle().getString("openAlertButton"));
+                    ButtonType doNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotOpenAlertButton"));
+                    Optional<ButtonType> choice = Alerts.createAlertWithButtons(
                             Alert.AlertType.CONFIRMATION,
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString("openAnotherFileAlertTitle"),
+                            controller.getAlertResourceBundle().getString("openAnotherFileAlertHeader"),
+                            controller.getAlertResourceBundle().getString("openAnotherFileAlertContent"),
                             openFileButton, doNotOpenFileButton
                     ).showAndWait();
                     if (choice.get().equals(openFileButton)) {
@@ -167,15 +158,15 @@ public class FileTab implements Alerts {
                         logger.info("pressed 'doNotOpenFileButton'");
                     }
                 } else {
-                    ButtonType saveAndOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotSaveAndOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType saveAndDoNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotSaveAndDoNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                    ButtonType saveAndOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString("saveAndOpenAlertButton"));
+                    ButtonType doNotSaveAndOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotSaveAndOpenAlertButton"));
+                    ButtonType saveAndDoNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString("saveAndDoNotOpenAlertButton"));
+                    ButtonType doNotSaveAndDoNotOpenFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotSaveAndDoNotOpenAlertButton"));
+                    Optional<ButtonType> choice = Alerts.createAlertWithButtons(
                             Alert.AlertType.CONFIRMATION,
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString("openAnotherFileWithUnsavedFileAlertTitle"),
+                            controller.getAlertResourceBundle().getString("openAnotherFileWithUnsavedFileAlertHeader"),
+                            controller.getAlertResourceBundle().getString("openAnotherFileWithUnsavedFileAlertContent"),
                             saveAndOpenFileButton, doNotSaveAndOpenFileButton,
                             saveAndDoNotOpenFileButton, doNotSaveAndDoNotOpenFileButton
                     ).showAndWait();
@@ -199,18 +190,19 @@ public class FileTab implements Alerts {
             }
         });
     }
+    /** method which will set on action newFileButton */
     public void pressedNewFileButton() {
         controller.getNewFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'newFileButton'");
             if (controller.getFileOpen()) {
                 if (controller.getChangesInFileSaved()) {
-                    ButtonType crateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                    ButtonType crateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString("createNewAlertButton"));
+                    ButtonType doNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotCreateNewAlertButton"));
+                    Optional<ButtonType> choice = Alerts.createAlertWithButtons(
                             Alert.AlertType.CONFIRMATION,
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString("createNewFileAlertTitle"),
+                            controller.getAlertResourceBundle().getString("createNewFileAlertHeader"),
+                            controller.getAlertResourceBundle().getString("createNewFileAlertContent"),
                             crateNewFileButton, doNotCreateNewFileButton
                     ).showAndWait();
                     if (choice.get().equals(crateNewFileButton)) {
@@ -220,15 +212,15 @@ public class FileTab implements Alerts {
                         logger.info("pressed 'doNotCreateNewFileButton'");
                     }
                 } else {
-                    ButtonType saveAndCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotSaveAndCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType saveAndDoNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotSaveAndDoNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                    ButtonType saveAndCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString("saveAndCreateNewAlertButton"));
+                    ButtonType doNotSaveAndCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotSaveAndCreateNewAlertButton"));
+                    ButtonType saveAndDoNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString("saveAndDoNotCreateNewAlertButton"));
+                    ButtonType doNotSaveAndDoNotCreateNewFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotSaveAndDoNotCreateAlertButton"));
+                    Optional<ButtonType> choice = Alerts.createAlertWithButtons(
                             Alert.AlertType.CONFIRMATION,
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString("createNewFileWithUnsavedFileAlertTitle"),
+                            controller.getAlertResourceBundle().getString("createNewFileWithUnsavedFileAlertHeader"),
+                            controller.getAlertResourceBundle().getString("createNewFileWithUnsavedFileAlertContent"),
                             saveAndCreateNewFileButton, doNotSaveAndCreateNewFileButton,
                             saveAndDoNotCreateNewFileButton, doNotSaveAndDoNotCreateNewFileButton
                     ).showAndWait();
@@ -252,23 +244,20 @@ public class FileTab implements Alerts {
             }
         });
     }
+    /** method which will set on action saveFileButton */
     public void pressedSaveFileButton() {
         controller.getSaveFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'saveFileButton'");
             saveFileAndSetVariables(controller.getSaveFileButton());
         });
     }
+    /** method which will set on action saveAsFileButton */
     public void pressedSaveAsFileButton() {
         controller.getSaveAsFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'saveAsFileButton'");
             File file = getFileChooser().showOpenDialog(controller.getSaveAsFileButton().getParent().getScene().getWindow());
             if (file == null) {
-                CreateAlert.createAlert(
-                        Alert.AlertType.ERROR,
-                        controller.getAlertResourceBundle().getString(""),
-                        controller.getAlertResourceBundle().getString(""),
-                        controller.getAlertResourceBundle().getString("")
-                ).show();
+                Alerts.createFileHasNotChosenAlert(controller.getAlertResourceBundle()).show();
                 return;
             } else {
                 saveFile(file.getPath());
@@ -277,18 +266,19 @@ public class FileTab implements Alerts {
             controller.setChangesInFileSaved(true);
         });
     }
+    /** method which will set on action closeFileButton */
     public void pressedCloseFileButton() {
         controller.getCloseFileButton().setOnAction(actionEvent -> {
             logger.info("pressed 'closeFileButton'");
             if (controller.getFileOpen()) {
                 if (controller.getChangesInFileSaved()) {
-                    ButtonType closeFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                    ButtonType closeFileButton = new ButtonType(controller.getAlertResourceBundle().getString("closeFileAlertButton"));
+                    ButtonType doNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotCloseFileAlertButton"));
+                    Optional<ButtonType> choice = Alerts.createAlertWithButtons(
                             Alert.AlertType.CONFIRMATION,
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString("closeFileAlertTitle"),
+                            controller.getAlertResourceBundle().getString("closeFileAlertHeader"),
+                            controller.getAlertResourceBundle().getString("closeFileAlertContent"),
                             closeFileButton, doNotCloseFileButton
                     ).showAndWait();
                     if (choice.get().equals(closeFileButton)) {
@@ -298,15 +288,15 @@ public class FileTab implements Alerts {
                         logger.info("pressed 'doNotCloseFileButton'");
                     }
                 } else {
-                    ButtonType saveAndCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotSaveAndCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType saveAndDoNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    ButtonType doNotSaveAndDoNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString(""));
-                    Optional<ButtonType> choice = CreateAlert.createAlert(
+                    ButtonType saveAndCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString("saveAndCloseAlertButton"));
+                    ButtonType doNotSaveAndCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotSaveAndCloseAlertButton"));
+                    ButtonType saveAndDoNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString("saveAndDoNotCloseAlertButton"));
+                    ButtonType doNotSaveAndDoNotCloseFileButton = new ButtonType(controller.getAlertResourceBundle().getString("doNotSaveAndDoNotCloseAlertButton"));
+                    Optional<ButtonType> choice = Alerts.createAlertWithButtons(
                             Alert.AlertType.CONFIRMATION,
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
-                            controller.getAlertResourceBundle().getString(""),
+                            controller.getAlertResourceBundle().getString("closeUnsavedFileAlertTitle"),
+                            controller.getAlertResourceBundle().getString("closeUnsavedFileAlertHeader"),
+                            controller.getAlertResourceBundle().getString("closeUnsavedFileAlertContent"),
                             saveAndCloseFileButton, doNotSaveAndCloseFileButton,
                             saveAndDoNotCloseFileButton, doNotSaveAndDoNotCloseFileButton
                     ).showAndWait();
@@ -326,12 +316,7 @@ public class FileTab implements Alerts {
                     }
                 }
             } else {
-                CreateAlert.createAlert(
-                        Alert.AlertType.ERROR,
-                        controller.getAlertResourceBundle().getString(""),
-                        controller.getAlertResourceBundle().getString(""),
-                        controller.getAlertResourceBundle().getString("")
-                ).show();
+                Alerts.createFileIsNotOpenAlert(controller.getAlertResourceBundle()).show();
             }
         });
     }

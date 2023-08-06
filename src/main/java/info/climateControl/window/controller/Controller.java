@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Locale;
 
@@ -212,52 +213,36 @@ public class Controller {
     // SETTERS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void setClimate(Climate climate) {
-        if (this.climate == climate) {
-            logger.info("changed value of climate");
-            this.climate = climate;
-        }
+        logger.info("changed value of climate");
+        this.climate = climate;
     }
     public void setSelectedWeather(Weather selectedWeather) {
-        if (this.selectedWeather == selectedWeather) {
-            logger.info("changed value of selectedWeather");
-            this.selectedWeather = selectedWeather;
-        }
+        logger.info("changed value of selectedWeather");
+        this.selectedWeather = selectedWeather;
     }
     public void setMainWindowResourceBundle(ResourceBundle mainWindowResourceBundle) {
-        if (this.mainWindowResourceBundle == mainWindowResourceBundle) {
-            logger.info("changed value of mainWindowResourceBundle from '" + this.mainWindowResourceBundle + "' to '" + mainWindowResourceBundle);
-            this.mainWindowResourceBundle = mainWindowResourceBundle;
-        }
+        logger.info("changed value of mainWindowResourceBundle from '" + this.mainWindowResourceBundle + "' to '" + mainWindowResourceBundle);
+        this.mainWindowResourceBundle = mainWindowResourceBundle;
     }
     public void setAdditionalWindowsResourceBundle(ResourceBundle additionalWindowsResourceBundle) {
-        if (this.additionalWindowsResourceBundle == additionalWindowsResourceBundle) {
-            logger.info("changed value of additionalWindowsResourceBundle from '" + this.additionalWindowsResourceBundle + "' to '" + additionalWindowsResourceBundle + "'");
-            this.additionalWindowsResourceBundle = additionalWindowsResourceBundle;
-        }
+        logger.info("changed value of additionalWindowsResourceBundle from '" + this.additionalWindowsResourceBundle + "' to '" + additionalWindowsResourceBundle + "'");
+        this.additionalWindowsResourceBundle = additionalWindowsResourceBundle;
     }
     public void setAlertResourceBundle(ResourceBundle alertResourceBundle) {
-        if (this.alertResourceBundle == alertResourceBundle) {
-            logger.info("changed value of alertResourceBundle from '" + this.alertResourceBundle + "' to '" + alertResourceBundle + "'");
-            this.alertResourceBundle = alertResourceBundle;
-        }
+        logger.info("changed value of alertResourceBundle from '" + this.alertResourceBundle + "' to '" + alertResourceBundle + "'");
+        this.alertResourceBundle = alertResourceBundle;
     }
     public void setChangesInFileSaved(boolean changesInFileSaved) {
-        if (this.changesInFileSaved == changesInFileSaved) {
-            logger.info("changed value of changesInFileSaved from '" + this.changesInFileSaved + "' to '" + changesInFileSaved + "'");
-            this.changesInFileSaved = changesInFileSaved;
-        }
+        logger.info("changed value of changesInFileSaved from '" + this.changesInFileSaved + "' to '" + changesInFileSaved + "'");
+        this.changesInFileSaved = changesInFileSaved;
     }
     public void setFileOpen(boolean fileOpen) {
-        if (this.fileOpen == fileOpen) {
-            logger.info("changed value of fileOpen from '" + this.fileOpen + "' to '" + fileOpen + "'");
-            this.fileOpen = fileOpen;
-        }
+        logger.info("changed value of fileOpen from '" + this.fileOpen + "' to '" + fileOpen + "'");
+        this.fileOpen = fileOpen;
     }
     public void setFilePath(String filePath) {
-        if (this.filePath.equals(filePath)) {
-            logger.info("changed value of filePath from '" + this.filePath + "' to '" + filePath + "'");
-            this.filePath = filePath;
-        }
+        logger.info("changed value of filePath from '" + this.filePath + "' to '" + filePath + "'");
+        this.filePath = filePath;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // METHODS

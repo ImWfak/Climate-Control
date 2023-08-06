@@ -150,7 +150,7 @@ public class EditTab implements Alerts {
                     weathersTable.getItems().add(weather);
             });
                 if (weathersTable.getItems().isEmpty())
-                    Alerts.createNoSuchWeathersAlert(controller.getAlertResourceBundle()).show();
+                    Alerts.createNoSuchWeatherAlert(controller.getAlertResourceBundle()).show();
         });
     }
     /** private method which fill table of weather by comment */
@@ -161,7 +161,7 @@ public class EditTab implements Alerts {
                     weathersTable.getItems().add(weather);
             });
             if (weathersTable.getItems().isEmpty())
-                Alerts.createNoSuchWeathersAlert(controller.getAlertResourceBundle()).show();
+                Alerts.createNoSuchWeatherAlert(controller.getAlertResourceBundle()).show();
         });
     }
     /** private method which fill table of weather by position */
@@ -262,7 +262,7 @@ public class EditTab implements Alerts {
     /** private method which build delete weather window */
     private void showDeleteWeatherWindow() {
         if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+            Alerts.createNoWeatherInFileAlert(controller.getAlertResourceBundle()).show();
         } else {
             anchorPane.setPrefWidth(625);
             anchorPane.setPrefHeight(400);
@@ -326,7 +326,7 @@ public class EditTab implements Alerts {
     /** private method which build delete day window */
     private void showDeleteDayWindow() {
         if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+            Alerts.createNoWeatherInFileAlert(controller.getAlertResourceBundle()).show();
         } else if (controller.getSelectedWeather() == null) {
             Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
         } else {
@@ -393,7 +393,7 @@ public class EditTab implements Alerts {
     /** private method which will build edit weather window */
     private void showEditWeatherWindow() {
         if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+            Alerts.createNoWeatherInFileAlert(controller.getAlertResourceBundle()).show();
         } else {
             anchorPane.setPrefWidth(625);
             anchorPane.setPrefHeight(450);
@@ -433,7 +433,7 @@ public class EditTab implements Alerts {
             );
             editButton.setOnAction(actionEvent -> {
                 if (controller.getClimate().getWeathers().isEmpty()) {
-                    Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+                    Alerts.createNoWeatherInFileAlert(controller.getAlertResourceBundle()).show();
                 } else if (weathersTable.getSelectionModel().isEmpty()) {
                     Alerts.createNoSelectedRowAlert(controller.getAlertResourceBundle()).show();
                 } else {
@@ -452,7 +452,7 @@ public class EditTab implements Alerts {
     /** private method which will build edit day window */
     private void showEditDayWindow() {
         if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+            Alerts.createNoWeatherInFileAlert(controller.getAlertResourceBundle()).show();
         } else if (controller.getSelectedWeather() == null) {
             Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
         } else {
@@ -499,7 +499,7 @@ public class EditTab implements Alerts {
             );
             editButton.setOnAction(actionEvent -> {
                 if (controller.getClimate().getWeathers().isEmpty()) {
-                    Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+                    Alerts.createNoWeatherInFileAlert(controller.getAlertResourceBundle()).show();
                 } else if (controller.getSelectedWeather() == null) {
                     Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
                 } else if (daysTable.getSelectionModel().isEmpty()) {
@@ -528,7 +528,7 @@ public class EditTab implements Alerts {
     /** private method which will build add weather window */
     private void showAddWeatherWindow() {
         if (!controller.getFileOpen()) {
-             Alerts.createFileIsNotOpened(controller.getAlertResourceBundle()).show();
+            Alerts.createFileIsNotOpenAlert(controller.getAlertResourceBundle()).show();
         } else {
             anchorPane.setPrefWidth(625);
             anchorPane.setPrefHeight(125);
@@ -564,9 +564,9 @@ public class EditTab implements Alerts {
     /** private method which will build add day window */
     private void showAddDayWindow() {
         if (!controller.getFileOpen()) {
-            Alerts.createFileIsNotOpened(controller.getAlertResourceBundle()).show();
+            Alerts.createFileIsNotOpenAlert(controller.getAlertResourceBundle()).show();
         } else if (controller.getClimate().getWeathers().isEmpty()) {
-            Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+            Alerts.createNoWeatherInFileAlert(controller.getAlertResourceBundle()).show();
         } else if (controller.getSelectedWeather() == null) {
             Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
         } else {
@@ -596,7 +596,7 @@ public class EditTab implements Alerts {
             );
             addButton.setOnAction(actionEvent -> {
                 if (controller.getClimate().getWeathers().isEmpty()) {
-                    Alerts.createNoWeathersInFile(controller.getAlertResourceBundle()).show();
+                    Alerts.createNoWeatherInFileAlert(controller.getAlertResourceBundle()).show();
                 } else if (controller.getSelectedWeather() == null) {
                     Alerts.createNoSelectedWeatherAlert(controller.getAlertResourceBundle()).show();
                 } else {
