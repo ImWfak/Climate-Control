@@ -7,6 +7,8 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 import com.thoughtworks.xstream.XStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,8 +37,8 @@ import java.io.*;
  * <li>{@link #createDB(String)}</li>
  * <li>{@link #writeToDB(String)}</li> */
 public class Climate {
-    private ArrayList<Weather> weathers;
     private static final Logger logger = LogManager.getLogger(Climate.class);
+    private ArrayList<Weather> weathers;
     /** constructor which sets weathers of current climate object
      * @param weathers    ArrayList which will be set as weathers */
     public Climate(ArrayList<Weather> weathers) {
@@ -183,12 +185,125 @@ public class Climate {
     // DATA BASES
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void createDB(String path) {
-
+        logger.info("creating tables in .db " + path);
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + path);
+            statement = connection.createStatement();
+            statement.executeUpdate("DROP TABLE IF EXISTS days");
+            statement.executeUpdate(
+                    "CREATE TABLE days (" +
+                    "ID INTEGER," +
+                    "Temperature Double," +
+                    "DATE String," +
+                    "Comment String," +
+                    "FOREIGN KEY(ID) REFERENCES weathers(ID));"
+            );
+            statement.executeUpdate("DROP TABLE IF EXISTS weathers");
+            statement.executeUpdate(
+                    "CREATE TABLE weathers (" +
+                    "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "Season String," +
+                    "Comment String);"
+            );
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage());
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException sqlException) {
+                logger.error(sqlException.getMessage());
+            }
+        }
     }
     public void writeToDB(String path) {
-
+        logger.info("writing climate to .db" + path);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + path);
+            DatabaseMetaData metaData = connection.getMetaData();
+            if (!metaData.getTables(null, null, "days", null).next() ||
+                    !metaData.getTables(null, null, "weathers", null).next()) {
+                createDB(path);
+            }
+            for (int id = 0; id < weathers.size(); id++) {
+                preparedStatement = connection.prepareStatement("INSERT INTO weathers (ID, Season, Comment) VALUES (?, ?, ?);");
+                preparedStatement.setInt(1, id);
+                preparedStatement.setString(3, weathers.get(id).getSeason());
+                preparedStatement.setString(2, weathers.get(id).getComment());
+                preparedStatement.executeUpdate();
+                for (Day day : weathers.get(id).getDays()) {
+                    preparedStatement = connection.prepareStatement("INSERT INTO days (ID, Temperature, Date, Comment) VALUES (?, ?, ?, ?);");
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.setDouble(2, day.getTemperature());
+                    preparedStatement.setString(3, day.getDate().toString());
+                    preparedStatement.setString(4, day.getComment());
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException | ClassNotFoundException exception) {
+            logger.error(exception.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException sqlException) {
+                logger.error(sqlException.getMessage());
+            }
+        }
     }
     public void readFromDB(String path) {
-
+        logger.info("reading to climate from .db " + path);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + path);
+            DatabaseMetaData metaData = connection.getMetaData();
+            if (!metaData.getTables(null, null, "days", null).next() ||
+                    !metaData.getTables(null, null, "weathers", null).next()) {
+                createDB(path);
+            }
+            weathers.clear();
+            preparedStatement = connection.prepareStatement("SELECT MAX(rowID) FROM weathers;");
+            for (int weatherIndex = 0, weathersCount = preparedStatement.executeUpdate(); weatherIndex <= weathersCount; weatherIndex++) {
+                preparedStatement = connection.prepareStatement("SELECT ID FROM weathers WHERE rowID = ?;");
+                preparedStatement.setInt(1, weatherIndex);
+                int id = preparedStatement.executeUpdate();
+                preparedStatement = connection.prepareStatement("SELECT Comment, Season FROM weathers WHERE ID = ?;");
+                preparedStatement.setInt(1, id);
+                String season = preparedStatement.executeQuery().getString(1);
+                String comment = preparedStatement.executeQuery().getString(2);
+                ArrayList<Day> days = new ArrayList<>();
+                preparedStatement = connection.prepareStatement("SELECT * FROM days WHERE ID = ?;");
+                preparedStatement.setInt(1, id);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    days.add(new Day(
+                            resultSet.getDouble("Temperature"),
+                            LocalDate.parse(resultSet.getString("Date")),
+                            resultSet.getString("Comment")
+                    ));
+                }
+                weathers.add(new Weather(
+                        season,
+                        comment,
+                        days
+                ));
+            }
+        } catch (SQLException | ClassNotFoundException exception) {
+            logger.error(exception.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException sqlException) {
+                logger.error(sqlException.getMessage());
+            }
+        }
     }
 }

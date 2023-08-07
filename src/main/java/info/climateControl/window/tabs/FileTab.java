@@ -67,7 +67,7 @@ public class FileTab implements Alerts {
             default -> Alerts.createWrongFileExtensionAlert(controller.getAlertResourceBundle()).show();
         }
     }
-    /** method which write current climate object to .db, .xml, .json and .txt files
+    /** method which write current climate object to .db, .xml, .json and .txt files 277353
      * @param filePath String as path to file */
     private void saveFile(String filePath) {
         switch (Files.getFileExtension(filePath)) {

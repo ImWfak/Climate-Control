@@ -51,4 +51,12 @@ public class TestClimate {
         tempClimate.readFromJSON(path);
         Assert.assertEquals(climate.toString(), tempClimate.toString());
     }
+    @Test
+    public void testWriteAndReadFromDB() {
+        String path = "out/test.db";
+        climate.writeToDB(path);
+        Climate tempClimate = new Climate();
+        tempClimate.readFromDB(path);
+        Assert.assertEquals(climate.toString(), tempClimate.toString());
+    }
 }

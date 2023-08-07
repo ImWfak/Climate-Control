@@ -119,4 +119,12 @@ public interface Alerts {
                 resourceBundle.getString("noSelectedWeatherAlertContent")
         );
     }
+    static Alert createWrongFileContentAlert(ResourceBundle resourceBundle) {
+        return createAlert(
+                Alert.AlertType.ERROR,
+                resourceBundle.getString("wrongFileContentAlertTitle"),
+                resourceBundle.getString("wrongFileContentAlertHeader"),
+                resourceBundle.getString("wrongFileContentAlertContent")
+        );
+    }
 }
