@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TestClimate {
     private static final Logger logger = LogManager.getLogger(TestClimate.class);

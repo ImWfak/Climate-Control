@@ -191,7 +191,7 @@ public class Climate {
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:" + path);
             statement = connection.createStatement();
-            statement.executeUpdate("DROP TABLE IF EXISTS days");
+            //statement.executeUpdate("DROP TABLE IF EXISTS days");
             statement.executeUpdate(
                     "CREATE TABLE days (" +
                     "ID INTEGER," +
@@ -200,7 +200,7 @@ public class Climate {
                     "Comment String," +
                     "FOREIGN KEY(ID) REFERENCES weathers(ID));"
             );
-            statement.executeUpdate("DROP TABLE IF EXISTS weathers");
+            //statement.executeUpdate("DROP TABLE IF EXISTS weathers");
             statement.executeUpdate(
                     "CREATE TABLE weathers (" +
                     "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -229,6 +229,9 @@ public class Climate {
             if (!metaData.getTables(null, null, "days", null).next() ||
                     !metaData.getTables(null, null, "weathers", null).next()) {
                 createDB(path);
+            } else {
+                preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS days;");
+                preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS weathers;");
             }
             for (int id = 0; id < weathers.size(); id++) {
                 preparedStatement = connection.prepareStatement("INSERT INTO weathers (ID, Season, Comment) VALUES (?, ?, ?);");
@@ -266,15 +269,16 @@ public class Climate {
             DatabaseMetaData metaData = connection.getMetaData();
             if (!metaData.getTables(null, null, "days", null).next() ||
                     !metaData.getTables(null, null, "weathers", null).next()) {
-                createDB(path);
+                logger.info("in db no weathers or days tables");
+                return;
             }
             weathers.clear();
             preparedStatement = connection.prepareStatement("SELECT MAX(rowID) FROM weathers;");
-            for (int weatherIndex = 0, weathersCount = preparedStatement.executeUpdate(); weatherIndex <= weathersCount; weatherIndex++) {
+            for (int weatherIndex = 0, weathersCount = preparedStatement.executeQuery().getInt(1); weatherIndex <= weathersCount; weatherIndex++) {
                 preparedStatement = connection.prepareStatement("SELECT ID FROM weathers WHERE rowID = ?;");
                 preparedStatement.setInt(1, weatherIndex);
-                int id = preparedStatement.executeUpdate();
-                preparedStatement = connection.prepareStatement("SELECT Comment, Season FROM weathers WHERE ID = ?;");
+                int id = preparedStatement.executeQuery().getInt(1);
+                preparedStatement = connection.prepareStatement("SELECT Season, Comment FROM weathers WHERE ID = ?;");
                 preparedStatement.setInt(1, id);
                 String season = preparedStatement.executeQuery().getString(1);
                 String comment = preparedStatement.executeQuery().getString(2);
