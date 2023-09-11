@@ -455,3 +455,63 @@ Days[]
 2023-08-08 17:52:39.593 [main] info.climateControl.climate.Climate - reading to climate from .txt file out/test.txt
 2023-08-08 17:52:39.598 [main] info.climateControl.climate.Climate - writing climate to .xml file out/test.xml
 2023-08-08 17:52:39.605 [main] info.climateControl.climate.Climate - reading to climate from .xml file out/test.xml
+2023-09-05 14:20:58.671 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'openFileButton'
+2023-09-07 10:41:49.523 [main] info.climateControl.climate.Climate - writing climate to .json file out/test.json
+2023-09-07 10:41:49.692 [main] info.climateControl.climate.Climate - out\test.json (The system cannot find the path specified)
+2023-09-07 10:41:49.693 [main] info.climateControl.climate.Climate - reading to climate from .json file out/test.json
+2023-09-07 10:41:49.694 [main] info.climateControl.climate.Climate - out\test.json (The system cannot find the path specified)
+2023-09-07 10:41:49.700 [main] info.climateControl.climate.Climate - writing climate to .dbout/test.db
+2023-09-07 10:41:49.714 [main] info.climateControl.climate.Climate - path to 'out/test.db': 'E:\Code\Java\Climate-Control\out' does not exist
+2023-09-07 10:41:49.714 [main] info.climateControl.climate.Climate - reading to climate from .db out/test.db
+2023-09-07 10:41:49.714 [main] info.climateControl.climate.Climate - path to 'out/test.db': 'E:\Code\Java\Climate-Control\out' does not exist
+2023-09-07 10:41:49.715 [main] info.climateControl.climate.Climate - writing climate to .txt file out/test.txt
+2023-09-07 10:41:49.715 [main] info.climateControl.climate.Climate - out\test.txt (The system cannot find the path specified)
+2023-09-07 10:41:49.716 [main] info.climateControl.climate.Climate - reading to climate from .txt file out/test.txt
+2023-09-07 10:41:49.716 [main] info.climateControl.climate.Climate - out\test.txt
+2023-09-07 10:41:49.717 [main] info.climateControl.climate.Climate - writing climate to .xml file out/test.xml
+2023-09-07 10:41:49.721 [main] info.climateControl.climate.Climate - out\test.xml (The system cannot find the path specified)
+2023-09-07 10:41:49.721 [main] info.climateControl.climate.Climate - reading to climate from .xml file out/test.xml
+2023-09-07 10:41:49.722 [main] info.climateControl.climate.Climate - out\test.xml (The system cannot find the path specified)
+2023-09-07 11:27:33.708 [main] info.climateControl.climate.Climate - writing climate to .json file out/test.json
+2023-09-07 11:27:33.873 [main] info.climateControl.climate.Climate - reading to climate from .json file out/test.json
+2023-09-07 11:27:33.884 [main] info.climateControl.climate.Climate - writing climate to .dbout/test.db
+2023-09-07 11:27:34.034 [main] info.climateControl.climate.Climate - creating tables in .db out/test.db
+2023-09-07 11:27:34.575 [main] info.climateControl.climate.Climate - reading to climate from .db out/test.db
+2023-09-07 11:27:34.581 [main] info.climateControl.climate.Climate - writing climate to .txt file out/test.txt
+2023-09-07 11:27:34.581 [main] info.climateControl.climate.Climate - reading to climate from .txt file out/test.txt
+2023-09-07 11:27:34.582 [main] info.climateControl.climate.Climate - writing climate to .xml file out/test.xml
+2023-09-07 11:27:34.597 [main] info.climateControl.climate.Climate - reading to climate from .xml file out/test.xml
+2023-09-07 11:29:34.449 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'openFileButton'
+2023-09-07 11:29:50.220 [JavaFX Application Thread] info.climateControl.climate.Climate - reading to climate from .db E:\Code\Java\Climate-Control\out\test.db
+2023-09-07 11:29:50.350 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of selectedWeather
+2023-09-07 11:29:50.352 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of changesInFileSaved from 'true' to 'true'
+2023-09-07 11:29:50.352 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of fileOpen from 'false' to 'true'
+2023-09-07 11:29:50.352 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of filePath from 'null' to 'E:\Code\Java\Climate-Control\out\test.db'
+2023-09-07 11:30:08.040 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of selectedWeather
+2023-09-07 11:30:18.918 [JavaFX Application Thread] info.climateControl.window.tabs.EditTab - pressed 'editDayByTemperatureButton'
+2023-09-07 11:30:24.095 [JavaFX Application Thread] info.climateControl.window.tabs.ViewTab - pressed 'setUaToggleButton'
+2023-09-07 11:31:18.289 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of changesInFileSaved from 'true' to 'false'
+2023-09-07 11:31:38.965 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'closeFileButton'
+2023-09-07 11:32:20.761 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'doNotSaveAndCloseFileButton'
+2023-09-07 11:32:20.761 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of climate
+2023-09-07 11:32:20.761 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of selectedWeather
+2023-09-07 11:32:20.761 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of changesInFileSaved from 'false' to 'true'
+2023-09-07 11:32:20.761 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of fileOpen from 'true' to 'false'
+2023-09-07 11:32:20.761 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of filePath from 'E:\Code\Java\Climate-Control\out\test.db' to 'null'
+2023-09-07 11:32:24.978 [JavaFX Application Thread] info.climateControl.window.tabs.EditTab - pressed 'editDayByTemperatureButton'
+2023-09-07 11:32:29.354 [JavaFX Application Thread] info.climateControl.window.tabs.EditTab - pressed 'editWeatherBySeasonButton'
+2023-09-08 18:00:17.709 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'openFileButton'
+2023-09-08 18:00:29.513 [JavaFX Application Thread] info.climateControl.climate.Climate - reading to climate from .db E:\Code\Java\Climate-Control\out\test.db
+2023-09-08 18:00:29.653 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of selectedWeather
+2023-09-08 18:00:29.655 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of changesInFileSaved from 'true' to 'true'
+2023-09-08 18:00:29.655 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of fileOpen from 'false' to 'true'
+2023-09-08 18:00:29.655 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of filePath from 'null' to 'E:\Code\Java\Climate-Control\out\test.db'
+2023-09-08 18:00:31.374 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of selectedWeather
+2023-09-08 18:00:32.994 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'openFileButton'
+2023-09-08 18:00:37.697 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'doNotOpenFileButton'
+2023-09-08 18:00:40.000 [JavaFX Application Thread] info.climateControl.window.tabs.EditTab - pressed 'editDayByTemperatureButton'
+2023-09-08 18:00:46.239 [JavaFX Application Thread] info.climateControl.window.tabs.EditTab - pressed 'deleteDayByTemperatureButton'
+2023-09-08 18:00:50.682 [JavaFX Application Thread] info.climateControl.window.controller.Controller - changed value of changesInFileSaved from 'true' to 'false'
+2023-09-08 18:00:53.197 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'openFileButton'
+2023-09-08 18:25:55.481 [JavaFX Application Thread] info.climateControl.window.tabs.FileTab - pressed 'doNotSaveAndDoNotOpenFileButton'
+2023-09-08 18:25:59.428 [JavaFX Application Thread] info.climateControl.window.tabs.ViewTab - pressed 'setUaToggleButton'

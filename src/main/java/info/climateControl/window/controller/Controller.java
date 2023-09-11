@@ -17,9 +17,8 @@ import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class Controller {

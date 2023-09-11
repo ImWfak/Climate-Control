@@ -1,10 +1,5 @@
 package info.climateControl.day;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 

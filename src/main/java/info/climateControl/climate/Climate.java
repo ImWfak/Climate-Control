@@ -7,14 +7,13 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 import com.thoughtworks.xstream.XStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.sql.*;
 import java.time.LocalDate;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 import java.io.*;
 
 /**<p><b>methods in AbstractClimate</b></p>

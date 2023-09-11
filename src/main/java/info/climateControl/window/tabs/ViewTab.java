@@ -3,7 +3,6 @@ package info.climateControl.window.tabs;
 import info.climateControl.window.controller.Controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Locale;
 
 public class ViewTab {
